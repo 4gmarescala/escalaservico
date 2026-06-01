@@ -15,8 +15,9 @@ const C = {
   borda: 'rgba(255, 255, 255, 0.25)', // Borda branca translúcida de alto contraste
   verde: '#27ae60',
   verdePale: 'rgba(39,174,96,0.12)',
-  vermelho: '#ffffff',
-  vermelhoPale: 'rgba(255,255,255,0.15)',
+  vermelho: '#e74c3c',
+  vermelhoPale: 'rgba(231,76,60,0.12)',
+  vermelhoClaro: '#ffffff',
   laranja: '#ffbe76',
   laranjaPale: 'rgba(255,190,118,0.15)',
 };

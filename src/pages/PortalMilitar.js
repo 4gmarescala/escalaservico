@@ -15,8 +15,8 @@ const C = {
   borda: 'rgba(255, 255, 255, 0.25)', // Borda branca translúcida de alto contraste
   verde: '#27ae60',
   verdePale: 'rgba(39,174,96,0.12)',
-  vermelho: '#ffffff',
-  vermelhoPale: 'rgba(255,255,255,0.15)',
+  vermelho: '#e74c3c',
+  vermelhoPale: 'rgba(231,76,60,0.12)',
   laranja: '#ffbe76',
   laranjaPale: 'rgba(255,190,118,0.15)',
 };
@@ -244,11 +244,11 @@ export default function PortalMilitar() {
         {/* BOTÃO NOVA PERMUTA OU AVISO DE CONTA INATIVA */}
         {meuMilitar?.ativo !== false ? (
           <button onClick={() => { setModal('nova'); setErro(''); }}
-            style={{ width: '100%', background: C.ouro, color: '#8f0000', border: 'none', borderRadius: 10, padding: '1rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: '0.85rem', letterSpacing: 2, cursor: 'pointer', marginBottom: '1.2rem', boxShadow: '0 4px 20px rgba(255,255,255,0.2)', transition: 'all 0.2s' }}>
+            style={{ width: '100%', background: C.fundo2, color: '#ffffff', border: 'none', borderRadius: 10, padding: '1rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: '0.85rem', letterSpacing: 2, cursor: 'pointer', marginBottom: '1.2rem', boxShadow: '0 4px 15px rgba(143, 0, 0, 0.25)', transition: 'all 0.2s' }}>
             ➕ SOLICITAR NOVA PERMUTA
           </button>
         ) : (
-          <div style={{ background: C.vermelhoPale, border: `1px solid ${C.vermelho}40`, borderRadius: 10, padding: '1rem', color: '#e07070', textAlign: 'center', marginBottom: '1.2rem', fontFamily: "'Montserrat', sans-serif", fontSize: '0.85rem', fontWeight: 'bold' }}>
+          <div style={{ background: C.vermelhoPale, border: `1px solid ${C.vermelho}40`, borderRadius: 10, padding: '1rem', color: '#c0392b', textAlign: 'center', marginBottom: '1.2rem', fontFamily: "'Montserrat', sans-serif", fontSize: '0.85rem', fontWeight: 'bold' }}>
             ⚠️ SUA CONTA ESTÁ INATIVA. Você não pode propor ou confirmar novas permutas.
           </div>
         )}
@@ -262,10 +262,10 @@ export default function PortalMilitar() {
         )}
 
         {/* ABAS */}
-        <div style={{ display: 'flex', gap: 2, background: 'rgba(0,0,0,0.3)', border: `1px solid ${C.borda}`, borderRadius: 8, padding: 3, marginBottom: '1.2rem' }}>
+        <div style={{ display: 'flex', gap: 2, background: '#f5f6fa', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, padding: 3, marginBottom: '1.2rem' }}>
           {[['minhas', `Minhas (${minhas.length})`], ['pendentes', `Confirmar (${pendConf.length})`], ['historico', 'Histórico']].map(([k, v]) => (
             <button key={k} onClick={() => setAba(k)}
-              style={{ flex: 1, background: aba === k ? C.ouro : 'transparent', color: aba === k ? C.fundo : C.cinza, border: 'none', borderRadius: 5, padding: '0.5rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.65rem', fontWeight: aba === k ? 700 : 400, letterSpacing: 1, transition: 'all .2s' }}>
+              style={{ flex: 1, background: aba === k ? C.fundo2 : 'transparent', color: aba === k ? '#ffffff' : '#586069', border: 'none', borderRadius: 5, padding: '0.6rem 0.5rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.68rem', fontWeight: aba === k ? 700 : 500, letterSpacing: 1, transition: 'all .2s', boxShadow: aba === k ? '0 4px 12px rgba(143, 0, 0, 0.2)' : 'none' }}>
               {v}
             </button>
           ))}
@@ -367,7 +367,7 @@ export default function PortalMilitar() {
               <textarea value={form.obs} onChange={e => setForm(f => ({ ...f, obs: e.target.value }))} style={txtAreaStyle} placeholder="Ala, detalhes..." />
             </Campo>
 
-            {erro && <div style={{ background: C.vermelhoPale, border: `1px solid ${C.vermelho}40`, borderRadius: 6, color: '#e07070', fontSize: '0.85rem', padding: '0.6rem', marginBottom: '0.8rem' }}>{erro}</div>}
+            {erro && <div style={{ background: C.vermelhoPale, border: `1px solid ${C.vermelho}40`, borderRadius: 6, color: '#c0392b', fontSize: '0.85rem', padding: '0.6rem', marginBottom: '0.8rem' }}>{erro}</div>}
 
             <button type="submit" style={{ width: '100%', background: C.ouro, color: '#8f0000', border: 'none', borderRadius: 8, padding: '0.8rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', letterSpacing: 1, boxShadow: '0 4px 15px rgba(255,255,255,0.2)', transition: 'all 0.2s' }}>
               ENVIAR SOLICITAÇÃO
@@ -391,7 +391,7 @@ export default function PortalMilitar() {
           <Campo label="Observação (opcional)">
             <textarea value={obsModal} onChange={e => setObsModal(e.target.value)} style={txtAreaStyle} placeholder="Alguma observação..." />
           </Campo>
-          {erro && <div style={{ background: C.vermelhoPale, border: `1px solid ${C.vermelho}40`, borderRadius: 6, color: '#e07070', fontSize: '0.85rem', padding: '0.6rem', marginBottom: '0.8rem' }}>{erro}</div>}
+          {erro && <div style={{ background: C.vermelhoPale, border: `1px solid ${C.vermelho}40`, borderRadius: 6, color: '#c0392b', fontSize: '0.85rem', padding: '0.6rem', marginBottom: '0.8rem' }}>{erro}</div>}
           <div style={{ display: 'flex', gap: '0.6rem' }}>
             <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.75rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.75rem' }}>CANCELAR</button>
             <button onClick={handleConfirmar} style={{ flex: 2, background: C.verdePale, color: '#7dbd72', border: `1px solid ${C.verde}40`, borderRadius: 8, padding: '0.75rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '0.75rem' }}>✅ CONFIRMAR</button>
@@ -406,7 +406,7 @@ export default function PortalMilitar() {
           <Campo label="Motivo da recusa">
             <textarea value={obsModal} onChange={e => setObsModal(e.target.value)} style={{ ...txtAreaStyle, minHeight: 70 }} placeholder="Informe o motivo..." />
           </Campo>
-          {erro && <div style={{ background: C.vermelhoPale, border: `1px solid ${C.vermelho}40`, borderRadius: 6, color: '#e07070', fontSize: '0.85rem', padding: '0.6rem', marginBottom: '0.8rem' }}>{erro}</div>}
+          {erro && <div style={{ background: C.vermelhoPale, border: `1px solid ${C.vermelho}40`, borderRadius: 6, color: '#c0392b', fontSize: '0.85rem', padding: '0.6rem', marginBottom: '0.8rem' }}>{erro}</div>}
           <div style={{ display: 'flex', gap: '0.6rem' }}>
             <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.75rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.75rem' }}>CANCELAR</button>
             <button onClick={handleRejeitar} style={{ flex: 2, background: C.vermelhoPale, color: '#e07070', border: `1px solid ${C.vermelho}40`, borderRadius: 8, padding: '0.75rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '0.75rem' }}>❌ RECUSAR</button>
