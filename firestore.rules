@@ -1,0 +1,149 @@
+-- =====================================================================
+-- ⚓ 4º GMar — SISTEMA DE CONTROLE DE PERMUTAS
+-- SCRIPT DE BANCO DE DADOS E AUTENTICAÇÃO INTERNA (SUPABASE)
+-- =====================================================================
+-- Cole todo este script no painel do seu Supabase em:
+-- SQL Editor -> "+ New query" -> Cole o código -> Clique em "Run"
+-- =====================================================================
+
+-- 1. Habilitar a extensão pgcrypto para criptografia Blowfish (bcrypt) das senhas
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+-- 2. Limpeza prévia (Opcional - caso queira reiniciar o banco)
+-- DROP TABLE IF EXISTS public.config_mes CASCADE;
+-- DROP TABLE IF EXISTS public.permutas CASCADE;
+-- DROP TABLE IF EXISTS public.usuarios CASCADE;
+-- DROP TABLE IF EXISTS public.militares CASCADE;
+
+-- 3. Criar a Tabela de Militares
+CREATE TABLE public.militares (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    nome text NOT NULL,
+    posto text NOT NULL,
+    rg text UNIQUE NOT NULL,
+    regime text NOT NULL CHECK (regime IN ('12h', '24h', 'exp')),
+    secao text,
+    ativo boolean DEFAULT true NOT NULL,
+    criado_em timestamp with time zone DEFAULT now() NOT NULL
+);
+
+-- 4. Criar a Tabela de Usuários (Autenticador Interno por RG/Senha)
+CREATE TABLE public.usuarios (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    role text NOT NULL CHECK (role IN ('admin', 'militar')),
+    mil_id uuid REFERENCES public.militares(id) ON DELETE SET NULL,
+    posto text,
+    nome text NOT NULL,
+    rg text UNIQUE NOT NULL,
+    senha text NOT NULL,
+    ativo boolean DEFAULT true NOT NULL,
+    criado_em timestamp with time zone DEFAULT now() NOT NULL
+);
+
+-- 5. Criar a Tabela de Permutas
+CREATE TABLE public.permutas (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    tipo text NOT NULL CHECK (tipo IN ('real', 'paga')),
+    solicitante_id uuid NOT NULL REFERENCES public.militares(id) ON DELETE CASCADE,
+    solicitante_nome text NOT NULL,
+    receptor_id uuid NOT NULL REFERENCES public.militares(id) ON DELETE CASCADE,
+    receptor_nome text NOT NULL,
+    data text NOT NULL, -- Formato YYYY-MM-DD
+    data_retorno text, -- Formato YYYY-MM-DD (opcional, usado no tipo troca)
+    tipo_sv text NOT NULL,
+    obs text,
+    mes text NOT NULL, -- Formato YYYY-MM
+    status text NOT NULL DEFAULT 'aguardando_confirmacao' CHECK (status IN ('aguardando_confirmacao', 'aguardando_aprovacao', 'aprovada', 'rejeitada', 'quitada')),
+    criado_em timestamp with time zone DEFAULT now() NOT NULL,
+    confirmado_em timestamp with time zone,
+    obs_confirmacao text,
+    rejeitado_em timestamp with time zone,
+    motivo_rejeicao text,
+    rejeitado_por text,
+    aprovado_em timestamp with time zone,
+    aprovado_por text,
+    quitado_em timestamp with time zone,
+    obs_quitacao text
+);
+
+-- 6. Criar a Tabela de Configurações de Escala Mensal (Limites)
+CREATE TABLE public.config_mes (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    mes text NOT NULL, -- Formato YYYY-MM
+    militar_id uuid NOT NULL REFERENCES public.militares(id) ON DELETE CASCADE,
+    quantidade integer NOT NULL,
+    CONSTRAINT unique_mes_militar UNIQUE (mes, militar_id)
+);
+
+-- =====================================================================
+-- TRIGGERS E AUTOMATIZAÇÕES
+-- =====================================================================
+
+-- 7. Trigger para Criptografar Senhas Automaticamente antes de salvar no Banco
+CREATE OR REPLACE FUNCTION public.hash_password_trigger()
+RETURNS trigger AS $$
+BEGIN
+    -- Criptografa a senha se for um INSERT ou se a senha foi atualizada e não está em formato hash
+    IF (TG_OP = 'INSERT') OR (TG_OP = 'UPDATE' AND NEW.senha <> OLD.senha) THEN
+        IF NEW.senha NOT LIKE '$2a$%' AND NEW.senha NOT LIKE '$2b$%' THEN
+            NEW.senha := crypt(NEW.senha, gen_salt('bf'));
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER tr_hash_password
+BEFORE INSERT OR UPDATE OF senha ON public.usuarios
+FOR EACH ROW
+EXECUTE FUNCTION public.hash_password_trigger();
+
+-- =====================================================================
+-- FUNÇÃO RPC PARA LOGIN SEGURO
+-- =====================================================================
+
+-- 8. Função para Login Interno via RPC (RG e Senha)
+CREATE OR REPLACE FUNCTION public.login_militar(p_rg text, p_senha text)
+RETURNS TABLE (
+    id uuid,
+    role text,
+    mil_id uuid,
+    posto text,
+    nome text,
+    rg text
+) SECURITY DEFINER AS $$
+BEGIN
+    RETURN QUERY
+    SELECT u.id, u.role, u.mil_id, u.posto, u.nome, u.rg
+    FROM public.usuarios u
+    WHERE u.rg = TRIM(p_rg) AND u.senha = crypt(p_senha, u.senha);
+END;
+$$ LANGUAGE plpgsql;
+
+-- =====================================================================
+-- POLÍTICAS DE ACESSO (POLÍTICAS PÚBLICAS DO BANCO DE DADOS)
+-- =====================================================================
+-- Como estamos utilizando um Autenticador Interno Customizado baseado no banco,
+-- as consultas serão feitas pela API anônima do Supabase. Desativamos o RLS
+-- para permitir leituras e escritas diretas. O controle de sessões e integridade
+-- é feito pelo front-end.
+
+ALTER TABLE public.militares DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.usuarios DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.permutas DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.config_mes DISABLE ROW LEVEL SECURITY;
+
+-- Habilitar a publicação em tempo real para as tabelas principais no canal "supabase_realtime"
+ALTER PUBLICATION supabase_realtime ADD TABLE public.permutas;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.militares;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.config_mes;
+
+-- =====================================================================
+-- CADASTRO DO PRIMEIRO ADMINISTRADOR (EXEMPLO PRÁTICO)
+-- =====================================================================
+-- Após rodar este script completo, execute o bloco abaixo para criar o
+-- primeiro acesso administrativo do sistema (RG: 0001, Senha: admin123).
+-- Mude as informações conforme sua preferência!
+
+-- INSERT INTO public.usuarios (role, posto, nome, rg, senha)
+-- VALUES ('admin', 'Cel', 'ADMINISTRADOR PRINCIPAL', '0001', 'admin123');

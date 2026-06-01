@@ -1,0 +1,2704 @@
+{
+  "militares": [
+    {
+      "id": "0a6ac320-8535-4f43-a208-1a28c43337f6",
+      "nome": "MARCELO FERREIRA",
+      "posto": "SUBTEN",
+      "rg": "21305",
+      "regime": "12h",
+      "secao": "SUPERVISÃO 24h",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "2a3da507-0b46-45b9-bbc8-e2c948078db2",
+      "nome": "SILVA FILHO",
+      "posto": "SUBTEN",
+      "rg": "12900",
+      "regime": "12h",
+      "secao": "SUPERVISÃO 24h",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "925da344-88a1-4b8d-a0fa-2882d232e2df",
+      "nome": "DA SILVA",
+      "posto": "SUBTEN",
+      "rg": "31491",
+      "regime": "12h",
+      "secao": "SUPERVISÃO 24h",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "feaf5221-d015-45a5-b0f0-b41ed97faab7",
+      "nome": "AMARAL",
+      "posto": "SUBTEN",
+      "rg": "12712",
+      "regime": "12h",
+      "secao": "SUPERVISÃO 24h",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "f3e8b208-5ef8-42cb-97c0-5b07903d4f51",
+      "nome": "R RANGEL",
+      "posto": "SUBTEN",
+      "rg": "24181",
+      "regime": "12h",
+      "secao": "SUPERVISÃO 12h",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "cd96b7cc-9719-4cf7-ab29-b6f02b9b663c",
+      "nome": "CLAUDIO",
+      "posto": "SUBTEN",
+      "rg": "24095",
+      "regime": "12h",
+      "secao": "SUPERVISÃO 12h",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "8dae81a1-42a4-467f-9e64-7521913a4e55",
+      "nome": "DAMASCENO",
+      "posto": "SUBTEN",
+      "rg": "24214",
+      "regime": "12h",
+      "secao": "SUPERVISÃO 12h",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "a0c928da-58c8-4b05-8d9d-98954d335d87",
+      "nome": "DIEGO",
+      "posto": "2º Sgt",
+      "rg": "43842",
+      "regime": "12h",
+      "secao": "OER",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "e10990dc-9d04-4935-b809-a4d9e832e30d",
+      "nome": "JEAN MOURA",
+      "posto": "2º Sgt",
+      "rg": "44813",
+      "regime": "12h",
+      "secao": "OER",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "aeb3fa00-8d85-473c-96de-1e7d5fd9589b",
+      "nome": "ERIK",
+      "posto": "Cb",
+      "rg": "53042",
+      "regime": "12h",
+      "secao": "OER",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "61aa3908-6fbe-4298-a789-df4b6abfdb38",
+      "nome": "SILVA",
+      "posto": "Cb",
+      "rg": "53198",
+      "regime": "12h",
+      "secao": "OER",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "06a92e28-0316-42ec-ba84-ff734fe2453f",
+      "nome": "ANGELO",
+      "posto": "1º Sgt",
+      "rg": "24554",
+      "regime": "12h",
+      "secao": "OER",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "d57a02ed-b69b-4f5f-a648-66851d209b09",
+      "nome": "BEZERRIL",
+      "posto": "2º Sgt",
+      "rg": "43739",
+      "regime": "12h",
+      "secao": "OER",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "a2b5053a-93c1-4880-8063-1da7c250b54c",
+      "nome": "MAGALHAES",
+      "posto": "SUBTEN",
+      "rg": "27523",
+      "regime": "12h",
+      "secao": "OER",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "7b918fa6-12f3-42d3-9715-3375c35777dd",
+      "nome": "RODRIGO SANTOS",
+      "posto": "1º Sgt",
+      "rg": "31538",
+      "regime": "12h",
+      "secao": "OER",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "a736b794-8bb1-48d6-9265-b1d63418e667",
+      "nome": "DE FREITAS",
+      "posto": "SUBTEN",
+      "rg": "22528",
+      "regime": "12h",
+      "secao": "OER",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "046d6f47-b312-4ee9-bb13-441e6c4c3f45",
+      "nome": "MEIRELES",
+      "posto": "1º Sgt",
+      "rg": "31379",
+      "regime": "12h",
+      "secao": "OER",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "ff87bd91-9aa8-4477-bacd-201f6fb10269",
+      "nome": "ANDRE",
+      "posto": "SUBTEN",
+      "rg": "24203",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "a2477a5a-0ebe-49c1-a9bc-7d3a72466c25",
+      "nome": "GRANJA",
+      "posto": "SUBTEN",
+      "rg": "27769",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "e0cda78d-f380-4731-85fb-25effd794e7a",
+      "nome": "LOPES",
+      "posto": "SUBTEN",
+      "rg": "22513",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "21acf255-58ac-44c9-a0ed-d82b7ecfea48",
+      "nome": "SIMAO",
+      "posto": "SUBTEN",
+      "rg": "24254",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "f17173c9-db47-4058-b47b-8fd693daa6da",
+      "nome": "JEFFERSON",
+      "posto": "SUBTEN",
+      "rg": "24503",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "b7af07d7-c288-4f89-81ec-61432dde913d",
+      "nome": "RICARDO",
+      "posto": "SUBTEN",
+      "rg": "24517",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "e88dc0a2-5f10-46d7-ae4b-eabe5a1e0c1f",
+      "nome": "VIVAS",
+      "posto": "2º Sgt",
+      "rg": "43771",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "729e25d6-a5c3-4d44-8d9a-fc0a635cc87c",
+      "nome": "JEOVANE",
+      "posto": "2º Sgt",
+      "rg": "43959",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "5b8277c7-a0b2-4a66-b27b-5610b6ec7cfe",
+      "nome": "FALLEIRO",
+      "posto": "2º Sgt",
+      "rg": "43828",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "2318006f-f658-4b82-bebc-7abbc88f94eb",
+      "nome": "MAYCON SOUZA",
+      "posto": "2º Sgt",
+      "rg": "44776",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "534b64ba-3d4d-4337-bfc5-f94c71ed6da3",
+      "nome": "CHALITA",
+      "posto": "Cb",
+      "rg": "53052",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "d59d25ce-6a77-466a-9d67-0f97153688b8",
+      "nome": "NOBRE",
+      "posto": "Cb",
+      "rg": "53102",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "ffded876-7776-4a5d-8f7d-6228efc75f5a",
+      "nome": "DENIS GONCALVES",
+      "posto": "Cb",
+      "rg": "53104",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "c6646880-c151-4756-9c1d-c63497d97414",
+      "nome": "AESSIO",
+      "posto": "Cb",
+      "rg": "53115",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "4450c56e-5ad8-4787-b92a-e5861d48b7f2",
+      "nome": "CESAR",
+      "posto": "Cb",
+      "rg": "53217",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "c78b723b-e92d-426e-9d6d-85004531da19",
+      "nome": "PICANÇO",
+      "posto": "Cb",
+      "rg": "53548",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "5aadf1ca-6108-417e-8c03-509254413ced",
+      "nome": "MARCEL",
+      "posto": "SUBTEN",
+      "rg": "13003",
+      "regime": "12h",
+      "secao": "1ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "d48b82d6-954a-4f89-ab3b-a972f13e02fd",
+      "nome": "CASTRO",
+      "posto": "SUBTEN",
+      "rg": "24232",
+      "regime": "12h",
+      "secao": "1ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "a580211c-c636-4d0b-acee-700bed956727",
+      "nome": "ELYSIO",
+      "posto": "2º Sgt",
+      "rg": "44203",
+      "regime": "12h",
+      "secao": "1ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "8a1f4928-362d-4715-8add-4a4bc4388b24",
+      "nome": "JANDER VIEIRA",
+      "posto": "2º Sgt",
+      "rg": "43773",
+      "regime": "12h",
+      "secao": "1ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "e45f1c00-40e9-4228-b227-142ab75024c2",
+      "nome": "FABIO SILVA",
+      "posto": "2º Sgt",
+      "rg": "43797",
+      "regime": "12h",
+      "secao": "1ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "27f560a4-3022-4378-9eba-7c5b8cef62ae",
+      "nome": "VIEIRA",
+      "posto": "2º Sgt",
+      "rg": "44814",
+      "regime": "12h",
+      "secao": "1ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "75fc9844-2dd3-4c75-86e6-d2b6998af23b",
+      "nome": "THIAGO",
+      "posto": "Cb",
+      "rg": "53600",
+      "regime": "12h",
+      "secao": "1ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "683cb34d-4825-4025-ae42-a8886163f567",
+      "nome": "VINICIUS",
+      "posto": "SUBTEN",
+      "rg": "24190",
+      "regime": "12h",
+      "secao": "1PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "5cf87561-e43b-4879-ba73-885e91933aa1",
+      "nome": "TRINDADE",
+      "posto": "1º Sgt",
+      "rg": "31390",
+      "regime": "12h",
+      "secao": "1PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "8c6bdd8e-c3ed-4acf-a552-db9bc4e98337",
+      "nome": "CORREA",
+      "posto": "1º Sgt",
+      "rg": "31510",
+      "regime": "12h",
+      "secao": "1PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "e5a29ae6-c09b-435b-9816-43fe882d91c0",
+      "nome": "ZSCHORNACK",
+      "posto": "Cb",
+      "rg": "53529",
+      "regime": "12h",
+      "secao": "1PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "77e86ab8-36f7-46cf-b62a-a9543cddcbf9",
+      "nome": "GLAUCEMIR",
+      "posto": "SUBTEN",
+      "rg": "26324",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "f5bfc780-1921-459f-96e7-3afcfd87be1e",
+      "nome": "CALIFFA",
+      "posto": "2º Sgt",
+      "rg": "43384",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "60300ea1-0366-48db-9f15-1f7eda8963cd",
+      "nome": "DAVID",
+      "posto": "2º Sgt",
+      "rg": "43664",
+      "regime": "12h",
+      "secao": "1NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "0a991a62-e1a1-4575-8541-19c020ad82b2",
+      "nome": "CAVALCANTE",
+      "posto": "Cb",
+      "rg": "53057",
+      "regime": "12h",
+      "secao": "1PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "be939991-40b2-497e-bc6b-238a6bb6b9bd",
+      "nome": "MARMELO",
+      "posto": "SUBTEN",
+      "rg": "24495",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "86837d0c-c6f1-437d-8ab5-0b2863d2eedb",
+      "nome": "BERGOMI",
+      "posto": "SUBTEN",
+      "rg": "31420",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "4cc00e0d-0512-418d-90ef-dc88a5adfc0f",
+      "nome": "MARCELO PINHO",
+      "posto": "SUBTEN",
+      "rg": "21209",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "706e38c9-0e9d-4345-9d3f-0664b4a0705c",
+      "nome": "FALCAO",
+      "posto": "SUBTEN",
+      "rg": "24224",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "92a730d3-35b8-417c-be33-ae23e386a5bf",
+      "nome": "SANDRO COSTA",
+      "posto": "SUBTEN",
+      "rg": "24278",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "b0667736-7ff1-4133-9c70-be74901e99f3",
+      "nome": "MAURO",
+      "posto": "SUBTEN",
+      "rg": "24466",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "0cee13d3-09a1-4152-82b4-a78924391ac5",
+      "nome": "EVANDRO",
+      "posto": "SUBTEN",
+      "rg": "24476",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "2b387ba8-cad3-404f-b097-520ba9db711a",
+      "nome": "AURELIO",
+      "posto": "SUBTEN",
+      "rg": "24516",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "b42796c4-5770-4684-a152-157e4558fc4c",
+      "nome": "HUGUENIN",
+      "posto": "2º Sgt",
+      "rg": "43863",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "7201a7ec-2461-490d-a507-65d534051027",
+      "nome": "LEANDRO",
+      "posto": "Cb",
+      "rg": "53027",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "c3ae2ef9-d2d1-4f76-8c12-ff635f92f005",
+      "nome": "LAURO",
+      "posto": "Cb",
+      "rg": "53034",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "2fd48a4f-e38e-4971-8e33-9c95c5b49439",
+      "nome": "DOUGLAS LIMA",
+      "posto": "Cb",
+      "rg": "53039",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "076d1b5f-a3b7-47d0-97f2-b613eaf51ca5",
+      "nome": "THALES",
+      "posto": "Cb",
+      "rg": "53069",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "8c318eef-ff11-447b-9d25-ee8507bbdb1b",
+      "nome": "JORIO",
+      "posto": "Cb",
+      "rg": "53081",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "9c46f324-f3f4-45d4-b7fa-486f5d66bc9e",
+      "nome": "BRUNO",
+      "posto": "Cb",
+      "rg": "53571",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "b674a641-35e5-4e2a-9d9c-7a4d03cbb888",
+      "nome": "KNAPP",
+      "posto": "Cb",
+      "rg": "53543",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "7074f72a-931d-46aa-9441-ab03d2f7c123",
+      "nome": "CARLOS FROES",
+      "posto": "Cb",
+      "rg": "53573",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "0892b748-0982-4a30-a928-f4d94c8e4a16",
+      "nome": "FERREIRA",
+      "posto": "Sd",
+      "rg": "53651",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "5ac225d3-c17b-4fa7-85dc-3775503392b0",
+      "nome": "REISON",
+      "posto": "SUBTEN",
+      "rg": "22537",
+      "regime": "12h",
+      "secao": "2ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "484d77a1-6622-427a-afd2-f651b7afe17b",
+      "nome": "FERNANDO JUNIOR",
+      "posto": "2º Sgt",
+      "rg": "43833",
+      "regime": "12h",
+      "secao": "2ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "46f2c85a-8c78-4ad3-a784-022f9c43cbcf",
+      "nome": "CARVALHO",
+      "posto": "2º Sgt",
+      "rg": "43878",
+      "regime": "12h",
+      "secao": "2ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "948e96bb-e899-420e-beae-bbde10694214",
+      "nome": "MACHADO",
+      "posto": "1º Sgt",
+      "rg": "31487",
+      "regime": "12h",
+      "secao": "2PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "ebbf0b17-b807-4ece-a7b7-c376ade88289",
+      "nome": "TERCITANO",
+      "posto": "2º Sgt",
+      "rg": "43680",
+      "regime": "12h",
+      "secao": "2PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "90b372b6-2190-4260-a603-046e34575313",
+      "nome": "PABLO LIMA",
+      "posto": "2º Sgt",
+      "rg": "44803",
+      "regime": "12h",
+      "secao": "2PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "afdf55ac-a261-433a-b0cf-ec13d14927d8",
+      "nome": "DANIEL NASCIMENTO",
+      "posto": "Cb",
+      "rg": "53618",
+      "regime": "12h",
+      "secao": "2PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "fd0380b4-d88a-4043-b5e1-dd32f9bfc6fc",
+      "nome": "SD TEMP AMANDA ANTUNES",
+      "posto": "4",
+      "rg": "2201284",
+      "regime": "12h",
+      "secao": "2PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "0947d5b0-16e1-492e-962d-5f7b965a6c5f",
+      "nome": "TAVARES",
+      "posto": "SUBTEN",
+      "rg": "24567",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "00544eb5-5f8b-4eaa-b06e-74c56c3d470e",
+      "nome": "RANGEL",
+      "posto": "1º Sgt",
+      "rg": "31502",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "e312df88-cc9f-46a4-afed-7903dce73c44",
+      "nome": "EDALMO",
+      "posto": "2º Sgt",
+      "rg": "43686",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "a5f186f2-2865-4aed-a34b-bdb24d16f10b",
+      "nome": "VINICIUS COSTA",
+      "posto": "2º Sgt",
+      "rg": "43698",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "713c2160-d562-4532-a3b2-77f12195e31c",
+      "nome": "SENRA",
+      "posto": "2º Sgt",
+      "rg": "43792",
+      "regime": "12h",
+      "secao": "2ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "a04100a4-eefa-48a9-b33d-4de411147771",
+      "nome": "RODRIGUES",
+      "posto": "Cb",
+      "rg": "53621",
+      "regime": "12h",
+      "secao": "2PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "5baa75c0-1401-4191-9798-4ca7fe478b3e",
+      "nome": "BARROSO",
+      "posto": "Cb",
+      "rg": "53634",
+      "regime": "12h",
+      "secao": "2ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "78cf15f1-d3e6-4285-bbbb-b8f4f68de45a",
+      "nome": "F VIVAS",
+      "posto": "Cb",
+      "rg": "53235",
+      "regime": "12h",
+      "secao": "2NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "8124788c-07f6-4696-b60f-437674b6ca60",
+      "nome": "FONTOURA",
+      "posto": "SUBTEN",
+      "rg": "24178",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "e9dc9bcf-ddd9-466b-b47e-dd346473196e",
+      "nome": "VIEIRA",
+      "posto": "SUBTEN",
+      "rg": "24245",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "6ea46417-469c-41f6-b526-9fde55077e69",
+      "nome": "VILLAR",
+      "posto": "SUBTEN",
+      "rg": "24219",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "69070df1-8d59-46f2-8d48-6535ae30dabb",
+      "nome": "FREITAS",
+      "posto": "SUBTEN",
+      "rg": "24472",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "8d496892-1a54-481f-88b4-ef65bacd3226",
+      "nome": "PABLO MATTA",
+      "posto": "1º Sgt",
+      "rg": "45093",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "e74eae4c-cdc4-44ae-b655-b928aaaa53f5",
+      "nome": "JANDRE",
+      "posto": "1º Sgt",
+      "rg": "31435",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "ce56cdff-8718-4343-a9aa-58b7901a351e",
+      "nome": "MARCELO",
+      "posto": "1º Sgt",
+      "rg": "31415",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "35eb917c-01c9-47ff-a585-e9d54e18e781",
+      "nome": "ESCANHO",
+      "posto": "1º Sgt",
+      "rg": "31402",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "1d2d3fd4-0041-48ed-ba26-f4409d06322a",
+      "nome": "L JANDRE",
+      "posto": "2º Sgt",
+      "rg": "43671",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "8268ce6a-4c50-4a36-91e6-8ab116f0b881",
+      "nome": "LISBOA",
+      "posto": "2º Sgt",
+      "rg": "44765",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "1e8b41e8-4f0c-42ca-b5ad-532d3e6e9f29",
+      "nome": "EDER",
+      "posto": "2º Sgt",
+      "rg": "43879",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "d52a67c9-3474-44c7-b0b1-3bdb2ae479fa",
+      "nome": "BRUTO",
+      "posto": "3º Sgt",
+      "rg": "53260",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "7c0b8808-6bbb-4784-889f-332c72d84544",
+      "nome": "LLOVERAS",
+      "posto": "Cb",
+      "rg": "53033",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "b86fc7ba-e999-4b17-8be2-15c1508efa5e",
+      "nome": "LEONARDO ARAGON",
+      "posto": "Cb",
+      "rg": "53050",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "2770e060-34de-4b59-9828-36360dad189d",
+      "nome": "ADALTO",
+      "posto": "Cb",
+      "rg": "53051",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "bf2c41eb-f25a-4685-b573-76d10538a6f6",
+      "nome": "IGOR",
+      "posto": "Cb",
+      "rg": "53603",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "3e29aa88-e248-4c0f-9301-6d1a8107b753",
+      "nome": "SD TEMP CYRIACO",
+      "posto": "5",
+      "rg": "2201285",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "05c2d3bd-bb1e-4f84-b68e-3d0cbcde1b49",
+      "nome": "NAPOLEAO",
+      "posto": "SUBTEN",
+      "rg": "31370",
+      "regime": "12h",
+      "secao": "3ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "09ccb12c-55a5-4617-a47b-295f240e1723",
+      "nome": "JAIME",
+      "posto": "SUBTEN",
+      "rg": "24507",
+      "regime": "12h",
+      "secao": "3ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "ff8d767b-1475-4a77-a7de-c609ef4c39b2",
+      "nome": "PANISSET",
+      "posto": "2º Sgt",
+      "rg": "44745",
+      "regime": "12h",
+      "secao": "3ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "b097d456-1982-4a8e-862d-4327ffc8b887",
+      "nome": "COSTA NETO",
+      "posto": "Cb",
+      "rg": "53085",
+      "regime": "12h",
+      "secao": "3ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "47b77610-010e-4220-a87e-66365c471fb2",
+      "nome": "GUTEMBERG",
+      "posto": "Cb",
+      "rg": "53245",
+      "regime": "12h",
+      "secao": "3ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "f0f7919f-39be-4b90-9f16-2996a89cae1b",
+      "nome": "BRUNO ALVES",
+      "posto": "Cb",
+      "rg": "53259",
+      "regime": "12h",
+      "secao": "3ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "1cd69878-6e00-4c46-b65c-166b523fa7d1",
+      "nome": "L FIGUEIREDO",
+      "posto": "Cb",
+      "rg": "53278",
+      "regime": "12h",
+      "secao": "3ITÇ",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "a7cb8900-aa1d-4f23-87f7-1820ef630435",
+      "nome": "AMPARO",
+      "posto": "SUBTEN",
+      "rg": "21180",
+      "regime": "12h",
+      "secao": "3PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "d499c334-0f99-4557-a516-a7e9908b38b9",
+      "nome": "MAYCON",
+      "posto": "2º Sgt",
+      "rg": "43817",
+      "regime": "12h",
+      "secao": "3PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "95701be5-c5ec-41d2-a0ea-cbaba94163d1",
+      "nome": "RAFAEL CUNHA",
+      "posto": "2º Sgt",
+      "rg": "43710",
+      "regime": "12h",
+      "secao": "3PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "30d05db7-f108-4e3d-a35c-745e3e42162e",
+      "nome": "MELLO",
+      "posto": "2º Sgt",
+      "rg": "44777",
+      "regime": "12h",
+      "secao": "3PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "c35278d0-84b5-4bb7-93e6-64b5cf77c3ed",
+      "nome": "CARDOSO",
+      "posto": "2º Sgt",
+      "rg": "43211",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "3e913089-4166-45d9-886d-faa577a47021",
+      "nome": "VICTOR MORAIS",
+      "posto": "Cb",
+      "rg": "53122",
+      "regime": "12h",
+      "secao": "3PN",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "5bb5ab08-88c6-479c-b26a-d46fc69becb4",
+      "nome": "BRENO",
+      "posto": "Cb",
+      "rg": "53277",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "c9ea6bca-b26e-4c6d-8155-960ff76efbee",
+      "nome": "GONÇALVES",
+      "posto": "Cb",
+      "rg": "53563",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "a37f40dc-f4d6-471e-ae0b-499610a5d14c",
+      "nome": "RANGEL",
+      "posto": "Sd",
+      "rg": "53594",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "2d7ca9d9-4764-4185-b1c6-92dfeb692959",
+      "nome": "RUBENS",
+      "posto": "Cb",
+      "rg": "53142",
+      "regime": "12h",
+      "secao": "3NIT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "52051587-ff77-4e69-b194-8c8330fea857",
+      "nome": "JEFFERSON MORAES",
+      "posto": "1º Sgt",
+      "rg": "31557",
+      "regime": "12h",
+      "secao": "SAD",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "12fec0ca-ce73-407a-92dc-dd7768fd6fcd",
+      "nome": "VINICIUS",
+      "posto": "2º Sgt",
+      "rg": "43857",
+      "regime": "12h",
+      "secao": "SAD",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "c98b9a21-cba9-4dd1-99f2-c694061aa72e",
+      "nome": "RIBEIRO",
+      "posto": "2º Sgt",
+      "rg": "43692",
+      "regime": "12h",
+      "secao": "ESC",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "0bacd116-7b4b-4019-91f4-df712965b55d",
+      "nome": "MAURICIO",
+      "posto": "2º Sgt",
+      "rg": "43814",
+      "regime": "12h",
+      "secao": "SOP/SST",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "8e2fa369-856b-4a6c-b88c-0cf78be32786",
+      "nome": "EDUARDO",
+      "posto": "2º Sgt",
+      "rg": "43818",
+      "regime": "12h",
+      "secao": "SOP/SST",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "47d66abc-cfcb-451f-a115-bb99f204efe0",
+      "nome": "WANDEMBERG",
+      "posto": "2º Sgt",
+      "rg": "43749",
+      "regime": "12h",
+      "secao": "SOP/SST",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "f1651903-d36a-4f2b-9910-4b98f3f30a30",
+      "nome": "TOLEDO",
+      "posto": "2º Sgt",
+      "rg": "44314",
+      "regime": "12h",
+      "secao": "SOP/SST",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "2ca59609-d530-439d-a79f-3f84ad1c121d",
+      "nome": "REGINALDO",
+      "posto": "2º Sgt",
+      "rg": "43530",
+      "regime": "12h",
+      "secao": "SSMT",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "a1904510-e1a8-4c34-8615-0b022c9e5b00",
+      "nome": "DAVIDSON",
+      "posto": "Cb",
+      "rg": "53193",
+      "regime": "12h",
+      "secao": "APROV",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "738df4dd-92fe-4c54-ae6c-4858df1d6879",
+      "nome": "BRANDAO FILHO",
+      "posto": "2º Sgt",
+      "rg": "43810",
+      "regime": "12h",
+      "secao": "AIOp",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "47153a99-b036-4ace-a909-24cc166cf8c1",
+      "nome": "REGINO",
+      "posto": "SUBTEN",
+      "rg": "21755",
+      "regime": "12h",
+      "secao": "SSSG",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "0f1021d2-bbcd-4cb4-a219-8a5e9a646bd3",
+      "nome": "BRUNO MORAES",
+      "posto": "2º Sgt",
+      "rg": "44808",
+      "regime": "12h",
+      "secao": "SSSG",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "17ad8b92-014c-4df4-bd77-da3fdd7f5edd",
+      "nome": "DIAS",
+      "posto": "Cb",
+      "rg": "53200",
+      "regime": "12h",
+      "secao": "SSSG",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "bad511c0-2b83-48a0-bf01-b129f3f1eff0",
+      "nome": "FELIPE MARCOS",
+      "posto": "2º Sgt",
+      "rg": "43705",
+      "regime": "12h",
+      "secao": "ALMOX",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "1e336fe5-c081-4c09-b04e-f5560ea446eb",
+      "nome": "VIDAL",
+      "posto": "1º Sgt",
+      "rg": "31570",
+      "regime": "12h",
+      "secao": "SSCO",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "015c2372-f3a0-4009-a576-9ed00832ff0f",
+      "nome": "PAULO NUNES",
+      "posto": "SUBTEN",
+      "rg": "42257",
+      "regime": "12h",
+      "secao": "SSCO",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "ff91c24a-c0b0-46f8-a556-0ef4635596f8",
+      "nome": "ROSARIO",
+      "posto": "SUBTEN",
+      "rg": "23836",
+      "regime": "12h",
+      "secao": "SSCO",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "009b27ce-77f8-41c6-8265-441eba0fc209",
+      "nome": "SD LUCAS BORGES",
+      "posto": "1º Sgt",
+      "rg": "2200121",
+      "regime": "12h",
+      "secao": "SSCO",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "ef15380a-629d-4ab5-8f17-76bb07f71f1b",
+      "nome": "SPINELLI",
+      "posto": "Sd",
+      "rg": "61292",
+      "regime": "12h",
+      "secao": "SSCO",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "51a3ab80-9d55-4b9f-a0be-3812cb10d4d7",
+      "nome": "NOBLAT",
+      "posto": "SUBTEN",
+      "rg": "20382",
+      "regime": "12h",
+      "secao": "SSCO",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "6b0e426e-c7f4-404d-a92d-04b40066339b",
+      "nome": "BATISTA",
+      "posto": "SUBTEN",
+      "rg": "25596",
+      "regime": "12h",
+      "secao": "RANCHO",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "d8255e30-62c4-4cfb-a13c-639eb1fa0807",
+      "nome": "NOVELLO",
+      "posto": "1º Sgt",
+      "rg": "32114",
+      "regime": "12h",
+      "secao": "RANCHO",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "c88d823e-6c40-4b00-8858-199676dfc5f0",
+      "nome": "DE SOUZA",
+      "posto": "SUBTEN",
+      "rg": "25577",
+      "regime": "12h",
+      "secao": "RANCHO",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "b9c9095a-edc4-4114-9a5b-f6ed9a4fbe9c",
+      "nome": "J MENDONÇA",
+      "posto": "SUBTEN",
+      "rg": "23903",
+      "regime": "12h",
+      "secao": "RANCHO",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "a4b284d3-d2c1-4cf3-9dfb-c78f4aec6aa9",
+      "nome": "EDUARDO MEDEIROS",
+      "posto": "Sd",
+      "rg": "54846",
+      "regime": "12h",
+      "secao": "TDF",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    },
+    {
+      "id": "d53acc25-cd7f-4579-af0b-bcfb8e454b37",
+      "nome": "ROMERO",
+      "posto": "Sd",
+      "rg": "54959",
+      "regime": "12h",
+      "secao": "TDF",
+      "criadoEm": "2026-05-28T18:00:00Z"
+    }
+  ],
+  "usuarios": [
+    {
+      "id": "0bbaab50-fc65-4e03-876a-16ffb3696ab4",
+      "role": "militar",
+      "mil_id": "0a6ac320-8535-4f43-a208-1a28c43337f6",
+      "milId": "0a6ac320-8535-4f43-a208-1a28c43337f6",
+      "posto": "SUBTEN",
+      "nome": "MARCELO FERREIRA",
+      "rg": "21305",
+      "senha": "123456"
+    },
+    {
+      "id": "6a33e18e-a77f-4e44-9749-c38a95bb544d",
+      "role": "militar",
+      "mil_id": "2a3da507-0b46-45b9-bbc8-e2c948078db2",
+      "milId": "2a3da507-0b46-45b9-bbc8-e2c948078db2",
+      "posto": "SUBTEN",
+      "nome": "SILVA FILHO",
+      "rg": "12900",
+      "senha": "123456"
+    },
+    {
+      "id": "1a3d98e1-506d-4c11-8a03-03148c77e6af",
+      "role": "militar",
+      "mil_id": "925da344-88a1-4b8d-a0fa-2882d232e2df",
+      "milId": "925da344-88a1-4b8d-a0fa-2882d232e2df",
+      "posto": "SUBTEN",
+      "nome": "DA SILVA",
+      "rg": "31491",
+      "senha": "123456"
+    },
+    {
+      "id": "5e91b1e6-eee9-486c-9a2a-6d9b7bcbf429",
+      "role": "militar",
+      "mil_id": "feaf5221-d015-45a5-b0f0-b41ed97faab7",
+      "milId": "feaf5221-d015-45a5-b0f0-b41ed97faab7",
+      "posto": "SUBTEN",
+      "nome": "AMARAL",
+      "rg": "12712",
+      "senha": "123456"
+    },
+    {
+      "id": "ce68f3cd-2211-4b7a-b2d3-baf1878d221b",
+      "role": "militar",
+      "mil_id": "f3e8b208-5ef8-42cb-97c0-5b07903d4f51",
+      "milId": "f3e8b208-5ef8-42cb-97c0-5b07903d4f51",
+      "posto": "SUBTEN",
+      "nome": "R RANGEL",
+      "rg": "24181",
+      "senha": "123456"
+    },
+    {
+      "id": "c553b498-10e8-4366-8306-03513c3860a1",
+      "role": "militar",
+      "mil_id": "cd96b7cc-9719-4cf7-ab29-b6f02b9b663c",
+      "milId": "cd96b7cc-9719-4cf7-ab29-b6f02b9b663c",
+      "posto": "SUBTEN",
+      "nome": "CLAUDIO",
+      "rg": "24095",
+      "senha": "123456"
+    },
+    {
+      "id": "f546807b-d6e8-4f6f-bc69-df04228a13ed",
+      "role": "militar",
+      "mil_id": "8dae81a1-42a4-467f-9e64-7521913a4e55",
+      "milId": "8dae81a1-42a4-467f-9e64-7521913a4e55",
+      "posto": "SUBTEN",
+      "nome": "DAMASCENO",
+      "rg": "24214",
+      "senha": "123456"
+    },
+    {
+      "id": "dbfe289d-0aae-4879-880c-6a36818e2471",
+      "role": "militar",
+      "mil_id": "a0c928da-58c8-4b05-8d9d-98954d335d87",
+      "milId": "a0c928da-58c8-4b05-8d9d-98954d335d87",
+      "posto": "2º Sgt",
+      "nome": "DIEGO",
+      "rg": "43842",
+      "senha": "123456"
+    },
+    {
+      "id": "4bdd9ccf-3d6e-4411-b8cd-c97ada9a7c80",
+      "role": "militar",
+      "mil_id": "e10990dc-9d04-4935-b809-a4d9e832e30d",
+      "milId": "e10990dc-9d04-4935-b809-a4d9e832e30d",
+      "posto": "2º Sgt",
+      "nome": "JEAN MOURA",
+      "rg": "44813",
+      "senha": "123456"
+    },
+    {
+      "id": "6c9f6e6f-566b-40ed-a0db-542c80cba15f",
+      "role": "militar",
+      "mil_id": "aeb3fa00-8d85-473c-96de-1e7d5fd9589b",
+      "milId": "aeb3fa00-8d85-473c-96de-1e7d5fd9589b",
+      "posto": "Cb",
+      "nome": "ERIK",
+      "rg": "53042",
+      "senha": "123456"
+    },
+    {
+      "id": "7e8f1f27-0231-4469-b30e-5b771898e11d",
+      "role": "militar",
+      "mil_id": "61aa3908-6fbe-4298-a789-df4b6abfdb38",
+      "milId": "61aa3908-6fbe-4298-a789-df4b6abfdb38",
+      "posto": "Cb",
+      "nome": "SILVA",
+      "rg": "53198",
+      "senha": "123456"
+    },
+    {
+      "id": "f9bbac3f-e675-47e4-a067-86d8790cf728",
+      "role": "militar",
+      "mil_id": "06a92e28-0316-42ec-ba84-ff734fe2453f",
+      "milId": "06a92e28-0316-42ec-ba84-ff734fe2453f",
+      "posto": "1º Sgt",
+      "nome": "ANGELO",
+      "rg": "24554",
+      "senha": "123456"
+    },
+    {
+      "id": "6f27bdc3-fdd9-4d64-b6b9-4ba366e2b7a0",
+      "role": "militar",
+      "mil_id": "d57a02ed-b69b-4f5f-a648-66851d209b09",
+      "milId": "d57a02ed-b69b-4f5f-a648-66851d209b09",
+      "posto": "2º Sgt",
+      "nome": "BEZERRIL",
+      "rg": "43739",
+      "senha": "123456"
+    },
+    {
+      "id": "3cf85e7c-c4f3-4737-971c-c43a95cc3377",
+      "role": "militar",
+      "mil_id": "a2b5053a-93c1-4880-8063-1da7c250b54c",
+      "milId": "a2b5053a-93c1-4880-8063-1da7c250b54c",
+      "posto": "SUBTEN",
+      "nome": "MAGALHAES",
+      "rg": "27523",
+      "senha": "123456"
+    },
+    {
+      "id": "05b43429-44ef-41e6-8bb3-ceafdaf5d9f4",
+      "role": "militar",
+      "mil_id": "7b918fa6-12f3-42d3-9715-3375c35777dd",
+      "milId": "7b918fa6-12f3-42d3-9715-3375c35777dd",
+      "posto": "1º Sgt",
+      "nome": "RODRIGO SANTOS",
+      "rg": "31538",
+      "senha": "123456"
+    },
+    {
+      "id": "29082dbc-4d5f-4f4b-b594-21b4ec0d05fe",
+      "role": "militar",
+      "mil_id": "a736b794-8bb1-48d6-9265-b1d63418e667",
+      "milId": "a736b794-8bb1-48d6-9265-b1d63418e667",
+      "posto": "SUBTEN",
+      "nome": "DE FREITAS",
+      "rg": "22528",
+      "senha": "123456"
+    },
+    {
+      "id": "53705e92-ef89-42ec-abe5-9edd4ae1feb8",
+      "role": "militar",
+      "mil_id": "046d6f47-b312-4ee9-bb13-441e6c4c3f45",
+      "milId": "046d6f47-b312-4ee9-bb13-441e6c4c3f45",
+      "posto": "1º Sgt",
+      "nome": "MEIRELES",
+      "rg": "31379",
+      "senha": "123456"
+    },
+    {
+      "id": "104dc03d-9354-4594-b4f0-080bdbb969a4",
+      "role": "militar",
+      "mil_id": "ff87bd91-9aa8-4477-bacd-201f6fb10269",
+      "milId": "ff87bd91-9aa8-4477-bacd-201f6fb10269",
+      "posto": "SUBTEN",
+      "nome": "ANDRE",
+      "rg": "24203",
+      "senha": "123456"
+    },
+    {
+      "id": "1ce2e860-7a14-4de9-88c8-e994873aa125",
+      "role": "militar",
+      "mil_id": "a2477a5a-0ebe-49c1-a9bc-7d3a72466c25",
+      "milId": "a2477a5a-0ebe-49c1-a9bc-7d3a72466c25",
+      "posto": "SUBTEN",
+      "nome": "GRANJA",
+      "rg": "27769",
+      "senha": "123456"
+    },
+    {
+      "id": "a109b493-0de4-4c8d-bb1b-3706b655245b",
+      "role": "militar",
+      "mil_id": "e0cda78d-f380-4731-85fb-25effd794e7a",
+      "milId": "e0cda78d-f380-4731-85fb-25effd794e7a",
+      "posto": "SUBTEN",
+      "nome": "LOPES",
+      "rg": "22513",
+      "senha": "123456"
+    },
+    {
+      "id": "72f87dc4-4381-4567-9099-0f1218b913e6",
+      "role": "militar",
+      "mil_id": "21acf255-58ac-44c9-a0ed-d82b7ecfea48",
+      "milId": "21acf255-58ac-44c9-a0ed-d82b7ecfea48",
+      "posto": "SUBTEN",
+      "nome": "SIMAO",
+      "rg": "24254",
+      "senha": "123456"
+    },
+    {
+      "id": "4f37fe3a-a7dc-4825-a8a1-3232b2a29f3a",
+      "role": "militar",
+      "mil_id": "f17173c9-db47-4058-b47b-8fd693daa6da",
+      "milId": "f17173c9-db47-4058-b47b-8fd693daa6da",
+      "posto": "SUBTEN",
+      "nome": "JEFFERSON",
+      "rg": "24503",
+      "senha": "123456"
+    },
+    {
+      "id": "56fbf74b-c497-4845-83c0-2c8232e09466",
+      "role": "militar",
+      "mil_id": "b7af07d7-c288-4f89-81ec-61432dde913d",
+      "milId": "b7af07d7-c288-4f89-81ec-61432dde913d",
+      "posto": "SUBTEN",
+      "nome": "RICARDO",
+      "rg": "24517",
+      "senha": "123456"
+    },
+    {
+      "id": "183df764-a368-4f21-a44f-e4753201869e",
+      "role": "militar",
+      "mil_id": "e88dc0a2-5f10-46d7-ae4b-eabe5a1e0c1f",
+      "milId": "e88dc0a2-5f10-46d7-ae4b-eabe5a1e0c1f",
+      "posto": "2º Sgt",
+      "nome": "VIVAS",
+      "rg": "43771",
+      "senha": "123456"
+    },
+    {
+      "id": "af4c8b26-69cd-42a5-abab-9f5f5000eafb",
+      "role": "militar",
+      "mil_id": "729e25d6-a5c3-4d44-8d9a-fc0a635cc87c",
+      "milId": "729e25d6-a5c3-4d44-8d9a-fc0a635cc87c",
+      "posto": "2º Sgt",
+      "nome": "JEOVANE",
+      "rg": "43959",
+      "senha": "123456"
+    },
+    {
+      "id": "a872cbe1-b5b1-456d-b137-48175f2656e2",
+      "role": "militar",
+      "mil_id": "5b8277c7-a0b2-4a66-b27b-5610b6ec7cfe",
+      "milId": "5b8277c7-a0b2-4a66-b27b-5610b6ec7cfe",
+      "posto": "2º Sgt",
+      "nome": "FALLEIRO",
+      "rg": "43828",
+      "senha": "123456"
+    },
+    {
+      "id": "91ea9428-e9d3-4fd9-adf1-59acca8c37c7",
+      "role": "militar",
+      "mil_id": "2318006f-f658-4b82-bebc-7abbc88f94eb",
+      "milId": "2318006f-f658-4b82-bebc-7abbc88f94eb",
+      "posto": "2º Sgt",
+      "nome": "MAYCON SOUZA",
+      "rg": "44776",
+      "senha": "123456"
+    },
+    {
+      "id": "d3c6798c-805a-4c16-9148-6c6f51a9b6bf",
+      "role": "militar",
+      "mil_id": "534b64ba-3d4d-4337-bfc5-f94c71ed6da3",
+      "milId": "534b64ba-3d4d-4337-bfc5-f94c71ed6da3",
+      "posto": "Cb",
+      "nome": "CHALITA",
+      "rg": "53052",
+      "senha": "123456"
+    },
+    {
+      "id": "6c4ccc52-054d-48ff-a83e-c36b23af7bc7",
+      "role": "militar",
+      "mil_id": "d59d25ce-6a77-466a-9d67-0f97153688b8",
+      "milId": "d59d25ce-6a77-466a-9d67-0f97153688b8",
+      "posto": "Cb",
+      "nome": "NOBRE",
+      "rg": "53102",
+      "senha": "123456"
+    },
+    {
+      "id": "7a6ae871-653f-4181-9b0b-b7d4370506de",
+      "role": "militar",
+      "mil_id": "ffded876-7776-4a5d-8f7d-6228efc75f5a",
+      "milId": "ffded876-7776-4a5d-8f7d-6228efc75f5a",
+      "posto": "Cb",
+      "nome": "DENIS GONCALVES",
+      "rg": "53104",
+      "senha": "123456"
+    },
+    {
+      "id": "8857a55d-2e85-4114-9459-5acfd40ee8e2",
+      "role": "militar",
+      "mil_id": "c6646880-c151-4756-9c1d-c63497d97414",
+      "milId": "c6646880-c151-4756-9c1d-c63497d97414",
+      "posto": "Cb",
+      "nome": "AESSIO",
+      "rg": "53115",
+      "senha": "123456"
+    },
+    {
+      "id": "2fa52543-dc8f-440f-a68f-625cc071f1b4",
+      "role": "militar",
+      "mil_id": "4450c56e-5ad8-4787-b92a-e5861d48b7f2",
+      "milId": "4450c56e-5ad8-4787-b92a-e5861d48b7f2",
+      "posto": "Cb",
+      "nome": "CESAR",
+      "rg": "53217",
+      "senha": "123456"
+    },
+    {
+      "id": "b4a79dae-c638-4798-8549-fbcb8dd16461",
+      "role": "militar",
+      "mil_id": "c78b723b-e92d-426e-9d6d-85004531da19",
+      "milId": "c78b723b-e92d-426e-9d6d-85004531da19",
+      "posto": "Cb",
+      "nome": "PICANÇO",
+      "rg": "53548",
+      "senha": "123456"
+    },
+    {
+      "id": "d253df8e-92c7-4ada-860e-49107ee2ee93",
+      "role": "militar",
+      "mil_id": "5aadf1ca-6108-417e-8c03-509254413ced",
+      "milId": "5aadf1ca-6108-417e-8c03-509254413ced",
+      "posto": "SUBTEN",
+      "nome": "MARCEL",
+      "rg": "13003",
+      "senha": "123456"
+    },
+    {
+      "id": "716b5b5d-0490-4580-a12c-6292c124f511",
+      "role": "militar",
+      "mil_id": "d48b82d6-954a-4f89-ab3b-a972f13e02fd",
+      "milId": "d48b82d6-954a-4f89-ab3b-a972f13e02fd",
+      "posto": "SUBTEN",
+      "nome": "CASTRO",
+      "rg": "24232",
+      "senha": "123456"
+    },
+    {
+      "id": "59324088-e7f1-4950-869d-1d6dd317bb07",
+      "role": "militar",
+      "mil_id": "a580211c-c636-4d0b-acee-700bed956727",
+      "milId": "a580211c-c636-4d0b-acee-700bed956727",
+      "posto": "2º Sgt",
+      "nome": "ELYSIO",
+      "rg": "44203",
+      "senha": "123456"
+    },
+    {
+      "id": "d554ed35-d4a5-4c5c-9b7c-15d6e793dd59",
+      "role": "militar",
+      "mil_id": "8a1f4928-362d-4715-8add-4a4bc4388b24",
+      "milId": "8a1f4928-362d-4715-8add-4a4bc4388b24",
+      "posto": "2º Sgt",
+      "nome": "JANDER VIEIRA",
+      "rg": "43773",
+      "senha": "123456"
+    },
+    {
+      "id": "87bd9513-fec5-4540-b689-59068797c5e8",
+      "role": "militar",
+      "mil_id": "e45f1c00-40e9-4228-b227-142ab75024c2",
+      "milId": "e45f1c00-40e9-4228-b227-142ab75024c2",
+      "posto": "2º Sgt",
+      "nome": "FABIO SILVA",
+      "rg": "43797",
+      "senha": "123456"
+    },
+    {
+      "id": "a0def7b7-9f42-47ab-b6b6-d59eb36d3865",
+      "role": "militar",
+      "mil_id": "27f560a4-3022-4378-9eba-7c5b8cef62ae",
+      "milId": "27f560a4-3022-4378-9eba-7c5b8cef62ae",
+      "posto": "2º Sgt",
+      "nome": "VIEIRA",
+      "rg": "44814",
+      "senha": "123456"
+    },
+    {
+      "id": "0521f6dc-856d-43cd-8b9e-8179a26a7a07",
+      "role": "militar",
+      "mil_id": "75fc9844-2dd3-4c75-86e6-d2b6998af23b",
+      "milId": "75fc9844-2dd3-4c75-86e6-d2b6998af23b",
+      "posto": "Cb",
+      "nome": "THIAGO",
+      "rg": "53600",
+      "senha": "123456"
+    },
+    {
+      "id": "0e2e0697-606f-4e4b-916e-01bb5876452f",
+      "role": "militar",
+      "mil_id": "683cb34d-4825-4025-ae42-a8886163f567",
+      "milId": "683cb34d-4825-4025-ae42-a8886163f567",
+      "posto": "SUBTEN",
+      "nome": "VINICIUS",
+      "rg": "24190",
+      "senha": "123456"
+    },
+    {
+      "id": "d7c4e412-310f-46f6-a790-74061d981829",
+      "role": "militar",
+      "mil_id": "5cf87561-e43b-4879-ba73-885e91933aa1",
+      "milId": "5cf87561-e43b-4879-ba73-885e91933aa1",
+      "posto": "1º Sgt",
+      "nome": "TRINDADE",
+      "rg": "31390",
+      "senha": "123456"
+    },
+    {
+      "id": "b2761a65-5d19-46d6-8cb7-f7cb9044fe41",
+      "role": "militar",
+      "mil_id": "8c6bdd8e-c3ed-4acf-a552-db9bc4e98337",
+      "milId": "8c6bdd8e-c3ed-4acf-a552-db9bc4e98337",
+      "posto": "1º Sgt",
+      "nome": "CORREA",
+      "rg": "31510",
+      "senha": "123456"
+    },
+    {
+      "id": "20100dd7-d6f6-4af1-a154-1b4612b31123",
+      "role": "militar",
+      "mil_id": "e5a29ae6-c09b-435b-9816-43fe882d91c0",
+      "milId": "e5a29ae6-c09b-435b-9816-43fe882d91c0",
+      "posto": "Cb",
+      "nome": "ZSCHORNACK",
+      "rg": "53529",
+      "senha": "123456"
+    },
+    {
+      "id": "6e079828-296f-40fa-90a0-c3ee03aed393",
+      "role": "militar",
+      "mil_id": "77e86ab8-36f7-46cf-b62a-a9543cddcbf9",
+      "milId": "77e86ab8-36f7-46cf-b62a-a9543cddcbf9",
+      "posto": "SUBTEN",
+      "nome": "GLAUCEMIR",
+      "rg": "26324",
+      "senha": "123456"
+    },
+    {
+      "id": "25ce268d-abed-4f47-a5ed-598e4aa819b7",
+      "role": "militar",
+      "mil_id": "f5bfc780-1921-459f-96e7-3afcfd87be1e",
+      "milId": "f5bfc780-1921-459f-96e7-3afcfd87be1e",
+      "posto": "2º Sgt",
+      "nome": "CALIFFA",
+      "rg": "43384",
+      "senha": "123456"
+    },
+    {
+      "id": "16205583-6ef6-4dd0-9c41-b190c7c0d8de",
+      "role": "militar",
+      "mil_id": "60300ea1-0366-48db-9f15-1f7eda8963cd",
+      "milId": "60300ea1-0366-48db-9f15-1f7eda8963cd",
+      "posto": "2º Sgt",
+      "nome": "DAVID",
+      "rg": "43664",
+      "senha": "123456"
+    },
+    {
+      "id": "8e2562f2-d6c2-41b8-bd8f-7798f9f3a57b",
+      "role": "militar",
+      "mil_id": "0a991a62-e1a1-4575-8541-19c020ad82b2",
+      "milId": "0a991a62-e1a1-4575-8541-19c020ad82b2",
+      "posto": "Cb",
+      "nome": "CAVALCANTE",
+      "rg": "53057",
+      "senha": "123456"
+    },
+    {
+      "id": "3d6f9a2b-c240-46ec-b604-6f580dc8a00c",
+      "role": "militar",
+      "mil_id": "be939991-40b2-497e-bc6b-238a6bb6b9bd",
+      "milId": "be939991-40b2-497e-bc6b-238a6bb6b9bd",
+      "posto": "SUBTEN",
+      "nome": "MARMELO",
+      "rg": "24495",
+      "senha": "123456"
+    },
+    {
+      "id": "1cef5e34-31c7-4412-a2ab-d50ff483c52e",
+      "role": "militar",
+      "mil_id": "86837d0c-c6f1-437d-8ab5-0b2863d2eedb",
+      "milId": "86837d0c-c6f1-437d-8ab5-0b2863d2eedb",
+      "posto": "SUBTEN",
+      "nome": "BERGOMI",
+      "rg": "31420",
+      "senha": "123456"
+    },
+    {
+      "id": "77e3db0e-4849-4339-88e1-3496c15dddd9",
+      "role": "militar",
+      "mil_id": "4cc00e0d-0512-418d-90ef-dc88a5adfc0f",
+      "milId": "4cc00e0d-0512-418d-90ef-dc88a5adfc0f",
+      "posto": "SUBTEN",
+      "nome": "MARCELO PINHO",
+      "rg": "21209",
+      "senha": "123456"
+    },
+    {
+      "id": "1084b993-1031-45fb-9ecf-11ebd8a7bf1f",
+      "role": "militar",
+      "mil_id": "706e38c9-0e9d-4345-9d3f-0664b4a0705c",
+      "milId": "706e38c9-0e9d-4345-9d3f-0664b4a0705c",
+      "posto": "SUBTEN",
+      "nome": "FALCAO",
+      "rg": "24224",
+      "senha": "123456"
+    },
+    {
+      "id": "a8d31065-5eb5-4a2e-b9df-1bf6f8059246",
+      "role": "militar",
+      "mil_id": "92a730d3-35b8-417c-be33-ae23e386a5bf",
+      "milId": "92a730d3-35b8-417c-be33-ae23e386a5bf",
+      "posto": "SUBTEN",
+      "nome": "SANDRO COSTA",
+      "rg": "24278",
+      "senha": "123456"
+    },
+    {
+      "id": "caf0b1b7-f0fe-412f-bf69-256dadb3cb28",
+      "role": "militar",
+      "mil_id": "b0667736-7ff1-4133-9c70-be74901e99f3",
+      "milId": "b0667736-7ff1-4133-9c70-be74901e99f3",
+      "posto": "SUBTEN",
+      "nome": "MAURO",
+      "rg": "24466",
+      "senha": "123456"
+    },
+    {
+      "id": "e8bdb347-8a3b-4721-9a23-411dde94f832",
+      "role": "militar",
+      "mil_id": "0cee13d3-09a1-4152-82b4-a78924391ac5",
+      "milId": "0cee13d3-09a1-4152-82b4-a78924391ac5",
+      "posto": "SUBTEN",
+      "nome": "EVANDRO",
+      "rg": "24476",
+      "senha": "123456"
+    },
+    {
+      "id": "2cdb1dc5-0189-4d52-b3db-63aaf1cc8333",
+      "role": "militar",
+      "mil_id": "2b387ba8-cad3-404f-b097-520ba9db711a",
+      "milId": "2b387ba8-cad3-404f-b097-520ba9db711a",
+      "posto": "SUBTEN",
+      "nome": "AURELIO",
+      "rg": "24516",
+      "senha": "123456"
+    },
+    {
+      "id": "9d025d0c-527c-47e4-860f-c4c0e915dcb0",
+      "role": "militar",
+      "mil_id": "b42796c4-5770-4684-a152-157e4558fc4c",
+      "milId": "b42796c4-5770-4684-a152-157e4558fc4c",
+      "posto": "2º Sgt",
+      "nome": "HUGUENIN",
+      "rg": "43863",
+      "senha": "123456"
+    },
+    {
+      "id": "f37a8a0f-fcf4-4ada-8f35-670a911087f6",
+      "role": "militar",
+      "mil_id": "7201a7ec-2461-490d-a507-65d534051027",
+      "milId": "7201a7ec-2461-490d-a507-65d534051027",
+      "posto": "Cb",
+      "nome": "LEANDRO",
+      "rg": "53027",
+      "senha": "123456"
+    },
+    {
+      "id": "2a7304d7-f1a8-4a08-b9b8-a57e68f3afae",
+      "role": "militar",
+      "mil_id": "c3ae2ef9-d2d1-4f76-8c12-ff635f92f005",
+      "milId": "c3ae2ef9-d2d1-4f76-8c12-ff635f92f005",
+      "posto": "Cb",
+      "nome": "LAURO",
+      "rg": "53034",
+      "senha": "123456"
+    },
+    {
+      "id": "489bd7f8-182b-4834-8376-3260583720e7",
+      "role": "militar",
+      "mil_id": "2fd48a4f-e38e-4971-8e33-9c95c5b49439",
+      "milId": "2fd48a4f-e38e-4971-8e33-9c95c5b49439",
+      "posto": "Cb",
+      "nome": "DOUGLAS LIMA",
+      "rg": "53039",
+      "senha": "123456"
+    },
+    {
+      "id": "3cf9d87c-8c6d-43cd-a567-5702f8dff222",
+      "role": "militar",
+      "mil_id": "076d1b5f-a3b7-47d0-97f2-b613eaf51ca5",
+      "milId": "076d1b5f-a3b7-47d0-97f2-b613eaf51ca5",
+      "posto": "Cb",
+      "nome": "THALES",
+      "rg": "53069",
+      "senha": "123456"
+    },
+    {
+      "id": "6cafa653-93e1-403c-b5a5-85aecc54a419",
+      "role": "militar",
+      "mil_id": "8c318eef-ff11-447b-9d25-ee8507bbdb1b",
+      "milId": "8c318eef-ff11-447b-9d25-ee8507bbdb1b",
+      "posto": "Cb",
+      "nome": "JORIO",
+      "rg": "53081",
+      "senha": "123456"
+    },
+    {
+      "id": "eba99b86-b76a-4687-b75e-72617a0ffb64",
+      "role": "militar",
+      "mil_id": "9c46f324-f3f4-45d4-b7fa-486f5d66bc9e",
+      "milId": "9c46f324-f3f4-45d4-b7fa-486f5d66bc9e",
+      "posto": "Cb",
+      "nome": "BRUNO",
+      "rg": "53571",
+      "senha": "123456"
+    },
+    {
+      "id": "99e7e49b-2adf-4aa3-866a-35041ecfa67a",
+      "role": "militar",
+      "mil_id": "b674a641-35e5-4e2a-9d9c-7a4d03cbb888",
+      "milId": "b674a641-35e5-4e2a-9d9c-7a4d03cbb888",
+      "posto": "Cb",
+      "nome": "KNAPP",
+      "rg": "53543",
+      "senha": "123456"
+    },
+    {
+      "id": "61852e00-22b6-4b86-a0f6-69d4f80aac4c",
+      "role": "militar",
+      "mil_id": "7074f72a-931d-46aa-9441-ab03d2f7c123",
+      "milId": "7074f72a-931d-46aa-9441-ab03d2f7c123",
+      "posto": "Cb",
+      "nome": "CARLOS FROES",
+      "rg": "53573",
+      "senha": "123456"
+    },
+    {
+      "id": "4e04f5e3-a7cf-49e6-8058-ebf87b8f22cd",
+      "role": "militar",
+      "mil_id": "0892b748-0982-4a30-a928-f4d94c8e4a16",
+      "milId": "0892b748-0982-4a30-a928-f4d94c8e4a16",
+      "posto": "Sd",
+      "nome": "FERREIRA",
+      "rg": "53651",
+      "senha": "123456"
+    },
+    {
+      "id": "0b516aac-d210-411c-9a2e-c99fed061aa4",
+      "role": "militar",
+      "mil_id": "5ac225d3-c17b-4fa7-85dc-3775503392b0",
+      "milId": "5ac225d3-c17b-4fa7-85dc-3775503392b0",
+      "posto": "SUBTEN",
+      "nome": "REISON",
+      "rg": "22537",
+      "senha": "123456"
+    },
+    {
+      "id": "2480571a-808b-4881-b0bd-5cb6c4c7f63f",
+      "role": "militar",
+      "mil_id": "484d77a1-6622-427a-afd2-f651b7afe17b",
+      "milId": "484d77a1-6622-427a-afd2-f651b7afe17b",
+      "posto": "2º Sgt",
+      "nome": "FERNANDO JUNIOR",
+      "rg": "43833",
+      "senha": "123456"
+    },
+    {
+      "id": "15992290-596c-49eb-a678-be0edeb734b9",
+      "role": "militar",
+      "mil_id": "46f2c85a-8c78-4ad3-a784-022f9c43cbcf",
+      "milId": "46f2c85a-8c78-4ad3-a784-022f9c43cbcf",
+      "posto": "2º Sgt",
+      "nome": "CARVALHO",
+      "rg": "43878",
+      "senha": "123456"
+    },
+    {
+      "id": "9e11d170-32f6-4ae3-bcf8-827426e7fbf9",
+      "role": "militar",
+      "mil_id": "948e96bb-e899-420e-beae-bbde10694214",
+      "milId": "948e96bb-e899-420e-beae-bbde10694214",
+      "posto": "1º Sgt",
+      "nome": "MACHADO",
+      "rg": "31487",
+      "senha": "123456"
+    },
+    {
+      "id": "0a48c780-b40f-4a2a-a685-0582442d5ce4",
+      "role": "militar",
+      "mil_id": "ebbf0b17-b807-4ece-a7b7-c376ade88289",
+      "milId": "ebbf0b17-b807-4ece-a7b7-c376ade88289",
+      "posto": "2º Sgt",
+      "nome": "TERCITANO",
+      "rg": "43680",
+      "senha": "123456"
+    },
+    {
+      "id": "5c024449-16b7-4b39-8231-3df497df0fb3",
+      "role": "militar",
+      "mil_id": "90b372b6-2190-4260-a603-046e34575313",
+      "milId": "90b372b6-2190-4260-a603-046e34575313",
+      "posto": "2º Sgt",
+      "nome": "PABLO LIMA",
+      "rg": "44803",
+      "senha": "123456"
+    },
+    {
+      "id": "a58b413b-15ed-4374-ba81-3ccfb69415e5",
+      "role": "militar",
+      "mil_id": "afdf55ac-a261-433a-b0cf-ec13d14927d8",
+      "milId": "afdf55ac-a261-433a-b0cf-ec13d14927d8",
+      "posto": "Cb",
+      "nome": "DANIEL NASCIMENTO",
+      "rg": "53618",
+      "senha": "123456"
+    },
+    {
+      "id": "38c6543f-c752-44fc-95ae-192e79554ca3",
+      "role": "militar",
+      "mil_id": "fd0380b4-d88a-4043-b5e1-dd32f9bfc6fc",
+      "milId": "fd0380b4-d88a-4043-b5e1-dd32f9bfc6fc",
+      "posto": "4",
+      "nome": "SD TEMP AMANDA ANTUNES",
+      "rg": "2201284",
+      "senha": "123456"
+    },
+    {
+      "id": "a9f84421-069b-46bb-95f0-495ead9d1037",
+      "role": "militar",
+      "mil_id": "0947d5b0-16e1-492e-962d-5f7b965a6c5f",
+      "milId": "0947d5b0-16e1-492e-962d-5f7b965a6c5f",
+      "posto": "SUBTEN",
+      "nome": "TAVARES",
+      "rg": "24567",
+      "senha": "123456"
+    },
+    {
+      "id": "59bb31b8-37ed-42aa-b7cf-22715cc21378",
+      "role": "militar",
+      "mil_id": "00544eb5-5f8b-4eaa-b06e-74c56c3d470e",
+      "milId": "00544eb5-5f8b-4eaa-b06e-74c56c3d470e",
+      "posto": "1º Sgt",
+      "nome": "RANGEL",
+      "rg": "31502",
+      "senha": "123456"
+    },
+    {
+      "id": "15de3f07-47a3-42be-b4b2-67a60f38c506",
+      "role": "militar",
+      "mil_id": "e312df88-cc9f-46a4-afed-7903dce73c44",
+      "milId": "e312df88-cc9f-46a4-afed-7903dce73c44",
+      "posto": "2º Sgt",
+      "nome": "EDALMO",
+      "rg": "43686",
+      "senha": "123456"
+    },
+    {
+      "id": "bde13548-88b0-4572-8823-64ec1892b5b9",
+      "role": "militar",
+      "mil_id": "a5f186f2-2865-4aed-a34b-bdb24d16f10b",
+      "milId": "a5f186f2-2865-4aed-a34b-bdb24d16f10b",
+      "posto": "2º Sgt",
+      "nome": "VINICIUS COSTA",
+      "rg": "43698",
+      "senha": "123456"
+    },
+    {
+      "id": "26632453-5fff-48bf-b0a9-213842ee3972",
+      "role": "militar",
+      "mil_id": "713c2160-d562-4532-a3b2-77f12195e31c",
+      "milId": "713c2160-d562-4532-a3b2-77f12195e31c",
+      "posto": "2º Sgt",
+      "nome": "SENRA",
+      "rg": "43792",
+      "senha": "123456"
+    },
+    {
+      "id": "05959a58-5028-4438-af32-36de689d9ed0",
+      "role": "militar",
+      "mil_id": "a04100a4-eefa-48a9-b33d-4de411147771",
+      "milId": "a04100a4-eefa-48a9-b33d-4de411147771",
+      "posto": "Cb",
+      "nome": "RODRIGUES",
+      "rg": "53621",
+      "senha": "123456"
+    },
+    {
+      "id": "f0df53e5-5b41-4767-b507-215531c8fca3",
+      "role": "militar",
+      "mil_id": "5baa75c0-1401-4191-9798-4ca7fe478b3e",
+      "milId": "5baa75c0-1401-4191-9798-4ca7fe478b3e",
+      "posto": "Cb",
+      "nome": "BARROSO",
+      "rg": "53634",
+      "senha": "123456"
+    },
+    {
+      "id": "20174949-14e4-478b-9cb3-87aaae189c67",
+      "role": "militar",
+      "mil_id": "78cf15f1-d3e6-4285-bbbb-b8f4f68de45a",
+      "milId": "78cf15f1-d3e6-4285-bbbb-b8f4f68de45a",
+      "posto": "Cb",
+      "nome": "F VIVAS",
+      "rg": "53235",
+      "senha": "123456"
+    },
+    {
+      "id": "12bb9756-7df0-467e-aa33-67e6eddbdbf2",
+      "role": "militar",
+      "mil_id": "8124788c-07f6-4696-b60f-437674b6ca60",
+      "milId": "8124788c-07f6-4696-b60f-437674b6ca60",
+      "posto": "SUBTEN",
+      "nome": "FONTOURA",
+      "rg": "24178",
+      "senha": "123456"
+    },
+    {
+      "id": "3ad6c7fb-088d-494a-ba53-538acce6c0ba",
+      "role": "militar",
+      "mil_id": "e9dc9bcf-ddd9-466b-b47e-dd346473196e",
+      "milId": "e9dc9bcf-ddd9-466b-b47e-dd346473196e",
+      "posto": "SUBTEN",
+      "nome": "VIEIRA",
+      "rg": "24245",
+      "senha": "123456"
+    },
+    {
+      "id": "7f35565e-8e05-4375-b453-69a5ebfb8f3b",
+      "role": "militar",
+      "mil_id": "6ea46417-469c-41f6-b526-9fde55077e69",
+      "milId": "6ea46417-469c-41f6-b526-9fde55077e69",
+      "posto": "SUBTEN",
+      "nome": "VILLAR",
+      "rg": "24219",
+      "senha": "123456"
+    },
+    {
+      "id": "1235adb6-491d-4fcc-8fef-07b51e4ec909",
+      "role": "militar",
+      "mil_id": "69070df1-8d59-46f2-8d48-6535ae30dabb",
+      "milId": "69070df1-8d59-46f2-8d48-6535ae30dabb",
+      "posto": "SUBTEN",
+      "nome": "FREITAS",
+      "rg": "24472",
+      "senha": "123456"
+    },
+    {
+      "id": "28fc8a96-6a91-4e6a-ae2e-965fed21c349",
+      "role": "militar",
+      "mil_id": "8d496892-1a54-481f-88b4-ef65bacd3226",
+      "milId": "8d496892-1a54-481f-88b4-ef65bacd3226",
+      "posto": "1º Sgt",
+      "nome": "PABLO MATTA",
+      "rg": "45093",
+      "senha": "123456"
+    },
+    {
+      "id": "421a30f0-77ee-4316-b7c6-aaba331523a5",
+      "role": "militar",
+      "mil_id": "e74eae4c-cdc4-44ae-b655-b928aaaa53f5",
+      "milId": "e74eae4c-cdc4-44ae-b655-b928aaaa53f5",
+      "posto": "1º Sgt",
+      "nome": "JANDRE",
+      "rg": "31435",
+      "senha": "123456"
+    },
+    {
+      "id": "7cc27c75-97b1-447b-b62a-d7260810f3aa",
+      "role": "militar",
+      "mil_id": "ce56cdff-8718-4343-a9aa-58b7901a351e",
+      "milId": "ce56cdff-8718-4343-a9aa-58b7901a351e",
+      "posto": "1º Sgt",
+      "nome": "MARCELO",
+      "rg": "31415",
+      "senha": "123456"
+    },
+    {
+      "id": "d1c29154-52a9-4b48-9f5a-9a62f45fa631",
+      "role": "militar",
+      "mil_id": "35eb917c-01c9-47ff-a585-e9d54e18e781",
+      "milId": "35eb917c-01c9-47ff-a585-e9d54e18e781",
+      "posto": "1º Sgt",
+      "nome": "ESCANHO",
+      "rg": "31402",
+      "senha": "123456"
+    },
+    {
+      "id": "f92ad61b-53f0-48f8-a8be-bda43ba47c7c",
+      "role": "militar",
+      "mil_id": "1d2d3fd4-0041-48ed-ba26-f4409d06322a",
+      "milId": "1d2d3fd4-0041-48ed-ba26-f4409d06322a",
+      "posto": "2º Sgt",
+      "nome": "L JANDRE",
+      "rg": "43671",
+      "senha": "123456"
+    },
+    {
+      "id": "850c90e3-738a-4fd2-9378-3ccef35c123c",
+      "role": "militar",
+      "mil_id": "8268ce6a-4c50-4a36-91e6-8ab116f0b881",
+      "milId": "8268ce6a-4c50-4a36-91e6-8ab116f0b881",
+      "posto": "2º Sgt",
+      "nome": "LISBOA",
+      "rg": "44765",
+      "senha": "123456"
+    },
+    {
+      "id": "67d51218-148a-42e1-8c54-b8895e3d8396",
+      "role": "militar",
+      "mil_id": "1e8b41e8-4f0c-42ca-b5ad-532d3e6e9f29",
+      "milId": "1e8b41e8-4f0c-42ca-b5ad-532d3e6e9f29",
+      "posto": "2º Sgt",
+      "nome": "EDER",
+      "rg": "43879",
+      "senha": "123456"
+    },
+    {
+      "id": "414aa2b8-8449-4cf2-a8dd-826cd6629a32",
+      "role": "militar",
+      "mil_id": "d52a67c9-3474-44c7-b0b1-3bdb2ae479fa",
+      "milId": "d52a67c9-3474-44c7-b0b1-3bdb2ae479fa",
+      "posto": "3º Sgt",
+      "nome": "BRUTO",
+      "rg": "53260",
+      "senha": "123456"
+    },
+    {
+      "id": "4f831c04-4108-42cd-8530-f56d7d487fb8",
+      "role": "militar",
+      "mil_id": "7c0b8808-6bbb-4784-889f-332c72d84544",
+      "milId": "7c0b8808-6bbb-4784-889f-332c72d84544",
+      "posto": "Cb",
+      "nome": "LLOVERAS",
+      "rg": "53033",
+      "senha": "123456"
+    },
+    {
+      "id": "42f11992-a09f-46ec-8df8-9b15afea57ff",
+      "role": "militar",
+      "mil_id": "b86fc7ba-e999-4b17-8be2-15c1508efa5e",
+      "milId": "b86fc7ba-e999-4b17-8be2-15c1508efa5e",
+      "posto": "Cb",
+      "nome": "LEONARDO ARAGON",
+      "rg": "53050",
+      "senha": "123456"
+    },
+    {
+      "id": "1da3fe3c-f79d-4c8b-9af4-0a6afda43f4b",
+      "role": "militar",
+      "mil_id": "2770e060-34de-4b59-9828-36360dad189d",
+      "milId": "2770e060-34de-4b59-9828-36360dad189d",
+      "posto": "Cb",
+      "nome": "ADALTO",
+      "rg": "53051",
+      "senha": "123456"
+    },
+    {
+      "id": "7c424d7a-7eea-429a-a76e-a79f90b962c8",
+      "role": "militar",
+      "mil_id": "bf2c41eb-f25a-4685-b573-76d10538a6f6",
+      "milId": "bf2c41eb-f25a-4685-b573-76d10538a6f6",
+      "posto": "Cb",
+      "nome": "IGOR",
+      "rg": "53603",
+      "senha": "123456"
+    },
+    {
+      "id": "5b92cc43-8189-481d-bc98-3e75c7b1e3e0",
+      "role": "militar",
+      "mil_id": "3e29aa88-e248-4c0f-9301-6d1a8107b753",
+      "milId": "3e29aa88-e248-4c0f-9301-6d1a8107b753",
+      "posto": "5",
+      "nome": "SD TEMP CYRIACO",
+      "rg": "2201285",
+      "senha": "123456"
+    },
+    {
+      "id": "ab951b24-97ff-45f8-b2b0-c0345718a002",
+      "role": "militar",
+      "mil_id": "05c2d3bd-bb1e-4f84-b68e-3d0cbcde1b49",
+      "milId": "05c2d3bd-bb1e-4f84-b68e-3d0cbcde1b49",
+      "posto": "SUBTEN",
+      "nome": "NAPOLEAO",
+      "rg": "31370",
+      "senha": "123456"
+    },
+    {
+      "id": "996152cc-31b1-42b7-8ea8-a4b74dd9c8dc",
+      "role": "militar",
+      "mil_id": "09ccb12c-55a5-4617-a47b-295f240e1723",
+      "milId": "09ccb12c-55a5-4617-a47b-295f240e1723",
+      "posto": "SUBTEN",
+      "nome": "JAIME",
+      "rg": "24507",
+      "senha": "123456"
+    },
+    {
+      "id": "c6f4cc47-7962-4286-82e6-46029229aca0",
+      "role": "militar",
+      "mil_id": "ff8d767b-1475-4a77-a7de-c609ef4c39b2",
+      "milId": "ff8d767b-1475-4a77-a7de-c609ef4c39b2",
+      "posto": "2º Sgt",
+      "nome": "PANISSET",
+      "rg": "44745",
+      "senha": "123456"
+    },
+    {
+      "id": "804432c3-9fc3-49f0-9bd8-586638590532",
+      "role": "militar",
+      "mil_id": "b097d456-1982-4a8e-862d-4327ffc8b887",
+      "milId": "b097d456-1982-4a8e-862d-4327ffc8b887",
+      "posto": "Cb",
+      "nome": "COSTA NETO",
+      "rg": "53085",
+      "senha": "123456"
+    },
+    {
+      "id": "a5b9dbe0-fabc-4395-9f24-f9c256a322e5",
+      "role": "militar",
+      "mil_id": "47b77610-010e-4220-a87e-66365c471fb2",
+      "milId": "47b77610-010e-4220-a87e-66365c471fb2",
+      "posto": "Cb",
+      "nome": "GUTEMBERG",
+      "rg": "53245",
+      "senha": "123456"
+    },
+    {
+      "id": "d9db3a6b-dbc7-4ab8-acea-4bef00e33f65",
+      "role": "militar",
+      "mil_id": "f0f7919f-39be-4b90-9f16-2996a89cae1b",
+      "milId": "f0f7919f-39be-4b90-9f16-2996a89cae1b",
+      "posto": "Cb",
+      "nome": "BRUNO ALVES",
+      "rg": "53259",
+      "senha": "123456"
+    },
+    {
+      "id": "ad34f020-e16f-4060-a6a3-9dcd3b301f9e",
+      "role": "militar",
+      "mil_id": "1cd69878-6e00-4c46-b65c-166b523fa7d1",
+      "milId": "1cd69878-6e00-4c46-b65c-166b523fa7d1",
+      "posto": "Cb",
+      "nome": "L FIGUEIREDO",
+      "rg": "53278",
+      "senha": "123456"
+    },
+    {
+      "id": "23f6ab25-01a1-485d-b3cd-5309a00d8c43",
+      "role": "militar",
+      "mil_id": "a7cb8900-aa1d-4f23-87f7-1820ef630435",
+      "milId": "a7cb8900-aa1d-4f23-87f7-1820ef630435",
+      "posto": "SUBTEN",
+      "nome": "AMPARO",
+      "rg": "21180",
+      "senha": "123456"
+    },
+    {
+      "id": "2120266f-6a6c-4e98-b144-6d64757861d8",
+      "role": "militar",
+      "mil_id": "d499c334-0f99-4557-a516-a7e9908b38b9",
+      "milId": "d499c334-0f99-4557-a516-a7e9908b38b9",
+      "posto": "2º Sgt",
+      "nome": "MAYCON",
+      "rg": "43817",
+      "senha": "123456"
+    },
+    {
+      "id": "b4899a7b-b0e3-437a-93f0-bedf819e60fb",
+      "role": "militar",
+      "mil_id": "95701be5-c5ec-41d2-a0ea-cbaba94163d1",
+      "milId": "95701be5-c5ec-41d2-a0ea-cbaba94163d1",
+      "posto": "2º Sgt",
+      "nome": "RAFAEL CUNHA",
+      "rg": "43710",
+      "senha": "123456"
+    },
+    {
+      "id": "17eedf73-08b2-4f9c-af49-462baa80129d",
+      "role": "militar",
+      "mil_id": "30d05db7-f108-4e3d-a35c-745e3e42162e",
+      "milId": "30d05db7-f108-4e3d-a35c-745e3e42162e",
+      "posto": "2º Sgt",
+      "nome": "MELLO",
+      "rg": "44777",
+      "senha": "123456"
+    },
+    {
+      "id": "0a3635e9-6ff3-4b61-9c88-17ae414e10c9",
+      "role": "militar",
+      "mil_id": "c35278d0-84b5-4bb7-93e6-64b5cf77c3ed",
+      "milId": "c35278d0-84b5-4bb7-93e6-64b5cf77c3ed",
+      "posto": "2º Sgt",
+      "nome": "CARDOSO",
+      "rg": "43211",
+      "senha": "123456"
+    },
+    {
+      "id": "d790904a-63f9-4a4c-a6b5-52348ca292d3",
+      "role": "militar",
+      "mil_id": "3e913089-4166-45d9-886d-faa577a47021",
+      "milId": "3e913089-4166-45d9-886d-faa577a47021",
+      "posto": "Cb",
+      "nome": "VICTOR MORAIS",
+      "rg": "53122",
+      "senha": "123456"
+    },
+    {
+      "id": "8d9de042-b3b9-413b-87c9-6ea4d90795ae",
+      "role": "militar",
+      "mil_id": "5bb5ab08-88c6-479c-b26a-d46fc69becb4",
+      "milId": "5bb5ab08-88c6-479c-b26a-d46fc69becb4",
+      "posto": "Cb",
+      "nome": "BRENO",
+      "rg": "53277",
+      "senha": "123456"
+    },
+    {
+      "id": "7867a8a0-955b-4d9c-b251-af2fa49c1bf6",
+      "role": "militar",
+      "mil_id": "c9ea6bca-b26e-4c6d-8155-960ff76efbee",
+      "milId": "c9ea6bca-b26e-4c6d-8155-960ff76efbee",
+      "posto": "Cb",
+      "nome": "GONÇALVES",
+      "rg": "53563",
+      "senha": "123456"
+    },
+    {
+      "id": "8b6ea9ca-df30-4131-b153-eaab5c52a33c",
+      "role": "militar",
+      "mil_id": "a37f40dc-f4d6-471e-ae0b-499610a5d14c",
+      "milId": "a37f40dc-f4d6-471e-ae0b-499610a5d14c",
+      "posto": "Sd",
+      "nome": "RANGEL",
+      "rg": "53594",
+      "senha": "123456"
+    },
+    {
+      "id": "676d2a53-cd6b-4bb1-a3c1-99d17d9ef659",
+      "role": "militar",
+      "mil_id": "2d7ca9d9-4764-4185-b1c6-92dfeb692959",
+      "milId": "2d7ca9d9-4764-4185-b1c6-92dfeb692959",
+      "posto": "Cb",
+      "nome": "RUBENS",
+      "rg": "53142",
+      "senha": "123456"
+    },
+    {
+      "id": "0cbc9a32-3f63-43f3-9cd2-eb1c4c6e8245",
+      "role": "militar",
+      "mil_id": "52051587-ff77-4e69-b194-8c8330fea857",
+      "milId": "52051587-ff77-4e69-b194-8c8330fea857",
+      "posto": "1º Sgt",
+      "nome": "JEFFERSON MORAES",
+      "rg": "31557",
+      "senha": "123456"
+    },
+    {
+      "id": "b7b69607-879e-44fe-860b-64676b926075",
+      "role": "militar",
+      "mil_id": "12fec0ca-ce73-407a-92dc-dd7768fd6fcd",
+      "milId": "12fec0ca-ce73-407a-92dc-dd7768fd6fcd",
+      "posto": "2º Sgt",
+      "nome": "VINICIUS",
+      "rg": "43857",
+      "senha": "123456"
+    },
+    {
+      "id": "0c25b2f9-3895-4cd9-bd37-2bbd212abf53",
+      "role": "militar",
+      "mil_id": "c98b9a21-cba9-4dd1-99f2-c694061aa72e",
+      "milId": "c98b9a21-cba9-4dd1-99f2-c694061aa72e",
+      "posto": "2º Sgt",
+      "nome": "RIBEIRO",
+      "rg": "43692",
+      "senha": "123456"
+    },
+    {
+      "id": "7c33d0e3-2e8a-43b4-956d-41d1a3f33178",
+      "role": "militar",
+      "mil_id": "0bacd116-7b4b-4019-91f4-df712965b55d",
+      "milId": "0bacd116-7b4b-4019-91f4-df712965b55d",
+      "posto": "2º Sgt",
+      "nome": "MAURICIO",
+      "rg": "43814",
+      "senha": "123456"
+    },
+    {
+      "id": "3559aa28-77b6-4528-ae66-154cd4094b28",
+      "role": "militar",
+      "mil_id": "8e2fa369-856b-4a6c-b88c-0cf78be32786",
+      "milId": "8e2fa369-856b-4a6c-b88c-0cf78be32786",
+      "posto": "2º Sgt",
+      "nome": "EDUARDO",
+      "rg": "43818",
+      "senha": "123456"
+    },
+    {
+      "id": "60c8923b-3891-4c8b-8a03-b12525eaa3b1",
+      "role": "militar",
+      "mil_id": "47d66abc-cfcb-451f-a115-bb99f204efe0",
+      "milId": "47d66abc-cfcb-451f-a115-bb99f204efe0",
+      "posto": "2º Sgt",
+      "nome": "WANDEMBERG",
+      "rg": "43749",
+      "senha": "123456"
+    },
+    {
+      "id": "4631706a-c268-4363-aeb1-467640d41e82",
+      "role": "militar",
+      "mil_id": "f1651903-d36a-4f2b-9910-4b98f3f30a30",
+      "milId": "f1651903-d36a-4f2b-9910-4b98f3f30a30",
+      "posto": "2º Sgt",
+      "nome": "TOLEDO",
+      "rg": "44314",
+      "senha": "123456"
+    },
+    {
+      "id": "8699c081-c038-4dfe-ab37-de5ac059a895",
+      "role": "militar",
+      "mil_id": "2ca59609-d530-439d-a79f-3f84ad1c121d",
+      "milId": "2ca59609-d530-439d-a79f-3f84ad1c121d",
+      "posto": "2º Sgt",
+      "nome": "REGINALDO",
+      "rg": "43530",
+      "senha": "123456"
+    },
+    {
+      "id": "3e6f3edd-a79a-43bb-8370-d41a7faf1c8a",
+      "role": "militar",
+      "mil_id": "a1904510-e1a8-4c34-8615-0b022c9e5b00",
+      "milId": "a1904510-e1a8-4c34-8615-0b022c9e5b00",
+      "posto": "Cb",
+      "nome": "DAVIDSON",
+      "rg": "53193",
+      "senha": "123456"
+    },
+    {
+      "id": "fa0eab90-6211-474c-af63-9028b31f4215",
+      "role": "militar",
+      "mil_id": "738df4dd-92fe-4c54-ae6c-4858df1d6879",
+      "milId": "738df4dd-92fe-4c54-ae6c-4858df1d6879",
+      "posto": "2º Sgt",
+      "nome": "BRANDAO FILHO",
+      "rg": "43810",
+      "senha": "123456"
+    },
+    {
+      "id": "90902a0a-949a-48f8-96e5-e5436425b207",
+      "role": "militar",
+      "mil_id": "47153a99-b036-4ace-a909-24cc166cf8c1",
+      "milId": "47153a99-b036-4ace-a909-24cc166cf8c1",
+      "posto": "SUBTEN",
+      "nome": "REGINO",
+      "rg": "21755",
+      "senha": "123456"
+    },
+    {
+      "id": "a84b3afb-cf54-4417-928a-c9b99a037c59",
+      "role": "militar",
+      "mil_id": "0f1021d2-bbcd-4cb4-a219-8a5e9a646bd3",
+      "milId": "0f1021d2-bbcd-4cb4-a219-8a5e9a646bd3",
+      "posto": "2º Sgt",
+      "nome": "BRUNO MORAES",
+      "rg": "44808",
+      "senha": "123456"
+    },
+    {
+      "id": "73f15c16-dd00-4430-96bf-ca256ea0a787",
+      "role": "militar",
+      "mil_id": "17ad8b92-014c-4df4-bd77-da3fdd7f5edd",
+      "milId": "17ad8b92-014c-4df4-bd77-da3fdd7f5edd",
+      "posto": "Cb",
+      "nome": "DIAS",
+      "rg": "53200",
+      "senha": "123456"
+    },
+    {
+      "id": "ceddb2e0-10b7-4fec-a424-704c2c84eb4a",
+      "role": "militar",
+      "mil_id": "bad511c0-2b83-48a0-bf01-b129f3f1eff0",
+      "milId": "bad511c0-2b83-48a0-bf01-b129f3f1eff0",
+      "posto": "2º Sgt",
+      "nome": "FELIPE MARCOS",
+      "rg": "43705",
+      "senha": "123456"
+    },
+    {
+      "id": "03dd915b-853c-4520-89c7-39fc6ce5bf32",
+      "role": "militar",
+      "mil_id": "1e336fe5-c081-4c09-b04e-f5560ea446eb",
+      "milId": "1e336fe5-c081-4c09-b04e-f5560ea446eb",
+      "posto": "1º Sgt",
+      "nome": "VIDAL",
+      "rg": "31570",
+      "senha": "123456"
+    },
+    {
+      "id": "bc279911-bbd1-407a-a9fe-ef2982e67191",
+      "role": "militar",
+      "mil_id": "015c2372-f3a0-4009-a576-9ed00832ff0f",
+      "milId": "015c2372-f3a0-4009-a576-9ed00832ff0f",
+      "posto": "SUBTEN",
+      "nome": "PAULO NUNES",
+      "rg": "42257",
+      "senha": "123456"
+    },
+    {
+      "id": "43e2c970-61bb-4ca2-8814-8a0333a73cac",
+      "role": "militar",
+      "mil_id": "ff91c24a-c0b0-46f8-a556-0ef4635596f8",
+      "milId": "ff91c24a-c0b0-46f8-a556-0ef4635596f8",
+      "posto": "SUBTEN",
+      "nome": "ROSARIO",
+      "rg": "23836",
+      "senha": "123456"
+    },
+    {
+      "id": "360a6616-5615-43f9-bffd-cb71d7663fef",
+      "role": "militar",
+      "mil_id": "009b27ce-77f8-41c6-8265-441eba0fc209",
+      "milId": "009b27ce-77f8-41c6-8265-441eba0fc209",
+      "posto": "1º Sgt",
+      "nome": "SD LUCAS BORGES",
+      "rg": "2200121",
+      "senha": "123456"
+    },
+    {
+      "id": "8f0078ba-bd1e-436e-84f7-ac9f1a92da65",
+      "role": "militar",
+      "mil_id": "ef15380a-629d-4ab5-8f17-76bb07f71f1b",
+      "milId": "ef15380a-629d-4ab5-8f17-76bb07f71f1b",
+      "posto": "Sd",
+      "nome": "SPINELLI",
+      "rg": "61292",
+      "senha": "123456"
+    },
+    {
+      "id": "1b2dbfed-5631-4a25-8893-0e0ae0a3b2b6",
+      "role": "militar",
+      "mil_id": "51a3ab80-9d55-4b9f-a0be-3812cb10d4d7",
+      "milId": "51a3ab80-9d55-4b9f-a0be-3812cb10d4d7",
+      "posto": "SUBTEN",
+      "nome": "NOBLAT",
+      "rg": "20382",
+      "senha": "123456"
+    },
+    {
+      "id": "450f11b5-ca41-457f-bd0f-30ed2bb0ef0f",
+      "role": "militar",
+      "mil_id": "6b0e426e-c7f4-404d-a92d-04b40066339b",
+      "milId": "6b0e426e-c7f4-404d-a92d-04b40066339b",
+      "posto": "SUBTEN",
+      "nome": "BATISTA",
+      "rg": "25596",
+      "senha": "123456"
+    },
+    {
+      "id": "8c16020b-ffa5-4224-a473-ae977dc85cbf",
+      "role": "militar",
+      "mil_id": "d8255e30-62c4-4cfb-a13c-639eb1fa0807",
+      "milId": "d8255e30-62c4-4cfb-a13c-639eb1fa0807",
+      "posto": "1º Sgt",
+      "nome": "NOVELLO",
+      "rg": "32114",
+      "senha": "123456"
+    },
+    {
+      "id": "468dfb0e-3059-46b9-a1a4-6eb3ff42d266",
+      "role": "militar",
+      "mil_id": "c88d823e-6c40-4b00-8858-199676dfc5f0",
+      "milId": "c88d823e-6c40-4b00-8858-199676dfc5f0",
+      "posto": "SUBTEN",
+      "nome": "DE SOUZA",
+      "rg": "25577",
+      "senha": "123456"
+    },
+    {
+      "id": "f4ca46c2-2ee3-4ee8-ae5a-33d8a65603f4",
+      "role": "militar",
+      "mil_id": "b9c9095a-edc4-4114-9a5b-f6ed9a4fbe9c",
+      "milId": "b9c9095a-edc4-4114-9a5b-f6ed9a4fbe9c",
+      "posto": "SUBTEN",
+      "nome": "J MENDONÇA",
+      "rg": "23903",
+      "senha": "123456"
+    },
+    {
+      "id": "36365969-2a26-406b-bae2-8f71796260e6",
+      "role": "militar",
+      "mil_id": "a4b284d3-d2c1-4cf3-9dfb-c78f4aec6aa9",
+      "milId": "a4b284d3-d2c1-4cf3-9dfb-c78f4aec6aa9",
+      "posto": "Sd",
+      "nome": "EDUARDO MEDEIROS",
+      "rg": "54846",
+      "senha": "123456"
+    },
+    {
+      "id": "3fc18f3f-51ef-4aca-afb2-59c4e3afa915",
+      "role": "militar",
+      "mil_id": "d53acc25-cd7f-4579-af0b-bcfb8e454b37",
+      "milId": "d53acc25-cd7f-4579-af0b-bcfb8e454b37",
+      "posto": "Sd",
+      "nome": "ROMERO",
+      "rg": "54959",
+      "senha": "123456"
+    }
+  ]
+}
