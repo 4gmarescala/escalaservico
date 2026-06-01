@@ -1,7 +1,7 @@
 // src/pages/PortalMilitar.js
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { getPermutas, getMilitares, solicitarPermuta, confirmarPermuta, rejeitarPermuta } from '../services/firestore';
+import { getPermutas, getMilitares, solicitarPermuta, confirmarPermuta, rejeitarPermuta, alterarSenhaUsuario } from '../services/firestore';
 import { supabase } from '../supabase';
 
 const C = {
@@ -34,6 +34,7 @@ export default function PortalMilitar() {
   const [erro, setErro] = useState('');
   const [sucesso, setSucesso] = useState('');
   const [meuMilitar, setMeuMilitar] = useState(null);
+  const [formSenha, setFormSenha] = useState({ senhaAtual: '', novaSenha: '', confSenha: '' });
 
   const milId = perfil?.milId;
 
@@ -202,6 +203,49 @@ export default function PortalMilitar() {
     } catch { setErro('Erro ao rejeitar.'); }
   }
 
+  async function handleAlterarSenha(e) {
+    e.preventDefault();
+    setErro('');
+    setSucesso('');
+
+    if (!formSenha.senhaAtual || !formSenha.novaSenha || !formSenha.confSenha) {
+      setErro('⛔ Preencha todos os campos.');
+      return;
+    }
+
+    if (formSenha.novaSenha !== formSenha.confSenha) {
+      setErro('⛔ A nova senha e a confirmação não coincidem.');
+      return;
+    }
+
+    if (formSenha.novaSenha.length < 6) {
+      setErro('⛔ A nova senha deve ter no mínimo 6 caracteres.');
+      return;
+    }
+
+    try {
+      // Validar se a senha atual está correta usando o endpoint de RPC de login
+      const { data, error } = await supabase.rpc('login_militar', {
+        p_rg: perfil.rg,
+        p_senha: formSenha.senhaAtual
+      });
+
+      if (error || !data || data.length === 0) {
+        setErro('⛔ Senha atual incorreta.');
+        return;
+      }
+
+      // Atualizar a senha do usuário
+      await alterarSenhaUsuario(perfil.id, formSenha.novaSenha);
+      setSucesso('✅ Senha alterada com sucesso!');
+      setModal(null);
+      setFormSenha({ senhaAtual: '', novaSenha: '', confSenha: '' });
+    } catch (err) {
+      console.error(err);
+      setErro('⛔ Erro ao alterar a senha. Tente novamente.');
+    }
+  }
+
   // Filtra permutas por aba a partir de todas as permutas carregadas
   const minhas = permutas.filter(p => p.solicitanteId === milId);
   const pendConf = permutas.filter(p => p.receptorId === milId && p.status === 'aguardando_confirmacao');
@@ -235,7 +279,15 @@ export default function PortalMilitar() {
           <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.3rem', letterSpacing: 3, color: C.creme }}>CBMERJ · 4º GMar</div>
           <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '0.62rem', fontWeight: 600, color: C.ouro, letterSpacing: 2 }}>{perfil?.posto} {perfil?.nome} · RG {perfil?.rg}</div>
         </div>
-        <button onClick={logout} style={{ background: 'transparent', border: `1px solid ${C.borda}`, color: C.cinza, borderRadius: 6, padding: '0.4rem 0.8rem', cursor: 'pointer', fontSize: '0.7rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, transition: 'all 0.2s' }}>SAIR</button>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button onClick={() => { setModal('alterar_senha'); setFormSenha({ senhaAtual: '', novaSenha: '', confSenha: '' }); setErro(''); }}
+            style={{ background: 'transparent', border: `1px solid ${C.borda}`, color: C.ouro, borderRadius: 6, padding: '0.4rem 0.8rem', cursor: 'pointer', fontSize: '0.7rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, transition: 'all 0.2s' }}>
+            🔑 SENHA
+          </button>
+          <button onClick={logout} style={{ background: 'transparent', border: `1px solid ${C.borda}`, color: C.cinza, borderRadius: 6, padding: '0.4rem 0.8rem', cursor: 'pointer', fontSize: '0.7rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, transition: 'all 0.2s' }}>
+            SAIR
+          </button>
+        </div>
       </div>
 
       <div style={{ padding: '1.2rem', maxWidth: 700, margin: '0 auto' }}>
@@ -411,6 +463,44 @@ export default function PortalMilitar() {
             <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.75rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.75rem' }}>CANCELAR</button>
             <button onClick={handleRejeitar} style={{ flex: 2, background: C.vermelhoPale, color: '#e07070', border: `1px solid ${C.vermelho}40`, borderRadius: 8, padding: '0.75rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '0.75rem' }}>❌ RECUSAR</button>
           </div>
+        </Overlay>
+      )}
+
+      {/* MODAL ALTERAR SENHA */}
+      {modal === 'alterar_senha' && (
+        <Overlay onClose={() => setModal(null)}>
+          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.4rem', letterSpacing: 2, color: C.ouro, marginBottom: '1rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>
+            Alterar Senha
+          </div>
+
+          <form onSubmit={handleAlterarSenha}>
+            <Campo label="Senha Atual">
+              <input type="password" value={formSenha.senhaAtual} onChange={e => setFormSenha(s => ({ ...s, senhaAtual: e.target.value }))} style={inpStyle} placeholder="Digite sua senha atual" />
+            </Campo>
+
+            <Campo label="Nova Senha">
+              <input type="password" value={formSenha.novaSenha} onChange={e => setFormSenha(s => ({ ...s, novaSenha: e.target.value }))} style={inpStyle} placeholder="Mínimo 6 caracteres" />
+            </Campo>
+
+            <Campo label="Confirmar Nova Senha">
+              <input type="password" value={formSenha.confSenha} onChange={e => setFormSenha(s => ({ ...s, confSenha: e.target.value }))} style={inpStyle} placeholder="Confirme a nova senha" />
+            </Campo>
+
+            {erro && (
+              <div style={{ background: C.vermelhoPale, border: `1px solid ${C.vermelho}40`, borderRadius: 6, color: '#c0392b', fontSize: '0.85rem', padding: '0.6rem', marginBottom: '0.8rem' }}>
+                {erro}
+              </div>
+            )}
+
+            <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1rem' }}>
+              <button type="button" onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.75rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.75rem' }}>
+                CANCELAR
+              </button>
+              <button type="submit" style={{ flex: 2, background: C.ouro, color: '#8f0000', border: 'none', borderRadius: 8, padding: '0.75rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: '0.75rem', letterSpacing: 1, boxShadow: '0 4px 15px rgba(255,255,255,0.2)' }}>
+                CONFIRMAR
+              </button>
+            </div>
+          </form>
         </Overlay>
       )}
     </div>

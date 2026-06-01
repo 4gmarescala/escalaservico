@@ -547,3 +547,22 @@ export async function createUsuario(dados) {
   if (error) throw error;
   return data;
 }
+
+export async function alterarSenhaUsuario(userId, novaSenha) {
+  if (isMockMode) {
+    const list = getMockData('usuarios');
+    const idx = list.findIndex(u => u.id === userId);
+    if (idx !== -1) {
+      list[idx].senha = novaSenha;
+      setMockData('usuarios', list);
+    }
+    return;
+  }
+
+  const { error } = await supabase
+    .from('usuarios')
+    .update({ senha: novaSenha })
+    .eq('id', userId);
+
+  if (error) throw error;
+}
