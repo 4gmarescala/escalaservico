@@ -273,9 +273,9 @@ export default function PortalMilitar() {
 
         {/* LISTA */}
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '3rem', color: C.cinza }}>Carregando...</div>
+          <div style={{ textAlign: 'center', padding: '3rem', color: C.fundo2 }}>Carregando...</div>
         ) : lista.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '3rem', color: C.cinza }}>
+          <div style={{ textAlign: 'center', padding: '3rem', color: C.fundo2 }}>
             <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🔄</div>
             <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '0.8rem' }}>Nenhuma permuta aqui</div>
           </div>

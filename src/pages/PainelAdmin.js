@@ -295,7 +295,7 @@ export default function PainelAdmin() {
           <div style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderRadius: 10, padding: '1rem 1.2rem', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
             <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.2rem', letterSpacing: 2, color: C.ouro, marginBottom: '1rem' }}>🔍 Permutas Aguardando Aprovação</div>
             {pendAprov.length === 0
-              ? <div style={{ textAlign: 'center', padding: '2rem', color: C.cinza }}><div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✅</div><div style={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>Nenhuma pendente</div></div>
+              ? <div style={{ textAlign: 'center', padding: '2rem', color: C.fundo2 }}><div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✅</div><div style={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>Nenhuma pendente</div></div>
               : pendAprov.map(p => (
                 <div key={p.id} style={{ background: 'rgba(0,0,0,.2)', borderRadius: 10, padding: '1rem', marginBottom: '0.8rem', border: `1px solid ${C.borda}` }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.3rem' }}>
