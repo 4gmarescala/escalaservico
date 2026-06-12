@@ -198,7 +198,7 @@ export default function PainelAdmin() {
       aguardando_aprovacao: ['🔍', C.ouroClaro, C.ouroPale, 'Ag. Aprovação'],
       aprovada: ['✅', '#7dbd72', C.verdePale, 'Aprovada'],
       rejeitada: ['❌', '#e07070', C.vermelhoPale, 'Rejeitada'],
-      quitada: ['🏁', C.cinza, 'rgba(122,138,106,.15)', 'Quitada'],
+      quitada: ['🏁', C.fundo2, 'rgba(122,138,106,.15)', 'Quitada'],
     };
     const [ico, cor, bg, txt] = map[s] || ['?', C.cinza, 'transparent', s];
     return <span style={{ background: bg, color: cor, border: `1px solid ${cor}40`, borderRadius: 4, padding: '2px 8px', fontSize: '0.65rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 700 }}>{ico} {txt}</span>;
@@ -255,14 +255,14 @@ export default function PainelAdmin() {
 
             {pendAprov.length > 0 && (
               <div style={{ background: C.ouroPale, border: `1px solid ${C.borda}`, borderRadius: 10, padding: '1rem 1.2rem', marginBottom: '1rem', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
-                <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.1rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.8rem' }}>🔍 Aguardando sua Aprovação</div>
+                <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.1rem', letterSpacing: 2, color: C.fundo2, marginBottom: '0.8rem' }}>🔍 Aguardando sua Aprovação</div>
                 {pendAprov.map(p => (
-                  <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.6rem 0', borderBottom: `1px solid ${C.borda}`, flexWrap: 'wrap', gap: '0.5rem' }}>
+                  <div key={p.id} style={{ color: C.fundo2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.6rem 0', borderBottom: `1px solid ${C.borda}`, flexWrap: 'wrap', gap: '0.5rem' }}>
                     <div>
                       <span style={{ fontWeight: 600 }}>{nomeMil(p.solicitanteId)}</span>
-                      <span style={{ color: C.cinza }}> → </span>
+                      <span style={{ color: C.fundo2 }}> → </span>
                       <span style={{ fontWeight: 600 }}>{nomeMil(p.receptorId)}</span>
-                      <span style={{ color: C.ouro, fontFamily: 'monospace', fontSize: '0.78rem', marginLeft: '0.5rem', fontWeight: 600 }}>
+                      <span style={{ color: C.fundo2, fontFamily: 'monospace', fontSize: '0.78rem', marginLeft: '0.5rem', fontWeight: 600 }}>
                         {p.tipo === 'real' ? `${fmtData(p.data)} ⇆ ${fmtData(p.dataRetorno)}` : fmtData(p.data)} · {p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}
                       </span>
                     </div>
@@ -434,122 +434,130 @@ export default function PainelAdmin() {
       </div>
 
       {/* MODAIS */}
-      {modal === 'aprovar' && permutaSel && (
-        <ModalBg onClose={() => setModal(null)}>
-          <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: '#7dbd72', marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>✅ Aprovar Permuta</div>
-          <div style={{ background: 'rgba(0,0,0,.2)', borderRadius: 8, borderLeft: `3px solid ${C.vermelho}`, padding: '0.7rem', marginBottom: '1rem', fontSize: '0.9rem', color: C.cinza }}>
-            <strong>{nomeMil(permutaSel.solicitanteId)}</strong> → <strong>{nomeMil(permutaSel.receptorId)}</strong><br />
-            <div style={{ marginTop: 4, color: C.ouro, fontWeight: 600 }}>
-              {permutaSel.tipo === 'real' ? `${fmtData(permutaSel.data)} ⇆ ${fmtData(permutaSel.dataRetorno)}` : fmtData(permutaSel.data)} · {permutaSel.tipoSv} · {permutaSel.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla'}
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: '0.6rem' }}>
-            <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>CANCELAR</button>
-            <button onClick={handleAprovar} style={{ flex: 2, background: C.verdePale, color: '#7dbd72', border: `1px solid ${C.verde}40`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.72rem' }}>✅ CONFIRMAR APROVAÇÃO</button>
-          </div>
-        </ModalBg>
-      )}
-
-      {modal === 'rejeitar' && permutaSel && (
-        <ModalBg onClose={() => setModal(null)}>
-          <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: '#e07070', marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>❌ Rejeitar Permuta</div>
-          <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.6rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Motivo</label>
-          <textarea value={motivo} onChange={e => setMotivo(e.target.value)} placeholder="Informe o motivo da rejeição..."
-            style={{ width: '100%', background: 'rgba(0,0,0,.35)', border: `1px solid ${C.borda}`, borderRadius: 8, color: C.creme, fontFamily: 'monospace', fontSize: '0.9rem', padding: '0.65rem', minHeight: 70, resize: 'vertical', boxSizing: 'border-box', marginBottom: '1rem', outline: 'none' }} />
-          <div style={{ display: 'flex', gap: '0.6rem' }}>
-            <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>CANCELAR</button>
-            <button onClick={handleRejeitar} style={{ flex: 2, background: C.vermelhoPale, color: '#e07070', border: `1px solid ${C.vermelho}40`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.72rem' }}>❌ REJEITAR</button>
-          </div>
-        </ModalBg>
-      )}
-
-      {modal === 'quitar' && permutaSel && (
-        <ModalBg onClose={() => setModal(null)}>
-          <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: C.cinza, marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>🏁 Quitar Permuta Dupla</div>
-          <div style={{ background: 'rgba(0,0,0,.2)', borderRadius: 8, borderLeft: `3px solid ${C.vermelho}`, padding: '0.7rem', marginBottom: '1rem', fontSize: '0.9rem', color: C.cinza }}>
-            <strong>{nomeMil(permutaSel.solicitanteId)}</strong> deu o serviço em {fmtData(permutaSel.data)} para <strong>{nomeMil(permutaSel.receptorId)}</strong> (Retorno em {fmtData(permutaSel.dataRetorno)}). A dívida foi quitada?
-          </div>
-          <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.6rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Observação</label>
-          <textarea value={motivo} onChange={e => setMotivo(e.target.value)} placeholder="Ex: Quitado em mai/2026..."
-            style={{ width: '100%', background: 'rgba(0,0,0,.35)', border: `1px solid ${C.borda}`, borderRadius: 8, color: C.creme, fontFamily: 'monospace', fontSize: '0.9rem', padding: '0.65rem', minHeight: 60, resize: 'vertical', boxSizing: 'border-box', marginBottom: '1rem', outline: 'none' }} />
-          <div style={{ display: 'flex', gap: '0.6rem' }}>
-            <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>CANCELAR</button>
-            <button onClick={handleQuitar} style={{ flex: 2, background: C.verdePale, color: '#7dbd72', border: `1px solid ${C.verde}40`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.72rem' }}>🏁 QUITAR</button>
-          </div>
-        </ModalBg>
-      )}
-
-      {modal === 'editar_militar' && militarSel && (
-        <ModalBg onClose={() => setModal(null)}>
-          <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>✏️ Editar Militar</div>
-
-          <form onSubmit={handleEditMilitar}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '0.8rem' }}>
-              <div>
-                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Posto*</label>
-                <select value={formEdit.posto} onChange={e => setFormEdit(f => ({ ...f, posto: e.target.value }))}
-                  style={controlStyle}>
-                  {['', 'Sd', 'Cb', '3º Sgt', '2º Sgt', '1º Sgt', 'ST', 'SUBTEN', '2º Ten', '1º Ten', 'Cap', 'Maj', 'TC', 'Cel'].map(v => <option key={v} value={v}>{v || 'Selecione...'}</option>)}
-                </select>
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Regime*</label>
-                <select value={formEdit.regime} onChange={e => setFormEdit(f => ({ ...f, regime: e.target.value }))}
-                  style={controlStyle}>
-                  {[['12h', '12h (12x60)'], ['24h', '24h (24x72)'], ['exp', 'Expediente']].map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-                </select>
+      {
+        modal === 'aprovar' && permutaSel && (
+          <ModalBg onClose={() => setModal(null)}>
+            <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: '#7dbd72', marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>✅ Aprovar Permuta</div>
+            <div style={{ background: 'rgba(0,0,0,.2)', borderRadius: 8, borderLeft: `3px solid ${C.vermelho}`, padding: '0.7rem', marginBottom: '1rem', fontSize: '0.9rem', color: C.cinza }}>
+              <strong>{nomeMil(permutaSel.solicitanteId)}</strong> → <strong>{nomeMil(permutaSel.receptorId)}</strong><br />
+              <div style={{ marginTop: 4, color: C.ouro, fontWeight: 600 }}>
+                {permutaSel.tipo === 'real' ? `${fmtData(permutaSel.data)} ⇆ ${fmtData(permutaSel.dataRetorno)}` : fmtData(permutaSel.data)} · {permutaSel.tipoSv} · {permutaSel.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla'}
               </div>
             </div>
-
-            <div style={{ marginBottom: '0.8rem' }}>
-              <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Nome de Guerra*</label>
-              <input type="text" value={formEdit.nome} onChange={e => setFormEdit(f => ({ ...f, nome: e.target.value }))}
-                style={controlStyle} />
+            <div style={{ display: 'flex', gap: '0.6rem' }}>
+              <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>CANCELAR</button>
+              <button onClick={handleAprovar} style={{ flex: 2, background: C.verdePale, color: '#7dbd72', border: `1px solid ${C.verde}40`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.72rem' }}>✅ CONFIRMAR APROVAÇÃO</button>
             </div>
+          </ModalBg>
+        )
+      }
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '0.8rem' }}>
-              <div>
-                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>RG*</label>
-                <input type="text" value={formEdit.rg} onChange={e => setFormEdit(f => ({ ...f, rg: e.target.value }))}
+      {
+        modal === 'rejeitar' && permutaSel && (
+          <ModalBg onClose={() => setModal(null)}>
+            <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: '#e07070', marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>❌ Rejeitar Permuta</div>
+            <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.6rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Motivo</label>
+            <textarea value={motivo} onChange={e => setMotivo(e.target.value)} placeholder="Informe o motivo da rejeição..."
+              style={{ width: '100%', background: 'rgba(0,0,0,.35)', border: `1px solid ${C.borda}`, borderRadius: 8, color: C.creme, fontFamily: 'monospace', fontSize: '0.9rem', padding: '0.65rem', minHeight: 70, resize: 'vertical', boxSizing: 'border-box', marginBottom: '1rem', outline: 'none' }} />
+            <div style={{ display: 'flex', gap: '0.6rem' }}>
+              <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>CANCELAR</button>
+              <button onClick={handleRejeitar} style={{ flex: 2, background: C.vermelhoPale, color: '#e07070', border: `1px solid ${C.vermelho}40`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.72rem' }}>❌ REJEITAR</button>
+            </div>
+          </ModalBg>
+        )
+      }
+
+      {
+        modal === 'quitar' && permutaSel && (
+          <ModalBg onClose={() => setModal(null)}>
+            <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: C.cinza, marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>🏁 Quitar Permuta Dupla</div>
+            <div style={{ background: 'rgba(0,0,0,.2)', borderRadius: 8, borderLeft: `3px solid ${C.vermelho}`, padding: '0.7rem', marginBottom: '1rem', fontSize: '0.9rem', color: C.cinza }}>
+              <strong>{nomeMil(permutaSel.solicitanteId)}</strong> deu o serviço em {fmtData(permutaSel.data)} para <strong>{nomeMil(permutaSel.receptorId)}</strong> (Retorno em {fmtData(permutaSel.dataRetorno)}). A dívida foi quitada?
+            </div>
+            <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.6rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Observação</label>
+            <textarea value={motivo} onChange={e => setMotivo(e.target.value)} placeholder="Ex: Quitado em mai/2026..."
+              style={{ width: '100%', background: 'rgba(0,0,0,.35)', border: `1px solid ${C.borda}`, borderRadius: 8, color: C.creme, fontFamily: 'monospace', fontSize: '0.9rem', padding: '0.65rem', minHeight: 60, resize: 'vertical', boxSizing: 'border-box', marginBottom: '1rem', outline: 'none' }} />
+            <div style={{ display: 'flex', gap: '0.6rem' }}>
+              <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>CANCELAR</button>
+              <button onClick={handleQuitar} style={{ flex: 2, background: C.verdePale, color: '#7dbd72', border: `1px solid ${C.verde}40`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.72rem' }}>🏁 QUITAR</button>
+            </div>
+          </ModalBg>
+        )
+      }
+
+      {
+        modal === 'editar_militar' && militarSel && (
+          <ModalBg onClose={() => setModal(null)}>
+            <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>✏️ Editar Militar</div>
+
+            <form onSubmit={handleEditMilitar}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '0.8rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Posto*</label>
+                  <select value={formEdit.posto} onChange={e => setFormEdit(f => ({ ...f, posto: e.target.value }))}
+                    style={controlStyle}>
+                    {['', 'Sd', 'Cb', '3º Sgt', '2º Sgt', '1º Sgt', 'ST', 'SUBTEN', '2º Ten', '1º Ten', 'Cap', 'Maj', 'TC', 'Cel'].map(v => <option key={v} value={v}>{v || 'Selecione...'}</option>)}
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Regime*</label>
+                  <select value={formEdit.regime} onChange={e => setFormEdit(f => ({ ...f, regime: e.target.value }))}
+                    style={controlStyle}>
+                    {[['12h', '12h (12x60)'], ['24h', '24h (24x72)'], ['exp', 'Expediente']].map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '0.8rem' }}>
+                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Nome de Guerra*</label>
+                <input type="text" value={formEdit.nome} onChange={e => setFormEdit(f => ({ ...f, nome: e.target.value }))}
                   style={controlStyle} />
               </div>
 
-              <div>
-                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Seção/Função</label>
-                <input type="text" value={formEdit.secao} onChange={e => setFormEdit(f => ({ ...f, secao: e.target.value }))}
-                  style={controlStyle} />
-              </div>
-            </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '0.8rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>RG*</label>
+                  <input type="text" value={formEdit.rg} onChange={e => setFormEdit(f => ({ ...f, rg: e.target.value }))}
+                    style={controlStyle} />
+                </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '0.8rem' }}>
-              <div>
-                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Status*</label>
-                <select value={formEdit.ativo ? 'ativo' : 'inativo'} onChange={e => setFormEdit(f => ({ ...f, ativo: e.target.value === 'ativo' }))}
-                  style={controlStyle}>
-                  <option value="ativo">🟢 Ativo</option>
-                  <option value="inativo">🔴 Inativo</option>
-                </select>
+                <div>
+                  <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Seção/Função</label>
+                  <input type="text" value={formEdit.secao} onChange={e => setFormEdit(f => ({ ...f, secao: e.target.value }))}
+                    style={controlStyle} />
+                </div>
               </div>
 
-              <div>
-                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Alterar Senha</label>
-                <input type="password" placeholder="Branco p/ manter" value={formEdit.senha} onChange={e => setFormEdit(f => ({ ...f, senha: e.target.value }))}
-                  style={controlStyle} />
-              </div>
-            </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '0.8rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Status*</label>
+                  <select value={formEdit.ativo ? 'ativo' : 'inativo'} onChange={e => setFormEdit(f => ({ ...f, ativo: e.target.value === 'ativo' }))}
+                    style={controlStyle}>
+                    <option value="ativo">🟢 Ativo</option>
+                    <option value="inativo">🔴 Inativo</option>
+                  </select>
+                </div>
 
-            <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1.2rem' }}>
-              <button type="button" onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>CANCELAR</button>
-              <button type="submit" style={{ flex: 2, background: C.ouro, color: C.fundo2, border: 'none', borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.72rem', boxShadow: '0 4px 15px rgba(0,210,255,0.3)' }}>💾 SALVAR ALTERAÇÕES</button>
-            </div>
-          </form>
-        </ModalBg>
-      )}
+                <div>
+                  <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Alterar Senha</label>
+                  <input type="password" placeholder="Branco p/ manter" value={formEdit.senha} onChange={e => setFormEdit(f => ({ ...f, senha: e.target.value }))}
+                    style={controlStyle} />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1.2rem' }}>
+                <button type="button" onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>CANCELAR</button>
+                <button type="submit" style={{ flex: 2, background: C.ouro, color: C.fundo2, border: 'none', borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.72rem', boxShadow: '0 4px 15px rgba(0,210,255,0.3)' }}>💾 SALVAR ALTERAÇÕES</button>
+              </div>
+            </form>
+          </ModalBg>
+        )
+      }
 
       {/* TOAST */}
       {toast && <div style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', background: C.vermelho, color: C.creme, fontFamily: 'monospace', fontWeight: 700, fontSize: '0.78rem', padding: '0.8rem 1.2rem', borderRadius: 8, zIndex: 999, boxShadow: '0 8px 30px rgba(0,0,0,.5)', letterSpacing: 1 }}>{toast}</div>}
-    </div>
+    </div >
   );
 }
 
