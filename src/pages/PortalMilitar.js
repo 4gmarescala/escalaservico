@@ -124,9 +124,9 @@ export default function PortalMilitar() {
     if (!form.receptorId) { setErro('Selecione o outro militar.'); return; }
     if (!form.data) { setErro('Informe a data do seu serviço.'); return; }
 
-    // Regra 1: Em permuta real (troca), a data de retorno é obrigatória
+    // Regra 1: Em permuta dupla, a data de retorno é obrigatória
     if (form.tipo === 'real' && !form.dataRetorno) {
-      setErro('Informe a data de retorno para a troca.');
+      setErro('Informe a data de retorno para a permuta dupla.');
       return;
     }
 
@@ -336,7 +336,7 @@ export default function PortalMilitar() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
               <div>
                 <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 7px', fontSize: '0.65rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, marginRight: 6 }}>
-                  {p.tipo === 'paga' ? '💰 PAGA' : '🤝 TROCA'}
+                  {p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}
                 </span>
                 {badgeStatus(p.status)}
               </div>
@@ -381,7 +381,7 @@ export default function PortalMilitar() {
           <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.4rem', letterSpacing: 2, color: C.ouro, marginBottom: '1rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>Nova Permuta</div>
 
           <div style={{ display: 'flex', gap: 4, marginBottom: '1rem', background: 'rgba(0,0,0,0.3)', borderRadius: 8, padding: 3 }}>
-            {[['real', '🤝 Real (Troca)'], ['paga', '💰 Paga']].map(([v, l]) => (
+            {[['real', '🤝 Permuta Dupla'], ['paga', 'Permuta Simples']].map(([v, l]) => (
               <button key={v} onClick={() => setForm(f => ({ ...f, tipo: v }))}
                 style={{ flex: 1, background: form.tipo === v ? (v === 'paga' ? C.laranjaPale : C.ouroPale) : 'transparent', color: form.tipo === v ? (v === 'paga' ? '#f0a050' : C.ouro) : C.cinza, border: 'none', borderRadius: 5, padding: '0.5rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.65rem', fontWeight: 700, transition: 'all 0.2s' }}>
                 {l}

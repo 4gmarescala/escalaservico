@@ -136,7 +136,7 @@ O sistema agora é **100% reativo por natureza**. Se dois celulares estiverem ab
 No início de cada mês:
 1. Faça login como admin.
 2. Altere o mês de referência (no canto superior direito).
-3. Vá em **⚠️ Limites** e ajuste os serviços impostos de cada militar conforme a necessidade do mês. O limite máximo de permutas pagas (50%) é calculado de forma automática.
+3. Vá em **⚠️ Limites** e ajuste os serviços impostos de cada militar conforme a necessidade do mês. O limite máximo de permutas simples (50%) é calculado de forma automática.
 
 ---
 

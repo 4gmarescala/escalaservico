@@ -120,10 +120,10 @@ export default function PainelAdmin() {
 
   async function handleAprovar() {
     if (permutaSel.tipo === 'real') {
-      // Permutas de Troca Real envolvem duas datas e se balanceiam sozinhas, logo vão direto para Quitadas
-      await quitarPermuta(permutaSel.id, 'Quitada automaticamente na aprovação (Troca Real)');
+      // Permutas do tipo Permuta Dupla envolvem duas datas e se balanceiam sozinhas, logo vão direto para Quitadas
+      await quitarPermuta(permutaSel.id, 'Quitada automaticamente na aprovação (Permuta Dupla)');
     } else {
-      // Permutas Pagas mantêm-se Aprovadas para registrar o saldo devedor até quitação posterior
+      // Permutas Simples mantêm-se Aprovadas para registrar o saldo devedor até quitação posterior
       await aprovarPermuta(permutaSel.id, perfil?.nome || 'admin');
     }
     showToast('✅ Permuta aprovada!');
@@ -263,7 +263,7 @@ export default function PainelAdmin() {
                       <span style={{ color: C.cinza }}> → </span>
                       <span style={{ fontWeight: 600 }}>{nomeMil(p.receptorId)}</span>
                       <span style={{ color: C.ouro, fontFamily: 'monospace', fontSize: '0.78rem', marginLeft: '0.5rem', fontWeight: 600 }}>
-                        {p.tipo === 'real' ? `${fmtData(p.data)} ⇆ ${fmtData(p.dataRetorno)}` : fmtData(p.data)} · {p.tipo === 'paga' ? '💰 PAGA' : '🤝 TROCA'}
+                        {p.tipo === 'real' ? `${fmtData(p.data)} ⇆ ${fmtData(p.dataRetorno)}` : fmtData(p.data)} · {p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}
                       </span>
                     </div>
                     <div style={{ display: 'flex', gap: '0.4rem' }}>
@@ -277,7 +277,7 @@ export default function PainelAdmin() {
 
             {/* Saldos reais */}
             <div style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderRadius: 10, padding: '1rem 1.2rem', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
-              <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.1rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.8rem' }}>💳 Saldo Permutas Reais (Apenas Pagas acumulam dívida)</div>
+              <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.1rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.8rem' }}>💳 Saldo Permutas Simples (Apenas Permutas Simples acumulam dívida)</div>
               {militares.filter(m => saldoReal(m.id) !== 0).map(m => {
                 const s = saldoReal(m.id);
                 return <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0', borderBottom: `1px solid ${C.borda}`, fontSize: '0.9rem' }}>
@@ -300,7 +300,7 @@ export default function PainelAdmin() {
                 <div key={p.id} style={{ background: 'rgba(0,0,0,.2)', borderRadius: 10, padding: '1rem', marginBottom: '0.8rem', border: `1px solid ${C.borda}` }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.3rem' }}>
                     <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                      <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 7px', fontSize: '0.65rem', fontFamily: 'monospace', fontWeight: 700 }}>{p.tipo === 'paga' ? '💰 PAGA' : '🤝 TROCA'}</span>
+                      <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 7px', fontSize: '0.65rem', fontFamily: 'monospace', fontWeight: 700 }}>{p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}</span>
                       {badgeStatus(p.status)}
                     </div>
                     <span style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: C.ouro, fontWeight: 600 }}>
@@ -330,7 +330,7 @@ export default function PainelAdmin() {
               <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.7rem 0', borderBottom: `1px solid ${C.borda}`, flexWrap: 'wrap', gap: '0.5rem' }}>
                 <div style={{ flex: 1, minWidth: 200 }}>
                   <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.2rem', flexWrap: 'wrap' }}>
-                    <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 6px', fontSize: '0.62rem', fontFamily: 'monospace', fontWeight: 700 }}>{p.tipo === 'paga' ? '💰 PAGA' : '🤝 TROCA'}</span>
+                    <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 6px', fontSize: '0.62rem', fontFamily: 'monospace', fontWeight: 700 }}>{p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}</span>
                     {badgeStatus(p.status)}
                     <span style={{ fontFamily: 'monospace', fontSize: '0.72rem', color: C.ouro, fontWeight: 600 }}>
                       {p.tipo === 'real' ? `${fmtData(p.data)} ⇆ ${fmtData(p.dataRetorno)}` : fmtData(p.data)}
@@ -409,7 +409,7 @@ export default function PainelAdmin() {
         {aba === 'limites' && (
           <div style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderRadius: 10, padding: '1rem 1.2rem', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
             <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.1rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem' }}>⚠️ Limites — {fmtMes(mesRef)}</div>
-            <p style={{ fontSize: '0.85rem', color: C.cinza, fontStyle: 'italic', marginBottom: '1rem' }}>Ajuste os serviços impostos de cada militar neste mês. O limite da permuta paga é calculado automaticamente (50%).</p>
+            <p style={{ fontSize: '0.85rem', color: C.cinza, fontStyle: 'italic', marginBottom: '1rem' }}>Ajuste os serviços impostos de cada militar neste mês. O limite da permuta simples é calculado automaticamente (50%).</p>
             {militares.map(m => {
               const svs = svsMilMes(m.id); const lim = limitePago(m.id); const pag = jaPageiMes(m.id);
               const pct = lim > 0 ? Math.min(100, Math.round(pag / lim * 100)) : 0;
@@ -440,7 +440,7 @@ export default function PainelAdmin() {
           <div style={{ background: 'rgba(0,0,0,.2)', borderRadius: 8, borderLeft: `3px solid ${C.vermelho}`, padding: '0.7rem', marginBottom: '1rem', fontSize: '0.9rem', color: C.cinza }}>
             <strong>{nomeMil(permutaSel.solicitanteId)}</strong> → <strong>{nomeMil(permutaSel.receptorId)}</strong><br />
             <div style={{ marginTop: 4, color: C.ouro, fontWeight: 600 }}>
-              {permutaSel.tipo === 'real' ? `${fmtData(permutaSel.data)} ⇆ ${fmtData(permutaSel.dataRetorno)}` : fmtData(permutaSel.data)} · {permutaSel.tipoSv} · {permutaSel.tipo === 'paga' ? 'Paga' : 'Troca'}
+              {permutaSel.tipo === 'real' ? `${fmtData(permutaSel.data)} ⇆ ${fmtData(permutaSel.dataRetorno)}` : fmtData(permutaSel.data)} · {permutaSel.tipoSv} · {permutaSel.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla'}
             </div>
           </div>
           <div style={{ display: 'flex', gap: '0.6rem' }}>
@@ -465,7 +465,7 @@ export default function PainelAdmin() {
 
       {modal === 'quitar' && permutaSel && (
         <ModalBg onClose={() => setModal(null)}>
-          <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: C.cinza, marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>🏁 Quitar Permuta Real</div>
+          <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: C.cinza, marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>🏁 Quitar Permuta Dupla</div>
           <div style={{ background: 'rgba(0,0,0,.2)', borderRadius: 8, borderLeft: `3px solid ${C.vermelho}`, padding: '0.7rem', marginBottom: '1rem', fontSize: '0.9rem', color: C.cinza }}>
             <strong>{nomeMil(permutaSel.solicitanteId)}</strong> deu o serviço em {fmtData(permutaSel.data)} para <strong>{nomeMil(permutaSel.receptorId)}</strong> (Retorno em {fmtData(permutaSel.dataRetorno)}). A dívida foi quitada?
           </div>

@@ -49,7 +49,7 @@ CREATE TABLE public.permutas (
     receptor_id uuid NOT NULL REFERENCES public.militares(id) ON DELETE CASCADE,
     receptor_nome text NOT NULL,
     data text NOT NULL, -- Formato YYYY-MM-DD
-    data_retorno text, -- Formato YYYY-MM-DD (opcional, usado no tipo troca)
+    data_retorno text, -- Formato YYYY-MM-DD (opcional, usado no tipo permuta dupla)
     tipo_sv text NOT NULL,
     obs text,
     mes text NOT NULL, -- Formato YYYY-MM
