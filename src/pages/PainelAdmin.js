@@ -51,6 +51,7 @@ export default function PainelAdmin() {
   const [permutas, setPermutas] = useState([]);
   const [configMes, setConfigMes] = useState({});
   const [mesRef, setMesRef] = useState(new Date().toISOString().slice(0, 7));
+  const [mesSaldoSel, setMesSaldoSel] = useState(new Date().toISOString().slice(0, 7));
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(null);
   const [permutaSel, setPermutaSel] = useState(null);
@@ -106,12 +107,14 @@ export default function PainelAdmin() {
   function limitePago(milId) { return Math.floor(svsMilMes(milId) / 2); }
 
   function jaPageiMes(milId) {
-    return permutas.filter(p => p.tipo === 'paga' && p.solicitanteId === milId && p.mes === mesRef && p.status !== 'rejeitada').length;
+    const pagou = permutas.filter(p => p.tipo === 'paga' && p.solicitanteId === milId && p.mes === mesRef && p.status !== 'rejeitada').length;
+    const entrou = permutas.filter(p => p.tipo === 'paga' && p.receptorId === milId && p.mes === mesRef && p.status !== 'rejeitada').length;
+    return Math.max(0, pagou - entrou);
   }
 
-  function saldoReal(milId) {
+  function saldoRealNoMes(milId, mes) {
     let s = 0;
-    permutas.filter(p => p.tipo === 'paga' && p.status === 'aprovada').forEach(p => {
+    permutas.filter(p => p.tipo === 'paga' && p.status === 'aprovada' && p.mes === mes).forEach(p => {
       if (p.solicitanteId === milId) s--; // Solicitante fica devendo (-1)
       if (p.receptorId === milId) s++;    // Receptor tem a receber (+1)
     });
@@ -139,6 +142,12 @@ export default function PainelAdmin() {
   async function handleQuitar() {
     await quitarPermuta(permutaSel.id, motivo);
     showToast('✅ Permuta quitada!');
+    setModal(null); setMotivo(''); carregar();
+  }
+
+  async function handleCancelar() {
+    await rejeitarPermuta(permutaSel.id, motivo, 'admin');
+    showToast('🚫 Permuta cancelada!');
     setModal(null); setMotivo(''); carregar();
   }
 
@@ -192,13 +201,26 @@ export default function PainelAdmin() {
   const pendConf = permutas.filter(p => p.status === 'aguardando_confirmacao');
   const noLimite = militares.filter(m => jaPageiMes(m.id) >= limitePago(m.id) && limitePago(m.id) > 0);
 
-  function badgeStatus(s) {
+  const mesesComSaldo = Array.from(
+    new Set(
+      permutas
+        .filter(p => p.tipo === 'paga' && p.status === 'aprovada')
+        .map(p => p.mes)
+    )
+  ).sort((a, b) => b.localeCompare(a));
+  const mesesFiltrados = mesesComSaldo.filter(mes =>
+    militares.some(m => saldoRealNoMes(m.id, mes) !== 0)
+  );
+
+  function badgeStatus(p) {
+    const s = p.status;
+    const isCancelada = s === 'rejeitada' && (p.aprovadoEm || p.quitadoEm);
     const map = {
       aguardando_confirmacao: ['⏳', '#f0a050', C.laranjaPale, 'Ag. Confirmação'],
       aguardando_aprovacao: ['🔍', C.ouroClaro, C.ouroPale, 'Ag. Aprovação'],
       aprovada: ['✅', '#7dbd72', C.verdePale, 'Aprovada'],
-      rejeitada: ['❌', '#e07070', C.vermelhoPale, 'Rejeitada'],
-      quitada: ['🏁', C.fundo2, 'rgba(122,138,106,.15)', 'Quitada'],
+      rejeitada: isCancelada ? ['🚫', '#e74c3c', C.vermelhoPale, 'Cancelada'] : ['❌', '#e07070', C.vermelhoPale, 'Rejeitada'],
+      quitada: ['🏁', '#e07070', 'rgba(122,138,106,.15)', 'Quitada'],
     };
     const [ico, cor, bg, txt] = map[s] || ['?', C.cinza, 'transparent', s];
     return <span style={{ background: bg, color: cor, border: `1px solid ${cor}40`, borderRadius: 4, padding: '2px 8px', fontSize: '0.65rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 700 }}>{ico} {txt}</span>;
@@ -218,7 +240,7 @@ export default function PainelAdmin() {
           <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.2rem', letterSpacing: 3 }}>CBMERJ · 4º GMar · Admin</div>
           <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '0.6rem', fontWeight: 600, color: C.ouro, letterSpacing: 2 }}>{perfil?.nome}</div>
         </div>
-        <input type="month" value={mesRef} onChange={e => setMesRef(e.target.value)}
+        <input type="month" value={mesRef} onChange={e => { setMesRef(e.target.value); setMesSaldoSel(e.target.value); }}
           style={{ background: 'rgba(0,0,0,.3)', border: `1px solid ${C.borda}`, borderRadius: 6, color: C.ouro, fontFamily: 'monospace', fontSize: '0.75rem', padding: '0.35rem 0.6rem', outline: 'none' }} />
         <button onClick={logout} style={{ background: 'transparent', border: `1px solid ${C.borda}`, color: C.cinza, borderRadius: 6, padding: '0.35rem 0.7rem', cursor: 'pointer', fontSize: '0.7rem', fontFamily: 'monospace', transition: 'all 0.2s' }}>SAIR</button>
       </div>
@@ -277,15 +299,33 @@ export default function PainelAdmin() {
 
             {/* Saldos reais */}
             <div style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderRadius: 10, padding: '1rem 1.2rem', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
-              <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.1rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.8rem' }}>💳 Saldo Permutas Simples (Apenas Permutas Simples acumulam dívida)</div>
-              {militares.filter(m => saldoReal(m.id) !== 0).map(m => {
-                const s = saldoReal(m.id);
-                return <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0', borderBottom: `1px solid ${C.borda}`, fontSize: '0.9rem' }}>
-                  <span>{m.posto} {m.nome}</span>
-                  <span style={{ fontFamily: 'monospace', fontWeight: 700, color: s > 0 ? '#7dbd72' : '#e07070' }}>{s > 0 ? `+${s} a receber` : `${s} a devolver`}</span>
-                </div>;
-              })}
-              {militares.filter(m => saldoReal(m.id) !== 0).length === 0 && <div style={{ color: C.cinza, fontStyle: 'italic', fontSize: '0.9rem' }}>Todos os saldos zerados ✅</div>}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.8rem', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.1rem', letterSpacing: 2, color: C.ouro }}>💳 Saldo Permutas Simples (Apenas Permutas Simples acumulam dívida)</div>
+                <select value={mesSaldoSel} onChange={e => setMesSaldoSel(e.target.value)}
+                  style={{ background: 'rgba(0,0,0,.3)', border: `1px solid ${C.borda}`, borderRadius: 6, color: C.ouro, fontFamily: 'monospace', fontSize: '0.75rem', padding: '0.3rem 0.5rem', outline: 'none' }}>
+                  {Array.from(new Set([mesRef, ...mesesComSaldo])).map(m => (
+                    <option key={m} value={m} style={{ background: '#2c3e50', color: '#fff' }}>{fmtMes(m)}</option>
+                  ))}
+                </select>
+              </div>
+
+              {(() => {
+                const militarSaldoList = militares.filter(m => saldoRealNoMes(m.id, mesSaldoSel) !== 0);
+                if (militarSaldoList.length === 0) {
+                  return <div style={{ color: C.cinza, fontStyle: 'italic', fontSize: '0.9rem' }}>Todos os saldos zerados em {fmtMes(mesSaldoSel)} ✅</div>;
+                }
+                return militarSaldoList.map(m => {
+                  const s = saldoRealNoMes(m.id, mesSaldoSel);
+                  return (
+                    <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0', borderBottom: `1px solid ${C.borda}`, fontSize: '0.9rem' }}>
+                      <span>{m.posto} {m.nome}</span>
+                      <span style={{ fontFamily: 'monospace', fontWeight: 700, color: s > 0 ? '#7dbd72' : '#e07070' }}>
+                        {s > 0 ? `+${s} a receber` : `${s} a devolver`}
+                      </span>
+                    </div>
+                  );
+                });
+              })()}
             </div>
           </>
         )}
@@ -301,7 +341,7 @@ export default function PainelAdmin() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.3rem' }}>
                     <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                       <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 7px', fontSize: '0.65rem', fontFamily: 'monospace', fontWeight: 700 }}>{p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}</span>
-                      {badgeStatus(p.status)}
+                      {badgeStatus(p)}
                     </div>
                     <span style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: C.ouro, fontWeight: 600 }}>
                       {p.tipo === 'real' ? `${fmtData(p.data)} ⇆ ${fmtData(p.dataRetorno)}` : fmtData(p.data)}
@@ -331,7 +371,7 @@ export default function PainelAdmin() {
                 <div style={{ flex: 1, minWidth: 200 }}>
                   <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.2rem', flexWrap: 'wrap' }}>
                     <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 6px', fontSize: '0.62rem', fontFamily: 'monospace', fontWeight: 700 }}>{p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}</span>
-                    {badgeStatus(p.status)}
+                    {badgeStatus(p)}
                     <span style={{ fontFamily: 'monospace', fontSize: '0.72rem', color: C.ouro, fontWeight: 600 }}>
                       {p.tipo === 'real' ? `${fmtData(p.data)} ⇆ ${fmtData(p.dataRetorno)}` : fmtData(p.data)}
                     </span>
@@ -344,6 +384,7 @@ export default function PainelAdmin() {
                     <button onClick={() => { setPermutaSel(p); setModal('rejeitar'); setMotivo(''); }} style={{ background: C.vermelhoPale, color: '#e07070', border: `1px solid ${C.vermelho}40`, borderRadius: 5, padding: '0.3rem 0.6rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.62rem', fontWeight: 700, transition: 'all 0.2s' }}>❌</button>
                   </>}
                   {p.status === 'aprovada' && p.tipo === 'real' && <button onClick={() => { setPermutaSel(p); setModal('quitar'); setMotivo(''); }} style={{ background: 'rgba(122,138,106,.15)', color: C.cinza, border: `1px solid ${C.cinza}40`, borderRadius: 5, padding: '0.3rem 0.6rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.62rem', fontWeight: 700, transition: 'all 0.2s' }}>🏁 Quitar</button>}
+                  {(p.status === 'aprovada' || p.status === 'quitada') && <button onClick={() => { setPermutaSel(p); setModal('cancelar'); setMotivo(''); }} style={{ background: C.vermelhoPale, color: '#f0a050', border: `1px solid ${C.vermelho}40`, borderRadius: 5, padding: '0.3rem 0.6rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.62rem', fontWeight: 700, transition: 'all 0.2s' }}>🚫 Cancelar</button>}
                 </div>
               </div>
             ))}
@@ -480,6 +521,27 @@ export default function PainelAdmin() {
             <div style={{ display: 'flex', gap: '0.6rem' }}>
               <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>CANCELAR</button>
               <button onClick={handleQuitar} style={{ flex: 2, background: C.verdePale, color: '#7dbd72', border: `1px solid ${C.verde}40`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.72rem' }}>🏁 QUITAR</button>
+            </div>
+          </ModalBg>
+        )
+      }
+
+      {
+        modal === 'cancelar' && permutaSel && (
+          <ModalBg onClose={() => setModal(null)}>
+            <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: '#e07070', marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>🚫 Cancelar Permuta</div>
+            <div style={{ background: 'rgba(0,0,0,.2)', borderRadius: 8, borderLeft: `3px solid ${C.vermelho}`, padding: '0.7rem', marginBottom: '1rem', fontSize: '0.9rem', color: C.cinza }}>
+              <strong>{nomeMil(permutaSel.solicitanteId)}</strong> → <strong>{nomeMil(permutaSel.receptorId)}</strong><br />
+              <div style={{ marginTop: 4, color: C.ouro, fontWeight: 600 }}>
+                {permutaSel.tipo === 'real' ? `${fmtData(permutaSel.data)} ⇆ ${fmtData(permutaSel.dataRetorno)}` : fmtData(permutaSel.data)} · {permutaSel.tipoSv} · {permutaSel.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla'}
+              </div>
+            </div>
+            <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.6rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Motivo do Cancelamento</label>
+            <textarea value={motivo} onChange={e => setMotivo(e.target.value)} placeholder="Informe o motivo do cancelamento..."
+              style={{ width: '100%', background: 'rgba(0,0,0,.35)', border: `1px solid ${C.borda}`, borderRadius: 8, color: C.creme, fontFamily: 'monospace', fontSize: '0.9rem', padding: '0.65rem', minHeight: 70, resize: 'vertical', boxSizing: 'border-box', marginBottom: '1rem', outline: 'none' }} />
+            <div style={{ display: 'flex', gap: '0.6rem' }}>
+              <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>CANCELAR</button>
+              <button onClick={handleCancelar} style={{ flex: 2, background: C.vermelhoPale, color: '#e07070', border: `1px solid ${C.vermelho}40`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.72rem' }}>🚫 CONFIRMAR CANCELAMENTO</button>
             </div>
           </ModalBg>
         )

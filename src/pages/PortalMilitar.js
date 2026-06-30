@@ -254,12 +254,14 @@ export default function PortalMilitar() {
   const abaData = { minhas, pendentes: pendConf, historico };
   const lista = abaData[aba] || [];
 
-  function badgeStatus(s) {
+  function badgeStatus(p) {
+    const s = p.status;
+    const isCancelada = s === 'rejeitada' && (p.aprovadoEm || p.quitadoEm);
     const map = {
       aguardando_confirmacao: ['⏳', '#f0a050', C.laranjaPale, 'Ag. Confirmação'],
       aguardando_aprovacao: ['🔍', C.ouroClaro, C.ouroPale, 'Ag. Aprovação'],
       aprovada: ['✅', '#7dbd72', C.verdePale, 'Aprovada'],
-      rejeitada: ['❌', '#e07070', C.vermelhoPale, 'Rejeitada'],
+      rejeitada: isCancelada ? ['🚫', '#e74c3c', '#f0a050', 'Cancelada'] : ['❌', '#e07070', C.vermelhoPale, 'Rejeitada'],
       quitada: ['🏁', C.cinza, 'rgba(122,138,106,0.15)', 'Quitada'],
     };
     const [ico, cor, bg, txt] = map[s] || ['?', C.cinza, 'transparent', s];
@@ -338,7 +340,7 @@ export default function PortalMilitar() {
                 <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 7px', fontSize: '0.65rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, marginRight: 6 }}>
                   {p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}
                 </span>
-                {badgeStatus(p.status)}
+                {badgeStatus(p)}
               </div>
               <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '0.75rem', color: C.ouro, fontWeight: 600 }}>
                 {p.tipo === 'real' ? `${fmtData(p.data)} ⇆ ${fmtData(p.dataRetorno)}` : fmtData(p.data)}
