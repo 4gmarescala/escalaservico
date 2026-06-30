@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { getMilitares, getPermutas, aprovarPermuta, rejeitarPermuta, quitarPermuta, addMilitar, getConfigMes, setSvsMes, createUsuario, updateMilitar } from '../services/firestore';
 import { supabase } from '../supabase';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
 
 const C = {
   fundo: '#ffffff', // Vermelho fogo principal CBMERJ
@@ -43,6 +46,17 @@ function fmtMes(ym) {
   const ms = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
   return `${ms[parseInt(m) - 1]}/${y}`;
 }
+function fmtDateTime(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    const dateStr = d.toLocaleDateString('pt-BR');
+    const timeStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    return `${dateStr} ${timeStr}`;
+  } catch (e) {
+    return iso;
+  }
+}
 
 export default function PainelAdmin() {
   const { perfil, logout } = useAuth();
@@ -59,6 +73,9 @@ export default function PainelAdmin() {
   const [toast, setToast] = useState('');
   const [formMil, setFormMil] = useState({ posto: '', nome: '', rg: '', regime: '12h', secao: '', senha: '' });
   const [busca, setBusca] = useState('');
+  const [buscaRel, setBuscaRel] = useState('');
+  const [sortField, setSortField] = useState('data');
+  const [sortAsc, setSortAsc] = useState(true);
   const [militarSel, setMilitarSel] = useState(null);
   const [formEdit, setFormEdit] = useState({ posto: '', nome: '', rg: '', regime: '12h', secao: '', ativo: true, senha: '' });
 
@@ -97,7 +114,7 @@ export default function PainelAdmin() {
 
   function nomeMil(id) {
     const m = militares.find(x => x.id === id);
-    return m ? `${m.posto} ${m.nome}` : id || '—';
+    return m ? `${m.rg} ${m.posto} ${m.nome}` : id || '—';
   }
 
   function svsMilMes(milId) {
@@ -212,6 +229,160 @@ export default function PainelAdmin() {
     militares.some(m => saldoRealNoMes(m.id, mes) !== 0)
   );
 
+  function handleSort(field) {
+    if (sortField === field) {
+      setSortAsc(!sortAsc);
+    } else {
+      setSortField(field);
+      setSortAsc(true);
+    }
+  }
+
+  const sortedPermutas = [...permutas].sort((a, b) => {
+    let valA = '';
+    let valB = '';
+
+    if (sortField === 'data') {
+      valA = a.data || '';
+      valB = b.data || '';
+    } else if (sortField === 'nome') {
+      valA = nomeMil(a.solicitanteId).toLowerCase();
+      valB = nomeMil(b.solicitanteId).toLowerCase();
+    } else if (sortField === 'receptor') {
+      valA = nomeMil(a.receptorId).toLowerCase();
+      valB = nomeMil(b.receptorId).toLowerCase();
+    } else if (sortField === 'criadoEm') {
+      valA = a.criadoEm || '';
+      valB = b.criadoEm || '';
+    } else if (sortField === 'tipo') {
+      valA = a.tipo || '';
+      valB = b.tipo || '';
+    } else if (sortField === 'status') {
+      valA = a.status || '';
+      valB = b.status || '';
+    }
+
+    if (valA < valB) return sortAsc ? -1 : 1;
+    if (valA > valB) return sortAsc ? 1 : -1;
+    return 0;
+  });
+
+  const relFiltrado = sortedPermutas.filter(p =>
+    nomeMil(p.solicitanteId).toLowerCase().includes(buscaRel.toLowerCase()) ||
+    nomeMil(p.receptorId).toLowerCase().includes(buscaRel.toLowerCase())
+  );
+
+  function handleExportarCSV() {
+    const headers = [
+      'Data de Servico',
+      'Data de Retorno',
+      'Solicitante',
+      'Receptor',
+      'Data de Solicitacao',
+      'Tipo de Permuta',
+      'Status',
+      'Motivo Rejeicao',
+      'Observacao'
+    ];
+
+    const rows = relFiltrado.map(p => [
+      p.data,
+      p.dataRetorno || '—',
+      nomeMil(p.solicitanteId),
+      nomeMil(p.receptorId),
+      p.criadoEm ? fmtDateTime(p.criadoEm) : '—',
+      p.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla',
+      p.status,
+      p.motivoRejeicao || '—',
+      p.obs || '—'
+    ]);
+
+    const csvContent = [
+      headers.join(';'),
+      ...rows.map(r => r.map(val => `"${val.replace(/"/g, '""')}"`).join(';'))
+    ].join('\n');
+
+    const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `relatorio_permutas_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  function handleExportarXLSX() {
+    const dataToExport = relFiltrado.map(p => ({
+      'Data do Serviço': p.data,
+      'Data de Retorno': p.dataRetorno || '—',
+      'Solicitante': nomeMil(p.solicitanteId),
+      'Receptor': nomeMil(p.receptorId),
+      'Data da Solicitação': p.criadoEm ? fmtDateTime(p.criadoEm) : '—',
+      'Tipo de Permuta': p.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla',
+      'Status': p.status,
+      'Motivo Rejeição / Observações': p.motivoRejeicao || p.obs || '—'
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Permutas');
+
+    const maxLens = {};
+    dataToExport.forEach(row => {
+      Object.keys(row).forEach(key => {
+        const val = String(row[key] || '');
+        maxLens[key] = Math.max(maxLens[key] || 10, val.length);
+      });
+    });
+    worksheet['!cols'] = Object.keys(maxLens).map(key => ({ wch: maxLens[key] + 3 }));
+
+    XLSX.writeFile(workbook, `relatorio_permutas_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  }
+
+  function handleExportarPDF() {
+    const doc = new jsPDF({ orientation: 'landscape' });
+    doc.setFont('Helvetica', 'bold');
+    doc.text('CBMERJ · 4º GMar · Relatório de Permutas', 14, 15);
+    doc.setFont('Helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 20);
+
+    const tableHeaders = [
+      ['Data Sv', 'Retorno', 'Solicitante', 'Receptor', 'Solicitado Em', 'Tipo', 'Status']
+    ];
+
+    const tableData = relFiltrado.map(p => [
+      fmtData(p.data),
+      p.dataRetorno ? fmtData(p.dataRetorno) : '—',
+      nomeMil(p.solicitanteId),
+      nomeMil(p.receptorId),
+      p.criadoEm ? fmtDateTime(p.criadoEm) : '—',
+      p.tipo === 'paga' ? 'Simples' : 'Dupla',
+      p.status
+    ]);
+
+    autoTable(doc, {
+      head: tableHeaders,
+      body: tableData,
+      startY: 25,
+      theme: 'grid',
+      headStyles: { fillColor: [143, 0, 0] },
+      styles: { fontSize: 8, font: 'Helvetica' },
+      columnStyles: {
+        0: { cellWidth: 22 },
+        1: { cellWidth: 22 },
+        2: { cellWidth: 70 },
+        3: { cellWidth: 70 },
+        4: { cellWidth: 35 },
+        5: { cellWidth: 25 },
+        6: { cellWidth: 30 }
+      }
+    });
+
+    doc.save(`relatorio_permutas_${new Date().toISOString().slice(0, 10)}.pdf`);
+  }
+
   function badgeStatus(p) {
     const s = p.status;
     const isCancelada = s === 'rejeitada' && (p.aprovadoEm || p.quitadoEm);
@@ -247,7 +418,7 @@ export default function PainelAdmin() {
 
       {/* NAV */}
       <div style={{ background: C.fundo2, borderBottom: `1px solid ${C.borda}`, padding: '0 1rem', display: 'flex', gap: 0, overflowX: 'auto' }}>
-        {[['dashboard', '📊 Painel'], ['aprovar', '🔍 Aprovar' + (pendAprov.length > 0 ? ` (${pendAprov.length})` : '')], ['permutas', '📋 Permutas'], ['militares', '👤 Militares'], ['limites', '⚠️ Limites']].map(([k, v]) => (
+        {[['dashboard', '📊 Painel'], ['aprovar', '🔍 Aprovar' + (pendAprov.length > 0 ? ` (${pendAprov.length})` : '')], ['permutas', '📋 Permutas'], ['militares', '👤 Militares'], ['limites', '⚠️ Limites'], ['relatorio', '📈 Relatório']].map(([k, v]) => (
           <button key={k} onClick={() => setAba(k)} style={{ background: 'transparent', border: 'none', borderBottom: aba === k ? `2px solid ${C.vermelho}` : '2px solid transparent', color: aba === k ? C.vermelhoClaro : C.cinza, padding: '0.8rem 1rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.68rem', fontWeight: aba === k ? 700 : 400, letterSpacing: 1, whiteSpace: 'nowrap', marginBottom: -1, transition: 'all 0.2s' }}>
             {v}
           </button>
@@ -318,7 +489,7 @@ export default function PainelAdmin() {
                   const s = saldoRealNoMes(m.id, mesSaldoSel);
                   return (
                     <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0', borderBottom: `1px solid ${C.borda}`, fontSize: '0.9rem' }}>
-                      <span>{m.posto} {m.nome}</span>
+                      <span>RG {m.rg} {m.posto} {m.nome}</span>
                       <span style={{ fontFamily: 'monospace', fontWeight: 700, color: s > 0 ? '#7dbd72' : '#e07070' }}>
                         {s > 0 ? `+${s} a receber` : `${s} a devolver`}
                       </span>
@@ -425,8 +596,7 @@ export default function PainelAdmin() {
               {militares.map(m => (
                 <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.6rem 0', borderBottom: `1px solid ${C.borda}`, flexWrap: 'wrap', gap: '0.3rem' }}>
                   <div>
-                    <span style={{ fontWeight: 600, fontSize: '0.95rem', color: C.creme }}>{m.posto} {m.nome}</span>
-                    <span style={{ fontFamily: 'monospace', fontSize: '0.72rem', color: C.cinza, marginLeft: '0.5rem' }}>RG {m.rg}</span>
+                    <span style={{ fontWeight: 600, fontSize: '0.95rem', color: C.creme }}>RG {m.rg} {m.posto} {m.nome}</span>
                     {m.ativo === false ? (
                       <span style={{ background: 'rgba(224,112,112,0.15)', color: '#e07070', borderRadius: 3, padding: '1px 5px', fontFamily: 'monospace', fontSize: '0.65rem', marginLeft: '0.5rem', fontWeight: 700 }}>🔴 INATIVO</span>
                     ) : (
@@ -457,7 +627,7 @@ export default function PainelAdmin() {
               const cor = pct >= 100 ? '#e07070' : pct >= 75 ? '#f0a050' : '#7dbd72';
               return <div key={m.id} style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', padding: '0.7rem 0', borderBottom: `1px solid ${C.borda}`, flexWrap: 'wrap' }}>
                 <div style={{ flex: 1, minWidth: 180 }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.9rem', color: C.creme }}>{m.posto} {m.nome}</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.9rem', color: C.creme }}>RG {m.rg} {m.posto} {m.nome}</div>
                   <div style={{ fontSize: '0.75rem', color: C.cinza, fontFamily: 'monospace' }}>{m.regime} · {pag}/{lim} pagos</div>
                   <div style={{ height: 4, background: 'rgba(255,255,255,.1)', borderRadius: 2, width: 100, marginTop: 4, overflow: 'hidden' }}><div style={{ height: '100%', background: cor, width: `${pct}%`, borderRadius: 2 }} /></div>
                 </div>
@@ -469,6 +639,83 @@ export default function PainelAdmin() {
                 </div>
               </div>;
             })}
+          </div>
+        )}
+
+        {/* ── RELATÓRIO ── */}
+        {aba === 'relatorio' && (
+          <div style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderRadius: 10, padding: '1rem 1.2rem', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.8rem' }}>
+              <div>
+                <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.2rem', letterSpacing: 2, color: C.ouro }}>📈 Relatório de Permutas</div>
+                <div style={{ fontSize: '0.75rem', color: C.cinza }}>Consulte, ordene e exporte o histórico de todas as permutas.</div>
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <button onClick={handleExportarCSV} style={{ background: 'rgba(52, 152, 219, 0.15)', color: '#3498db', border: '1px solid rgba(52, 152, 219, 0.4)', borderRadius: 6, padding: '0.4rem 0.8rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.68rem', fontWeight: 700, transition: 'all 0.2s' }}>
+                  📥 EXPORTAR CSV
+                </button>
+                <button onClick={handleExportarXLSX} style={{ background: 'rgba(46, 204, 113, 0.15)', color: '#2ecc71', border: '1px solid rgba(46, 204, 113, 0.4)', borderRadius: 6, padding: '0.4rem 0.8rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.68rem', fontWeight: 700, transition: 'all 0.2s' }}>
+                  📥 EXPORTAR XLSX
+                </button>
+                <button onClick={handleExportarPDF} style={{ background: 'rgba(231, 76, 60, 0.15)', color: '#e74c3c', border: '1px solid rgba(231, 76, 60, 0.4)', borderRadius: 6, padding: '0.4rem 0.8rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.68rem', fontWeight: 700, transition: 'all 0.2s' }}>
+                  📥 EXPORTAR PDF
+                </button>
+              </div>
+            </div>
+
+            <input type="text" placeholder="🔍 Buscar por nome ou RG..." value={buscaRel} onChange={e => setBuscaRel(e.target.value)}
+              style={{ width: '100%', background: 'rgba(0,0,0,.3)', border: `1px solid ${C.borda}`, borderRadius: 8, color: C.creme, fontFamily: 'monospace', fontSize: '0.9rem', padding: '0.6rem 0.9rem', marginBottom: '1rem', boxSizing: 'border-box', outline: 'none' }} />
+
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', fontFamily: 'monospace', color: C.creme }}>
+                <thead>
+                  <tr style={{ borderBottom: `2px solid ${C.borda}`, textAlign: 'left' }}>
+                    {[
+                      ['data', 'Data Sv'],
+                      ['nome', 'Solicitante'],
+                      ['receptor', 'Receptor'],
+                      ['criadoEm', 'Solicitado Em'],
+                      ['tipo', 'Tipo'],
+                      ['status', 'Status']
+                    ].map(([field, label]) => {
+                      const isSorted = sortField === field;
+                      return (
+                        <th key={field} onClick={() => handleSort(field)} style={{ padding: '0.7rem 0.5rem', cursor: 'pointer', userSelect: 'none', color: isSorted ? C.ouro : C.cinza }}>
+                          {label} {isSorted ? (sortAsc ? '▲' : '▼') : ''}
+                        </th>
+                      );
+                    })}
+                  </tr>
+                </thead>
+                <tbody>
+                  {relFiltrado.map(p => (
+                    <tr key={p.id} style={{ borderBottom: `1px solid ${C.borda}` }}>
+                      <td style={{ padding: '0.6rem 0.5rem' }}>
+                        {p.tipo === 'real' ? `${fmtData(p.data)} a ${fmtData(p.dataRetorno)}` : fmtData(p.data)}
+                      </td>
+                      <td style={{ padding: '0.6rem 0.5rem', fontWeight: 600 }}>{nomeMil(p.solicitanteId)}</td>
+                      <td style={{ padding: '0.6rem 0.5rem', fontWeight: 600 }}>{nomeMil(p.receptorId)}</td>
+                      <td style={{ padding: '0.6rem 0.5rem' }}>{fmtDateTime(p.criadoEm)}</td>
+                      <td style={{ padding: '0.6rem 0.5rem' }}>
+                        <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 5px', fontSize: '0.6rem', fontWeight: 700 }}>
+                          {p.tipo === 'paga' ? 'SIMPLES' : 'DUPLA'}
+                        </span>
+                      </td>
+                      <td style={{ padding: '0.6rem 0.5rem' }}>
+                        {badgeStatus(p)}
+                      </td>
+                    </tr>
+                  ))}
+                  {relFiltrado.length === 0 && (
+                    <tr>
+                      <td colSpan="6" style={{ padding: '2rem', textAlign: 'center', color: C.cinza }}>
+                        Nenhuma permuta encontrada.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
