@@ -1,7 +1,7 @@
 // src/pages/PainelAdmin.js
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { getMilitares, getPermutas, aprovarPermuta, rejeitarPermuta, quitarPermuta, addMilitar, getConfigMes, setSvsMes, createUsuario, updateMilitar } from '../services/firestore';
+import { getMilitares, getPermutas, aprovarPermuta, rejeitarPermuta, quitarPermuta, addMilitar, getConfigMes, setSvsMes, createUsuario, updateMilitar, criarPermutaDiretaAdmin } from '../services/firestore';
 import { supabase } from '../supabase';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -71,7 +71,9 @@ export default function PainelAdmin() {
   const [permutaSel, setPermutaSel] = useState(null);
   const [motivo, setMotivo] = useState('');
   const [toast, setToast] = useState('');
+  const [erro, setErro] = useState('');
   const [formMil, setFormMil] = useState({ posto: '', nome: '', rg: '', regime: '12h', secao: '', senha: '' });
+  const [formPermutaAdmin, setFormPermutaAdmin] = useState({ tipo: 'real', solicitanteId: '', receptorId: '', data: '', dataRetorno: '', tipoSv: '12h', obs: '' });
   const [busca, setBusca] = useState('');
   const [buscaRel, setBuscaRel] = useState('');
   const [sortField, setSortField] = useState('data');
@@ -166,6 +168,47 @@ export default function PainelAdmin() {
     await rejeitarPermuta(permutaSel.id, motivo, 'admin');
     showToast('🚫 Permuta cancelada!');
     setModal(null); setMotivo(''); carregar();
+  }
+
+  async function handleCriarPermutaAdmin(e) {
+    e.preventDefault();
+    setErro('');
+    if (!formPermutaAdmin.solicitanteId || !formPermutaAdmin.receptorId || !formPermutaAdmin.data) {
+      setErro('⚠️ Preencha todos os campos obrigatórios.');
+      return;
+    }
+    if (formPermutaAdmin.solicitanteId === formPermutaAdmin.receptorId) {
+      setErro('⚠️ O solicitante e o receptor não podem ser a mesma pessoa.');
+      return;
+    }
+    if (formPermutaAdmin.tipo === 'real' && !formPermutaAdmin.dataRetorno) {
+      setErro('⚠️ Informe a data de retorno.');
+      return;
+    }
+    try {
+      const sol = militares.find(m => m.id === formPermutaAdmin.solicitanteId);
+      const rec = militares.find(m => m.id === formPermutaAdmin.receptorId);
+      
+      await criarPermutaDiretaAdmin({
+        tipo: formPermutaAdmin.tipo,
+        solicitanteId: formPermutaAdmin.solicitanteId,
+        solicitanteNome: `${sol.posto} ${sol.nome}`,
+        receptorId: formPermutaAdmin.receptorId,
+        receptorNome: `${rec.posto} ${rec.nome}`,
+        data: formPermutaAdmin.data,
+        dataRetorno: formPermutaAdmin.tipo === 'real' ? formPermutaAdmin.dataRetorno : null,
+        tipoSv: formPermutaAdmin.tipoSv,
+        obs: formPermutaAdmin.obs,
+        mes: formPermutaAdmin.data.slice(0, 7),
+        adminNome: perfil?.nome || 'Administrador',
+      });
+      showToast('✅ Permuta criada de maneira direta!');
+      setModal(null);
+      setFormPermutaAdmin({ tipo: 'real', solicitanteId: '', receptorId: '', data: '', dataRetorno: '', tipoSv: '12h', obs: '' });
+      carregar();
+    } catch (err) {
+      setErro('Erro ao criar permuta: ' + err.message);
+    }
   }
 
   async function handleAddMilitar(e) {
@@ -321,7 +364,8 @@ export default function PainelAdmin() {
       'Data da Solicitação': p.criadoEm ? fmtDateTime(p.criadoEm) : '—',
       'Tipo de Permuta': p.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla',
       'Status': p.status,
-      'Motivo Rejeição / Observações': p.motivoRejeicao || p.obs || '—'
+      'Motivo Rejeição': p.motivoRejeicao || '—',
+      'Observação': p.obs || '—'
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(dataToExport);
@@ -349,7 +393,7 @@ export default function PainelAdmin() {
     doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 20);
 
     const tableHeaders = [
-      ['Data Sv', 'Retorno', 'Solicitante', 'Receptor', 'Solicitado Em', 'Tipo', 'Status']
+      ['Data Sv', 'Retorno', 'Solicitante', 'Receptor', 'Solicitado Em', 'Tipo', 'Status', 'Observação']
     ];
 
     const tableData = relFiltrado.map(p => [
@@ -359,7 +403,8 @@ export default function PainelAdmin() {
       nomeMil(p.receptorId),
       p.criadoEm ? fmtDateTime(p.criadoEm) : '—',
       p.tipo === 'paga' ? 'Simples' : 'Dupla',
-      p.status
+      p.status,
+      p.obs || '—'
     ]);
 
     autoTable(doc, {
@@ -370,13 +415,14 @@ export default function PainelAdmin() {
       headStyles: { fillColor: [143, 0, 0] },
       styles: { fontSize: 8, font: 'Helvetica' },
       columnStyles: {
-        0: { cellWidth: 22 },
-        1: { cellWidth: 22 },
-        2: { cellWidth: 70 },
-        3: { cellWidth: 70 },
-        4: { cellWidth: 35 },
-        5: { cellWidth: 25 },
-        6: { cellWidth: 30 }
+        0: { cellWidth: 20 },
+        1: { cellWidth: 20 },
+        2: { cellWidth: 50 },
+        3: { cellWidth: 50 },
+        4: { cellWidth: 30 },
+        5: { cellWidth: 20 },
+        6: { cellWidth: 25 },
+        7: { cellWidth: 50 }
       }
     });
 
@@ -534,7 +580,13 @@ export default function PainelAdmin() {
         {/* ── PERMUTAS ── */}
         {aba === 'permutas' && (
           <div style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderRadius: 10, padding: '1rem 1.2rem', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
-            <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.2rem', letterSpacing: 2, color: C.ouro, marginBottom: '1rem' }}>📋 Todas as Permutas</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.2rem', letterSpacing: 2, color: C.ouro }}>📋 Todas as Permutas</div>
+              <button onClick={() => { setModal('criar_permuta_admin'); setErro(''); setFormPermutaAdmin({ tipo: 'real', solicitanteId: '', receptorId: '', data: '', dataRetorno: '', tipoSv: '12h', obs: '' }); }}
+                style={{ background: C.verde, color: '#ffffff', border: 'none', borderRadius: 6, padding: '0.5rem 1rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.72rem', fontWeight: 700, transition: 'all 0.2s' }}>
+                ➕ LANÇAR PERMUTA DIRETA
+              </button>
+            </div>
             <input type="text" placeholder="🔍  Buscar por nome..." value={busca} onChange={e => setBusca(e.target.value)}
               style={{ width: '100%', background: 'rgba(0,0,0,.3)', border: `1px solid ${C.borda}`, borderRadius: 8, color: C.creme, fontFamily: 'monospace', fontSize: '0.9rem', padding: '0.6rem 0.9rem', marginBottom: '1rem', boxSizing: 'border-box', outline: 'none' }} />
             {permFiltradas.map(p => (
@@ -676,7 +728,8 @@ export default function PainelAdmin() {
                       ['receptor', 'Receptor'],
                       ['criadoEm', 'Solicitado Em'],
                       ['tipo', 'Tipo'],
-                      ['status', 'Status']
+                      ['status', 'Status'],
+                      ['obs', 'Observação']
                     ].map(([field, label]) => {
                       const isSorted = sortField === field;
                       return (
@@ -704,11 +757,14 @@ export default function PainelAdmin() {
                       <td style={{ padding: '0.6rem 0.5rem' }}>
                         {badgeStatus(p)}
                       </td>
+                      <td style={{ padding: '0.6rem 0.5rem', fontStyle: 'italic', maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={p.obs || ''}>
+                        {p.obs || '—'}
+                      </td>
                     </tr>
                   ))}
                   {relFiltrado.length === 0 && (
                     <tr>
-                      <td colSpan="6" style={{ padding: '2rem', textAlign: 'center', color: C.cinza }}>
+                      <td colSpan="7" style={{ padding: '2rem', textAlign: 'center', color: C.cinza }}>
                         Nenhuma permuta encontrada.
                       </td>
                     </tr>
@@ -783,13 +839,79 @@ export default function PainelAdmin() {
                 {permutaSel.tipo === 'real' ? `${fmtData(permutaSel.data)} ⇆ ${fmtData(permutaSel.dataRetorno)}` : fmtData(permutaSel.data)} · {permutaSel.tipoSv} · {permutaSel.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla'}
               </div>
             </div>
-            <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.6rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Motivo do Cancelamento</label>
-            <textarea value={motivo} onChange={e => setMotivo(e.target.value)} placeholder="Informe o motivo do cancelamento..."
-              style={{ width: '100%', background: 'rgba(0,0,0,.35)', border: `1px solid ${C.borda}`, borderRadius: 8, color: C.creme, fontFamily: 'monospace', fontSize: '0.9rem', padding: '0.65rem', minHeight: 70, resize: 'vertical', boxSizing: 'border-box', marginBottom: '1rem', outline: 'none' }} />
-            <div style={{ display: 'flex', gap: '0.6rem' }}>
+              <div style={{ display: 'flex', gap: '0.6rem' }}>
               <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>CANCELAR</button>
               <button onClick={handleCancelar} style={{ flex: 2, background: C.vermelhoPale, color: '#e07070', border: `1px solid ${C.vermelho}40`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.72rem' }}>🚫 CONFIRMAR CANCELAMENTO</button>
             </div>
+          </ModalBg>
+        )
+      }
+
+      {
+        modal === 'criar_permuta_admin' && (
+          <ModalBg onClose={() => setModal(null)}>
+            <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>➕ Lançar Permuta Direta (Admin)</div>
+            
+            <div style={{ display: 'flex', gap: 4, marginBottom: '1rem', background: 'rgba(0,0,0,0.3)', borderRadius: 8, padding: 3 }}>
+              {[['real', '🤝 Permuta Dupla'], ['paga', 'Permuta Simples']].map(([v, l]) => (
+                <button key={v} type="button" onClick={() => setFormPermutaAdmin(f => ({ ...f, tipo: v }))}
+                  style={{ flex: 1, background: formPermutaAdmin.tipo === v ? (v === 'paga' ? C.laranjaPale : C.ouroPale) : 'transparent', color: formPermutaAdmin.tipo === v ? (v === 'paga' ? '#f0a050' : C.ouro) : C.cinza, border: 'none', borderRadius: 5, padding: '0.5rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.65rem', fontWeight: 700, transition: 'all 0.2s' }}>
+                  {l}
+                </button>
+              ))}
+            </div>
+
+            <form onSubmit={handleCriarPermutaAdmin}>
+              <div style={{ marginBottom: '0.8rem' }}>
+                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Militar Solicitante (Sai do serviço)</label>
+                <select required value={formPermutaAdmin.solicitanteId} onChange={e => setFormPermutaAdmin(f => ({ ...f, solicitanteId: e.target.value }))} style={controlStyle}>
+                  <option value="">Selecione...</option>
+                  {militares.filter(m => m.ativo !== false).map(m => <option key={m.id} value={m.id}>{m.posto} {m.nome} ({m.regime})</option>)}
+                </select>
+              </div>
+
+              <div style={{ marginBottom: '0.8rem' }}>
+                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Militar Receptor (Entra no serviço)</label>
+                <select required value={formPermutaAdmin.receptorId} onChange={e => setFormPermutaAdmin(f => ({ ...f, receptorId: e.target.value }))} style={controlStyle}>
+                  <option value="">Selecione...</option>
+                  {militares.filter(m => m.ativo !== false && m.id !== formPermutaAdmin.solicitanteId).map(m => <option key={m.id} value={m.id}>{m.posto} {m.nome} ({m.regime})</option>)}
+                </select>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '0.8rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Data do Serviço</label>
+                  <input type="date" required value={formPermutaAdmin.data} onChange={e => setFormPermutaAdmin(f => ({ ...f, data: e.target.value }))} style={controlStyle} />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Tipo do Sv</label>
+                  <select value={formPermutaAdmin.tipoSv} onChange={e => setFormPermutaAdmin(f => ({ ...f, tipoSv: e.target.value }))} style={controlStyle}>
+                    <option value="12h">Serviço 12h</option>
+                    <option value="24h">Serviço 24h</option>
+                    <option value="complementar">Serviço Complementar</option>
+                  </select>
+                </div>
+              </div>
+
+              {formPermutaAdmin.tipo === 'real' && (
+                <div style={{ marginBottom: '0.8rem' }}>
+                  <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Data de Retorno</label>
+                  <input type="date" required value={formPermutaAdmin.dataRetorno} onChange={e => setFormPermutaAdmin(f => ({ ...f, dataRetorno: e.target.value }))} style={controlStyle} />
+                </div>
+              )}
+
+              <div style={{ marginBottom: '0.8rem' }}>
+                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.58rem', letterSpacing: 2, color: C.ouro, marginBottom: '0.3rem', textTransform: 'uppercase' }}>Observação (opcional)</label>
+                <textarea value={formPermutaAdmin.obs} onChange={e => setFormPermutaAdmin(f => ({ ...f, obs: e.target.value }))} style={{ ...controlStyle, height: 'auto', minHeight: 60, padding: '0.5rem 0.8rem' }} placeholder="Detalhes, ala..." />
+              </div>
+
+              {erro && <div style={{ background: C.vermelhoPale, border: `1px solid ${C.vermelho}40`, borderRadius: 6, color: '#e07070', fontSize: '0.85rem', padding: '0.6rem', marginBottom: '0.8rem' }}>{erro}</div>}
+
+              <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1rem' }}>
+                <button type="button" onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>CANCELAR</button>
+                <button type="submit" style={{ flex: 2, background: C.verde, color: '#ffffff', border: 'none', borderRadius: 8, padding: '0.7rem', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.72rem' }}>✚ LANÇAR PERMUTA</button>
+              </div>
+            </form>
           </ModalBg>
         )
       }

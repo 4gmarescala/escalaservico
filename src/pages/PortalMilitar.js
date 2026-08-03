@@ -87,6 +87,20 @@ export default function PortalMilitar() {
     return diffH >= 72;
   }
 
+  function obterPrimeiroServico(p) {
+    if (p.tipo === 'real' && p.dataRetorno) {
+      return p.data < p.dataRetorno ? p.data : p.dataRetorno;
+    }
+    return p.data;
+  }
+
+  function podeCancelar(p) {
+    if (p.status === 'rejeitada' || p.status === 'quitada') return false;
+    if (p.solicitanteId !== milId && p.receptorId !== milId) return false;
+    const primeiro = obterPrimeiroServico(p);
+    return verificar72h(primeiro);
+  }
+
   function calcularSaldoDia(militarId, dataVerificar, permutaIdExcluir = null) {
     if (!dataVerificar) return 1;
 
@@ -203,6 +217,15 @@ export default function PortalMilitar() {
     } catch { setErro('Erro ao rejeitar.'); }
   }
 
+  async function handleCancelarMilitar() {
+    try {
+      const motivo = obsModal || 'Cancelado pelo próprio militar';
+      await rejeitarPermuta(permutaSel.id, motivo, `${perfil.posto} ${perfil.nome}`);
+      setSucesso('✅ Permuta cancelada com sucesso!');
+      setModal(null); setObsModal(''); carregar();
+    } catch { setErro('Erro ao cancelar a permuta.'); }
+  }
+
   async function handleAlterarSenha(e) {
     e.preventDefault();
     setErro('');
@@ -251,7 +274,36 @@ export default function PortalMilitar() {
   const pendConf = permutas.filter(p => p.receptorId === milId && p.status === 'aguardando_confirmacao');
   const historico = permutas.filter(p => p.solicitanteId === milId || p.receptorId === milId);
 
-  const abaData = { minhas, pendentes: pendConf, historico };
+  const servicosEntrados = [];
+  permutas.forEach(p => {
+    if (p.status === 'aprovada' || p.status === 'quitada') {
+      if (p.receptorId === milId) {
+        servicosEntrados.push({
+          id: p.id + '_sv',
+          data: p.data,
+          tipo: p.tipo,
+          tipoSv: p.tipoSv,
+          deQuem: p.solicitanteNome || nomeMil(p.solicitanteId),
+          permuta: p,
+          funcao: 'Entrou no lugar de'
+        });
+      }
+      if (p.tipo === 'real' && p.solicitanteId === milId) {
+        servicosEntrados.push({
+          id: p.id + '_ret',
+          data: p.dataRetorno,
+          tipo: p.tipo,
+          tipoSv: p.tipoSv,
+          deQuem: p.receptorNome || nomeMil(p.receptorId),
+          permuta: p,
+          funcao: 'Retorno (no lugar de)'
+        });
+      }
+    }
+  });
+  servicosEntrados.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+  const abaData = { minhas, pendentes: pendConf, historico, servicos: servicosEntrados };
   const lista = abaData[aba] || [];
 
   function badgeStatus(p) {
@@ -316,8 +368,8 @@ export default function PortalMilitar() {
         )}
 
         {/* ABAS */}
-        <div style={{ display: 'flex', gap: 2, background: '#f5f6fa', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, padding: 3, marginBottom: '1.2rem' }}>
-          {[['minhas', `Minhas (${minhas.length})`], ['pendentes', `Confirmar (${pendConf.length})`], ['historico', 'Histórico']].map(([k, v]) => (
+        <div style={{ display: 'flex', gap: 2, background: '#f5f6fa', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, padding: 3, marginBottom: '1.2rem', overflowX: 'auto' }}>
+          {[['minhas', `Minhas (${minhas.length})`], ['pendentes', `Confirmar (${pendConf.length})`], ['servicos', `Serviços Entrados (${servicosEntrados.length})`], ['historico', 'Histórico']].map(([k, v]) => (
             <button key={k} onClick={() => setAba(k)}
               style={{ flex: 1, background: aba === k ? C.fundo2 : 'transparent', color: aba === k ? '#ffffff' : '#586069', border: 'none', borderRadius: 5, padding: '0.6rem 0.5rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.68rem', fontWeight: aba === k ? 700 : 500, letterSpacing: 1, transition: 'all .2s', boxShadow: aba === k ? '0 4px 12px rgba(143, 0, 0, 0.2)' : 'none' }}>
               {v}
@@ -331,8 +383,30 @@ export default function PortalMilitar() {
         ) : lista.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '3rem', color: C.fundo2 }}>
             <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🔄</div>
-            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '0.8rem' }}>Nenhuma permuta aqui</div>
+            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '0.8rem' }}>Nenhum serviço ou permuta aqui</div>
           </div>
+        ) : aba === 'servicos' ? (
+          lista.map(s => (
+            <div key={s.id} style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderRadius: 12, padding: '1rem 1.2rem', marginBottom: '0.8rem', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                <div>
+                  <span style={{ background: C.verdePale, color: '#7dbd72', border: `1px solid ${C.verde}40`, borderRadius: 4, padding: '1px 7px', fontSize: '0.65rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, marginRight: 6 }}>
+                    {s.funcao === 'Entrou no lugar de' ? '🔄 SERVIÇO ASSUMIDO' : '🤝 RETORNO ASSUMIDO'}
+                  </span>
+                </div>
+                <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '0.75rem', color: C.ouro, fontWeight: 600 }}>
+                  {fmtData(s.data)}
+                </span>
+              </div>
+              <div style={{ fontSize: '0.95rem', marginBottom: '0.3rem', color: C.creme }}>
+                {s.funcao} <strong>{s.deQuem}</strong>
+              </div>
+              <div style={{ fontSize: '0.8rem', color: C.cinza, fontFamily: "'Montserrat', sans-serif" }}>
+                {s.tipoSv} · {s.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla'}
+              </div>
+              {s.permuta.obs && <div style={{ fontSize: '0.82rem', color: C.cinza, fontStyle: 'italic', marginTop: '0.3rem', borderLeft: `2px solid ${C.ouroClaro}`, paddingLeft: 6 }}>{s.permuta.obs}</div>}
+            </div>
+          ))
         ) : lista.map(p => (
           <div key={p.id} style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderRadius: 12, padding: '1rem 1.2rem', marginBottom: '0.8rem', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
@@ -372,6 +446,15 @@ export default function PortalMilitar() {
                   ⚠️ Você está inativo e não pode responder a esta solicitação.
                 </div>
               )
+            )}
+
+            {podeCancelar(p) && (
+              <div style={{ marginTop: '0.8rem' }}>
+                <button onClick={() => { setPermutaSel(p); setModal('cancelar_militar'); setObsModal(''); setErro(''); }}
+                  style={{ width: '100%', background: C.vermelhoPale, color: '#e07070', border: `1px solid ${C.vermelho}40`, borderRadius: 6, padding: '0.5rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.7rem', fontWeight: 700, transition: 'all 0.2s' }}>
+                  🚫 Cancelar Permuta
+                </button>
+              </div>
             )}
           </div>
         ))}
@@ -503,6 +586,25 @@ export default function PortalMilitar() {
               </button>
             </div>
           </form>
+        </Overlay>
+      )}
+
+      {/* MODAL CANCELAR MILITAR */}
+      {modal === 'cancelar_militar' && permutaSel && (
+        <Overlay onClose={() => setModal(null)}>
+          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.4rem', letterSpacing: 2, color: '#e07070', marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>🚫 Cancelar Permuta</div>
+          <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 8, padding: '0.7rem', marginBottom: '1rem', fontSize: '0.9rem', color: C.cinza }}>
+            Deseja realmente cancelar esta permuta de serviço marcada para <strong>{fmtData(permutaSel.data)}</strong>?
+            {permutaSel.tipo === 'real' && ` (Retorno em ${fmtData(permutaSel.dataRetorno)})`}
+          </div>
+          <Campo label="Motivo do cancelamento (opcional)">
+            <textarea value={obsModal} onChange={e => setObsModal(e.target.value)} style={{ ...txtAreaStyle, minHeight: 70 }} placeholder="Informe o motivo do cancelamento..." />
+          </Campo>
+          {erro && <div style={{ background: C.vermelhoPale, border: `1px solid ${C.vermelho}40`, borderRadius: 6, color: '#c0392b', fontSize: '0.85rem', padding: '0.6rem', marginBottom: '0.8rem' }}>{erro}</div>}
+          <div style={{ display: 'flex', gap: '0.6rem' }}>
+            <button onClick={() => setModal(null)} style={{ flex: 1, background: 'transparent', color: C.cinza, border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.75rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.75rem' }}>CANCELAR</button>
+            <button onClick={handleCancelarMilitar} style={{ flex: 2, background: C.vermelhoPale, color: '#e07070', border: `1px solid ${C.vermelho}40`, borderRadius: 8, padding: '0.75rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '0.75rem' }}>🚫 CONFIRMAR CANCELAMENTO</button>
+          </div>
         </Overlay>
       )}
     </div>

@@ -318,7 +318,7 @@ export async function solicitarPermuta(dados) {
       tipoSv: dados.tipoSv,
       obs: dados.obs || '',
       mes: dados.mes,
-      status: 'aguardando_confirmacao',
+      status: dados.status || 'aguardando_confirmacao',
       criadoEm: new Date().toISOString()
     };
     list.push(record);
@@ -329,6 +329,68 @@ export async function solicitarPermuta(dados) {
   const { data, error } = await supabase
     .from('permutas')
     .insert(mapPermutaToDB(dados))
+    .select()
+    .single();
+
+  if (error) throw error;
+  return mapPermutaToUI(data);
+}
+
+export async function criarPermutaDiretaAdmin(dados) {
+  const agora = new Date().toISOString();
+  const status = dados.tipo === 'real' ? 'quitada' : 'aprovada';
+  
+  if (isMockMode) {
+    const list = getMockData('permutas');
+    const record = {
+      id: 'mock-perm-' + Math.random().toString(36).substr(2, 9),
+      tipo: dados.tipo,
+      solicitanteId: dados.solicitanteId,
+      solicitanteNome: dados.solicitanteNome,
+      receptorId: dados.receptorId,
+      receptorNome: dados.receptorNome,
+      data: dados.data,
+      dataRetorno: dados.tipo === 'real' ? dados.dataRetorno : null,
+      tipoSv: dados.tipoSv,
+      obs: dados.obs || '',
+      mes: dados.mes,
+      status: status,
+      criadoEm: agora,
+      confirmadoEm: agora,
+      obsConfirmacao: 'Confirmado por administrador',
+      aprovadoEm: agora,
+      aprovadoPor: dados.adminNome || 'admin',
+      quitadoEm: dados.tipo === 'real' ? agora : null,
+      obsQuitacao: dados.tipo === 'real' ? 'Quitada automaticamente (Permuta direta)' : ''
+    };
+    list.push(record);
+    setMockData('permutas', list);
+    return record;
+  }
+
+  const payload = {
+    tipo: dados.tipo,
+    solicitante_id: dados.solicitanteId,
+    solicitante_nome: dados.solicitanteNome,
+    receptor_id: dados.receptorId,
+    receptor_nome: dados.receptorNome,
+    data: dados.data,
+    data_retorno: dados.tipo === 'real' ? dados.dataRetorno : null,
+    tipo_sv: dados.tipoSv,
+    obs: dados.obs || '',
+    mes: dados.mes,
+    status: status,
+    confirmado_em: agora,
+    obs_confirmacao: 'Confirmado por administrador',
+    aprovado_em: agora,
+    aprovado_por: dados.adminNome || 'admin',
+    quitado_em: dados.tipo === 'real' ? agora : null,
+    obs_quitacao: dados.tipo === 'real' ? 'Quitada automaticamente (Permuta direta)' : null
+  };
+
+  const { data, error } = await supabase
+    .from('permutas')
+    .insert(payload)
     .select()
     .single();
 
