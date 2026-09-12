@@ -1,7 +1,7 @@
 // src/pages/PortalMilitar.js
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { getPermutas, getMilitares, solicitarPermuta, confirmarPermuta, rejeitarPermuta, alterarSenhaUsuario } from '../services/firestore';
+import { getPermutas, getMilitares, solicitarPermuta, confirmarPermuta, rejeitarPermuta, alterarSenhaUsuario, getConfigMes } from '../services/firestore';
 import { supabase } from '../supabase';
 
 const C = {
@@ -78,6 +78,32 @@ export default function PortalMilitar() {
     if (!iso) return '—';
     const [y, m, d] = iso.split('-');
     return `${d}/${m}/${y}`;
+  }
+
+  function fmtMes(ym) {
+    if (!ym) return '—';
+    const [y, m] = ym.split('-');
+    const ms = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    return `${ms[parseInt(m) - 1]}/${y}`;
+  }
+
+  function isMenos72h(p) {
+    if (!p || !p.data) return false;
+    try {
+      const criacao = p.criadoEm ? new Date(p.criadoEm) : new Date();
+      const srv1 = new Date(p.data + 'T00:00:00');
+      const diff1 = (srv1 - criacao) / 36e5;
+      if (diff1 < 72) return true;
+
+      if (p.tipo === 'real' && p.dataRetorno) {
+        const srv2 = new Date(p.dataRetorno + 'T00:00:00');
+        const diff2 = (srv2 - criacao) / 36e5;
+        if (diff2 < 72) return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
   }
 
   function verificar72h(dataStr) {
@@ -164,6 +190,23 @@ export default function PortalMilitar() {
     if (calcularSaldoDia(milId, form.data) < 1) {
       setErro(`⛔ Você já permutou o dia de serviço ${fmtData(form.data)} (ou tem uma solicitação pendente para ele).`);
       return;
+    }
+
+    // Regra 3: Se for permuta simples, verificar se o solicitante já atingiu o limite de devolução no mês
+    if (form.tipo === 'paga') {
+      const mesRef = form.data.slice(0, 7);
+      const config = await getConfigMes(mesRef);
+      const svs = config[milId] ?? (meuMilitar?.regime === '12h' ? 12 : meuMilitar?.regime === '24h' ? 7 : 2);
+      const limite = Math.floor(svs / 2);
+
+      const pagou = permutas.filter(p => p.tipo === 'paga' && p.solicitanteId === milId && p.mes === mesRef && p.status !== 'rejeitada').length;
+      const entrou = permutas.filter(p => p.tipo === 'paga' && p.receptorId === milId && p.mes === mesRef && p.status !== 'rejeitada').length;
+      const jaDevendo = Math.max(0, pagou - entrou);
+
+      if (jaDevendo >= limite) {
+        setErro(`⛔ Solicitação bloqueada: você atingiu o limite de permutas a devolver para o mês ${fmtMes(mesRef)} (${jaDevendo}/${limite}).`);
+        return;
+      }
     }
 
     // Regra 2: Em permuta real, validar se o receptor possui o dia de retorno para doar
@@ -408,13 +451,18 @@ export default function PortalMilitar() {
             </div>
           ))
         ) : lista.map(p => (
-          <div key={p.id} style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderRadius: 12, padding: '1rem 1.2rem', marginBottom: '0.8rem', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
+          <div key={p.id} style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderLeft: isMenos72h(p) ? '5px solid #ff7979' : `1px solid ${C.borda}`, borderRadius: 12, padding: '1rem 1.2rem', marginBottom: '0.8rem', boxShadow: isMenos72h(p) ? '0 4px 15px rgba(231, 76, 60, 0.25)' : '0 4px 15px rgba(0,0,0,0.2)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
               <div>
                 <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 7px', fontSize: '0.65rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, marginRight: 6 }}>
                   {p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}
                 </span>
                 {badgeStatus(p)}
+                {isMenos72h(p) && (
+                  <span style={{ background: 'rgba(231,76,60,0.2)', color: '#ff7979', border: '1px solid rgba(231,76,60,0.5)', borderRadius: 4, padding: '1px 7px', fontSize: '0.65rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 800, marginLeft: 6 }}>
+                    ⚡ &lt;72H
+                  </span>
+                )}
               </div>
               <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '0.75rem', color: C.ouro, fontWeight: 600 }}>
                 {p.tipo === 'real' ? `${fmtData(p.data)} ⇆ ${fmtData(p.dataRetorno)}` : fmtData(p.data)}

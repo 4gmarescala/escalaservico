@@ -80,6 +80,10 @@ export default function PainelAdmin() {
   const [sortAsc, setSortAsc] = useState(true);
   const [militarSel, setMilitarSel] = useState(null);
   const [formEdit, setFormEdit] = useState({ posto: '', nome: '', rg: '', regime: '12h', secao: '', ativo: true, senha: '' });
+  const [dataInicio, setDataInicio] = useState('');
+  const [dataFim, setDataFim] = useState('');
+  const [calDate, setCalDate] = useState(new Date());
+  const [diaSel, setDiaSel] = useState(new Date().toISOString().slice(0, 10));
 
   useEffect(() => {
     carregar();
@@ -120,7 +124,35 @@ export default function PainelAdmin() {
   }
 
   function svsMilMes(milId) {
-    return configMes[milId] ?? (militares.find(x => x.id === milId)?.regime === '12h' ? 10 : militares.find(x => x.id === milId)?.regime === '24h' ? 7 : 2);
+    return configMes[milId] ?? (militares.find(x => x.id === milId)?.regime === '12h' ? 12 : militares.find(x => x.id === milId)?.regime === '24h' ? 7 : 2);
+  }
+
+  function isMenos72h(p) {
+    if (!p || !p.data) return false;
+    try {
+      const criacao = p.criadoEm ? new Date(p.criadoEm) : new Date();
+      const srv1 = new Date(p.data + 'T00:00:00');
+      const diff1 = (srv1 - criacao) / 36e5;
+      if (diff1 < 72) return true;
+
+      if (p.tipo === 'real' && p.dataRetorno) {
+        const srv2 = new Date(p.dataRetorno + 'T00:00:00');
+        const diff2 = (srv2 - criacao) / 36e5;
+        if (diff2 < 72) return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function badge72h(p) {
+    if (!isMenos72h(p)) return null;
+    return (
+      <span style={{ background: 'rgba(231,76,60,0.2)', color: '#ff7979', border: '1px solid rgba(231,76,60,0.5)', borderRadius: 4, padding: '1px 6px', fontSize: '0.62rem', fontFamily: 'monospace', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: 3, marginLeft: 4 }}>
+        ⚡ &lt;72H
+      </span>
+    );
   }
 
   function limitePago(milId) { return Math.floor(svsMilMes(milId) / 2); }
@@ -315,6 +347,12 @@ export default function PainelAdmin() {
     nomeMil(p.receptorId).toLowerCase().includes(buscaRel.toLowerCase())
   );
 
+  const relFiltradoPeriodo = relFiltrado.filter(p => {
+    if (dataInicio && p.data < dataInicio) return false;
+    if (dataFim && p.data > dataFim) return false;
+    return true;
+  });
+
   function handleExportarCSV() {
     const headers = [
       'Data de Servico',
@@ -324,11 +362,12 @@ export default function PainelAdmin() {
       'Data de Solicitacao',
       'Tipo de Permuta',
       'Status',
+      'Urgente (<72h)',
       'Motivo Rejeicao',
       'Observacao'
     ];
 
-    const rows = relFiltrado.map(p => [
+    const rows = relFiltradoPeriodo.map(p => [
       p.data,
       p.dataRetorno || '—',
       nomeMil(p.solicitanteId),
@@ -336,6 +375,7 @@ export default function PainelAdmin() {
       p.criadoEm ? fmtDateTime(p.criadoEm) : '—',
       p.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla',
       p.status,
+      isMenos72h(p) ? 'SIM' : 'NAO',
       p.motivoRejeicao || '—',
       p.obs || '—'
     ]);
@@ -356,7 +396,7 @@ export default function PainelAdmin() {
   }
 
   function handleExportarXLSX() {
-    const dataToExport = relFiltrado.map(p => ({
+    const dataToExport = relFiltradoPeriodo.map(p => ({
       'Data do Serviço': p.data,
       'Data de Retorno': p.dataRetorno || '—',
       'Solicitante': nomeMil(p.solicitanteId),
@@ -364,6 +404,7 @@ export default function PainelAdmin() {
       'Data da Solicitação': p.criadoEm ? fmtDateTime(p.criadoEm) : '—',
       'Tipo de Permuta': p.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla',
       'Status': p.status,
+      'Urgente (<72h)': isMenos72h(p) ? 'SIM' : 'NÃO',
       'Motivo Rejeição': p.motivoRejeicao || '—',
       'Observação': p.obs || '—'
     }));
@@ -393,10 +434,10 @@ export default function PainelAdmin() {
     doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 20);
 
     const tableHeaders = [
-      ['Data Sv', 'Retorno', 'Solicitante', 'Receptor', 'Solicitado Em', 'Tipo', 'Status', 'Observação']
+      ['Data Sv', 'Retorno', 'Solicitante', 'Receptor', 'Solicitado Em', 'Tipo', 'Status', '<72h', 'Observação']
     ];
 
-    const tableData = relFiltrado.map(p => [
+    const tableData = relFiltradoPeriodo.map(p => [
       fmtData(p.data),
       p.dataRetorno ? fmtData(p.dataRetorno) : '—',
       nomeMil(p.solicitanteId),
@@ -404,6 +445,7 @@ export default function PainelAdmin() {
       p.criadoEm ? fmtDateTime(p.criadoEm) : '—',
       p.tipo === 'paga' ? 'Simples' : 'Dupla',
       p.status,
+      isMenos72h(p) ? 'SIM' : 'NÃO',
       p.obs || '—'
     ]);
 
@@ -464,7 +506,7 @@ export default function PainelAdmin() {
 
       {/* NAV */}
       <div style={{ background: C.fundo2, borderBottom: `1px solid ${C.borda}`, padding: '0 1rem', display: 'flex', gap: 0, overflowX: 'auto' }}>
-        {[['dashboard', '📊 Painel'], ['aprovar', '🔍 Aprovar' + (pendAprov.length > 0 ? ` (${pendAprov.length})` : '')], ['permutas', '📋 Permutas'], ['militares', '👤 Militares'], ['limites', '⚠️ Limites'], ['relatorio', '📈 Relatório']].map(([k, v]) => (
+        {[['dashboard', '📊 Painel'], ['aprovar', '🔍 Aprovar' + (pendAprov.length > 0 ? ` (${pendAprov.length})` : '')], ['permutas', '📋 Permutas'], ['militares', '👤 Militares'], ['limites', '⚠️ Limites'], ['relatorio', '📈 Relatório por Período'], ['calendario', '🗓️ Calendário']].map(([k, v]) => (
           <button key={k} onClick={() => setAba(k)} style={{ background: 'transparent', border: 'none', borderBottom: aba === k ? `2px solid ${C.vermelho}` : '2px solid transparent', color: aba === k ? C.vermelhoClaro : C.cinza, padding: '0.8rem 1rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.68rem', fontWeight: aba === k ? 700 : 400, letterSpacing: 1, whiteSpace: 'nowrap', marginBottom: -1, transition: 'all 0.2s' }}>
             {v}
           </button>
@@ -590,11 +632,12 @@ export default function PainelAdmin() {
             <input type="text" placeholder="🔍  Buscar por nome..." value={busca} onChange={e => setBusca(e.target.value)}
               style={{ width: '100%', background: 'rgba(0,0,0,.3)', border: `1px solid ${C.borda}`, borderRadius: 8, color: C.creme, fontFamily: 'monospace', fontSize: '0.9rem', padding: '0.6rem 0.9rem', marginBottom: '1rem', boxSizing: 'border-box', outline: 'none' }} />
             {permFiltradas.map(p => (
-              <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.7rem 0', borderBottom: `1px solid ${C.borda}`, flexWrap: 'wrap', gap: '0.5rem' }}>
+              <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.7rem 0', borderBottom: `1px solid ${C.borda}`, borderLeft: isMenos72h(p) ? '4px solid #ff7979' : 'none', paddingLeft: isMenos72h(p) ? 6 : 0, flexWrap: 'wrap', gap: '0.5rem' }}>
                 <div style={{ flex: 1, minWidth: 200 }}>
                   <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.2rem', flexWrap: 'wrap' }}>
                     <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 6px', fontSize: '0.62rem', fontFamily: 'monospace', fontWeight: 700 }}>{p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}</span>
                     {badgeStatus(p)}
+                    {badge72h(p)}
                     <span style={{ fontFamily: 'monospace', fontSize: '0.72rem', color: C.ouro, fontWeight: 600 }}>
                       {p.tipo === 'real' ? `${fmtData(p.data)} ⇆ ${fmtData(p.dataRetorno)}` : fmtData(p.data)}
                     </span>
@@ -694,13 +737,13 @@ export default function PainelAdmin() {
           </div>
         )}
 
-        {/* ── RELATÓRIO ── */}
+        {/* ── RELATÓRIO POR PERÍODO ── */}
         {aba === 'relatorio' && (
           <div style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderRadius: 10, padding: '1rem 1.2rem', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.8rem' }}>
               <div>
-                <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.2rem', letterSpacing: 2, color: C.ouro }}>📈 Relatório de Permutas</div>
-                <div style={{ fontSize: '0.75rem', color: C.cinza }}>Consulte, ordene e exporte o histórico de todas as permutas.</div>
+                <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.2rem', letterSpacing: 2, color: C.ouro }}>📈 Relatório de Permutas por Período</div>
+                <div style={{ fontSize: '0.75rem', color: C.cinza }}>Consulte, filtre por data de início/fim e exporte todas as permutas do período.</div>
               </div>
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                 <button onClick={handleExportarCSV} style={{ background: 'rgba(52, 152, 219, 0.15)', color: '#3498db', border: '1px solid rgba(52, 152, 219, 0.4)', borderRadius: 6, padding: '0.4rem 0.8rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.68rem', fontWeight: 700, transition: 'all 0.2s' }}>
@@ -715,8 +758,48 @@ export default function PainelAdmin() {
               </div>
             </div>
 
-            <input type="text" placeholder="🔍 Buscar por nome ou RG..." value={buscaRel} onChange={e => setBuscaRel(e.target.value)}
-              style={{ width: '100%', background: 'rgba(0,0,0,.3)', border: `1px solid ${C.borda}`, borderRadius: 8, color: C.creme, fontFamily: 'monospace', fontSize: '0.9rem', padding: '0.6rem 0.9rem', marginBottom: '1rem', boxSizing: 'border-box', outline: 'none' }} />
+            {/* FILTROS POR DATA */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.8rem', marginBottom: '1rem', background: 'rgba(0,0,0,0.2)', padding: '0.8rem', borderRadius: 8, border: `1px solid ${C.borda}` }}>
+              <div>
+                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.6rem', color: C.ouro, letterSpacing: 1, marginBottom: 4 }}>DATA INICIAL</label>
+                <input type="date" value={dataInicio} onChange={e => setDataInicio(e.target.value)} style={{ width: '100%', background: 'rgba(0,0,0,.3)', border: `1px solid ${C.borda}`, borderRadius: 6, color: C.creme, fontFamily: 'monospace', fontSize: '0.85rem', padding: '0.4rem 0.6rem', outline: 'none', boxSizing: 'border-box' }} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.6rem', color: C.ouro, letterSpacing: 1, marginBottom: 4 }}>DATA FINAL</label>
+                <input type="date" value={dataFim} onChange={e => setDataFim(e.target.value)} style={{ width: '100%', background: 'rgba(0,0,0,.3)', border: `1px solid ${C.borda}`, borderRadius: 6, color: C.creme, fontFamily: 'monospace', fontSize: '0.85rem', padding: '0.4rem 0.6rem', outline: 'none', boxSizing: 'border-box' }} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.6rem', color: C.ouro, letterSpacing: 1, marginBottom: 4 }}>BUSCAR NOME / RG</label>
+                <input type="text" placeholder="🔍 Filtrar por nome/RG..." value={buscaRel} onChange={e => setBuscaRel(e.target.value)} style={{ width: '100%', background: 'rgba(0,0,0,.3)', border: `1px solid ${C.borda}`, borderRadius: 6, color: C.creme, fontFamily: 'monospace', fontSize: '0.85rem', padding: '0.4rem 0.6rem', outline: 'none', boxSizing: 'border-box' }} />
+              </div>
+              {(dataInicio || dataFim || buscaRel) && (
+                <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                  <button onClick={() => { setDataInicio(''); setDataFim(''); setBuscaRel(''); }} style={{ width: '100%', background: 'transparent', border: `1px solid ${C.borda}`, color: C.cinza, borderRadius: 6, padding: '0.45rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.72rem' }}>
+                    🧹 LIMPAR FILTROS
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* MÉTRICAS DO PERÍODO */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.6rem', marginBottom: '1rem' }}>
+              <div style={{ background: 'rgba(0,0,0,0.25)', padding: '0.6rem 0.8rem', borderRadius: 6, border: `1px solid ${C.borda}` }}>
+                <div style={{ fontSize: '0.6rem', color: C.cinza, fontFamily: 'monospace' }}>TOTAL NO PERÍODO</div>
+                <div style={{ fontSize: '1.4rem', fontFamily: "'Bebas Neue',sans-serif", color: C.ouro }}>{relFiltradoPeriodo.length}</div>
+              </div>
+              <div style={{ background: 'rgba(0,0,0,0.25)', padding: '0.6rem 0.8rem', borderRadius: 6, border: `1px solid ${C.borda}` }}>
+                <div style={{ fontSize: '0.6rem', color: C.cinza, fontFamily: 'monospace' }}>PERMUTAS SIMPLES</div>
+                <div style={{ fontSize: '1.4rem', fontFamily: "'Bebas Neue',sans-serif", color: '#f0a050' }}>{relFiltradoPeriodo.filter(p => p.tipo === 'paga').length}</div>
+              </div>
+              <div style={{ background: 'rgba(0,0,0,0.25)', padding: '0.6rem 0.8rem', borderRadius: 6, border: `1px solid ${C.borda}` }}>
+                <div style={{ fontSize: '0.6rem', color: C.cinza, fontFamily: 'monospace' }}>PERMUTAS DUPLAS</div>
+                <div style={{ fontSize: '1.4rem', fontFamily: "'Bebas Neue',sans-serif", color: C.ouro }}>{relFiltradoPeriodo.filter(p => p.tipo === 'real').length}</div>
+              </div>
+              <div style={{ background: 'rgba(0,0,0,0.25)', padding: '0.6rem 0.8rem', borderRadius: 6, border: `1px solid ${C.borda}` }}>
+                <div style={{ fontSize: '0.6rem', color: C.cinza, fontFamily: 'monospace' }}>URGENTES (&lt;72H)</div>
+                <div style={{ fontSize: '1.4rem', fontFamily: "'Bebas Neue',sans-serif", color: '#ff7979' }}>{relFiltradoPeriodo.filter(isMenos72h).length}</div>
+              </div>
+            </div>
 
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', fontFamily: 'monospace', color: C.creme }}>
@@ -741,8 +824,8 @@ export default function PainelAdmin() {
                   </tr>
                 </thead>
                 <tbody>
-                  {relFiltrado.map(p => (
-                    <tr key={p.id} style={{ borderBottom: `1px solid ${C.borda}` }}>
+                  {relFiltradoPeriodo.map(p => (
+                    <tr key={p.id} style={{ borderBottom: `1px solid ${C.borda}`, background: isMenos72h(p) ? 'rgba(231,76,60,0.08)' : 'transparent' }}>
                       <td style={{ padding: '0.6rem 0.5rem' }}>
                         {p.tipo === 'real' ? `${fmtData(p.data)} a ${fmtData(p.dataRetorno)}` : fmtData(p.data)}
                       </td>
@@ -756,22 +839,155 @@ export default function PainelAdmin() {
                       </td>
                       <td style={{ padding: '0.6rem 0.5rem' }}>
                         {badgeStatus(p)}
+                        {badge72h(p)}
                       </td>
                       <td style={{ padding: '0.6rem 0.5rem', fontStyle: 'italic', maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={p.obs || ''}>
                         {p.obs || '—'}
                       </td>
                     </tr>
                   ))}
-                  {relFiltrado.length === 0 && (
+                  {relFiltradoPeriodo.length === 0 && (
                     <tr>
                       <td colSpan="7" style={{ padding: '2rem', textAlign: 'center', color: C.cinza }}>
-                        Nenhuma permuta encontrada.
+                        Nenhuma permuta encontrada no período selecionado.
                       </td>
                     </tr>
                   )}
                 </tbody>
               </table>
             </div>
+          </div>
+        )}
+
+        {/* ── CALENDÁRIO DE SERVIÇOS ── */}
+        {aba === 'calendario' && (
+          <div style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderRadius: 10, padding: '1rem 1.2rem', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
+            {(() => {
+              const anoCal = calDate.getFullYear();
+              const mesCal = calDate.getMonth();
+              const primeiroDiaSemana = new Date(anoCal, mesCal, 1).getDay();
+              const totalDiasMes = new Date(anoCal, mesCal + 1, 0).getDate();
+              const nomeMesExtenso = calDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }).toUpperCase();
+
+              const diasGrid = [];
+              for (let i = 0; i < primeiroDiaSemana; i++) diasGrid.push(null);
+              for (let d = 1; d <= totalDiasMes; d++) diasGrid.push(d);
+
+              const permutasNoDiaSel = permutas.filter(p => p.status !== 'rejeitada' && (p.data === diaSel || (p.tipo === 'real' && p.dataRetorno === diaSel)));
+
+              return (
+                <>
+                  {/* HEADER DO CALENDÁRIO */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.2rem', flexWrap: 'wrap', gap: '0.8rem' }}>
+                    <div>
+                      <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.3rem', letterSpacing: 2, color: C.ouro }}>🗓️ Calendário de Permutas Previstas</div>
+                      <div style={{ fontSize: '0.75rem', color: C.cinza }}>Clique num dia para ver todas as permutas agendadas.</div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <button onClick={() => setCalDate(new Date(anoCal, mesCal - 1, 1))} style={{ background: 'rgba(0,0,0,0.3)', border: `1px solid ${C.borda}`, color: C.ouro, borderRadius: 6, padding: '0.4rem 0.8rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.8rem' }}>◄</button>
+                      <span style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.2rem', color: C.ouro, letterSpacing: 2, minWidth: 140, textAlign: 'center' }}>{nomeMesExtenso}</span>
+                      <button onClick={() => setCalDate(new Date(anoCal, mesCal + 1, 1))} style={{ background: 'rgba(0,0,0,0.3)', border: `1px solid ${C.borda}`, color: C.ouro, borderRadius: 6, padding: '0.4rem 0.8rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.8rem' }}>►</button>
+                      <button onClick={() => { setCalDate(new Date()); setDiaSel(new Date().toISOString().slice(0, 10)); }} style={{ background: 'rgba(255,255,255,0.1)', border: `1px solid ${C.borda}`, color: C.creme, borderRadius: 6, padding: '0.4rem 0.8rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.7rem', fontWeight: 700 }}>HOJE</button>
+                    </div>
+                  </div>
+
+                  {/* GRADE DE DIAS DA SEMANA */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4, textAlign: 'center', marginBottom: 4 }}>
+                    {['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'].map(d => (
+                      <div key={d} style={{ fontFamily: 'monospace', fontSize: '0.65rem', fontWeight: 700, color: C.ouro, padding: '0.4rem 0', background: 'rgba(0,0,0,0.2)', borderRadius: 4 }}>{d}</div>
+                    ))}
+                  </div>
+
+                  {/* GRADE DE DIAS DO MÊS */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4, marginBottom: '1.5rem' }}>
+                    {diasGrid.map((d, idx) => {
+                      if (!d) return <div key={'blank_' + idx} style={{ minHeight: 50, background: 'rgba(0,0,0,0.05)', borderRadius: 6 }} />;
+                      const dStr = `${anoCal}-${String(mesCal + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                      const countPerms = permutas.filter(p => p.status !== 'rejeitada' && (p.data === dStr || (p.tipo === 'real' && p.dataRetorno === dStr))).length;
+                      const isSel = dStr === diaSel;
+                      const isHoje = dStr === new Date().toISOString().slice(0, 10);
+
+                      return (
+                        <div key={dStr} onClick={() => setDiaSel(dStr)}
+                          style={{
+                            minHeight: 55,
+                            background: isSel ? C.ouroPale : 'rgba(0,0,0,0.2)',
+                            border: isSel ? `2px solid ${C.ouro}` : isHoje ? `1px solid ${C.verde}` : `1px solid ${C.borda}`,
+                            borderRadius: 6,
+                            padding: '0.3rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justify: 'space-between',
+                            boxShadow: isSel ? '0 0 10px rgba(255,255,255,0.3)' : 'none'
+                          }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontFamily: 'monospace', fontSize: '0.75rem', fontWeight: isHoje || isSel ? 700 : 400, color: isHoje ? '#7dbd72' : C.creme }}>{d}</span>
+                            {isHoje && <span style={{ fontSize: '0.55rem', background: C.verdePale, color: '#7dbd72', padding: '1px 3px', borderRadius: 3, fontWeight: 700 }}>HOJE</span>}
+                          </div>
+                          {countPerms > 0 && (
+                            <div style={{ background: 'rgba(240, 160, 80, 0.2)', border: '1px solid rgba(240, 160, 80, 0.4)', color: '#f0a050', borderRadius: 4, fontSize: '0.6rem', fontFamily: 'monospace', fontWeight: 700, padding: '1px 4px', textAlign: 'center', marginTop: 4 }}>
+                              📌 {countPerms} permuta(s)
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* PAINEL DE PERMUTAS DO DIA SELECIONADO */}
+                  <div style={{ background: 'rgba(0,0,0,0.3)', border: `1px solid ${C.borda}`, borderRadius: 10, padding: '1.2rem' }}>
+                    <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.2rem', color: C.ouro, letterSpacing: 2, marginBottom: '0.8rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>
+                      📅 Permutas Previstas para o dia {fmtData(diaSel)} ({permutasNoDiaSel.length})
+                    </div>
+
+                    {permutasNoDiaSel.length === 0 ? (
+                      <div style={{ textAlign: 'center', padding: '1.5rem', color: C.cinza, fontFamily: 'monospace', fontSize: '0.8rem' }}>
+                        Nenhuma permuta agendada para esta data.
+                      </div>
+                    ) : (
+                      permutasNoDiaSel.map(p => (
+                        <div key={p.id} style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderLeft: isMenos72h(p) ? '4px solid #ff7979' : `1px solid ${C.borda}`, borderRadius: 8, padding: '0.8rem 1rem', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+                          <div>
+                            <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.3rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                              <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 6px', fontSize: '0.6rem', fontFamily: 'monospace', fontWeight: 700 }}>
+                                {p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}
+                              </span>
+                              {badgeStatus(p)}
+                              {badge72h(p)}
+                              <span style={{ fontSize: '0.72rem', color: C.ouro, fontFamily: 'monospace' }}>{p.tipoSv}</span>
+                            </div>
+                            <div style={{ fontSize: '0.9rem', color: C.creme }}>
+                              <strong>{nomeMil(p.solicitanteId)}</strong>
+                              <span style={{ color: C.cinza }}> → </span>
+                              <strong>{nomeMil(p.receptorId)}</strong>
+                            </div>
+                            {p.tipo === 'real' && (
+                              <div style={{ fontSize: '0.75rem', color: C.ouro, marginTop: 2 }}>
+                                Retorno: <strong>{fmtData(p.dataRetorno)}</strong>
+                              </div>
+                            )}
+                            {p.obs && <div style={{ fontSize: '0.75rem', color: C.cinza, fontStyle: 'italic', marginTop: 2 }}>Obs: {p.obs}</div>}
+                          </div>
+                          <div style={{ display: 'flex', gap: '0.4rem' }}>
+                            {p.status === 'aguardando_aprovacao' && (
+                              <>
+                                <button onClick={() => { setPermutaSel(p); setModal('aprovar'); }} style={{ background: C.verdePale, color: '#7dbd72', border: `1px solid ${C.verde}40`, borderRadius: 5, padding: '0.3rem 0.6rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.62rem', fontWeight: 700 }}>✅ Aprovar</button>
+                                <button onClick={() => { setPermutaSel(p); setModal('rejeitar'); setMotivo(''); }} style={{ background: C.vermelhoPale, color: '#e07070', border: `1px solid ${C.vermelho}40`, borderRadius: 5, padding: '0.3rem 0.6rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.62rem', fontWeight: 700 }}>❌ Rejeitar</button>
+                              </>
+                            )}
+                            {(p.status === 'aprovada' || p.status === 'quitada') && (
+                              <button onClick={() => { setPermutaSel(p); setModal('cancelar'); setMotivo(''); }} style={{ background: C.vermelhoPale, color: '#f0a050', border: `1px solid ${C.vermelho}40`, borderRadius: 5, padding: '0.3rem 0.6rem', cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.62rem', fontWeight: 700 }}>🚫 Cancelar</button>
+                            )}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </>
+              );
+            })()}
           </div>
         )}
 
