@@ -91,12 +91,12 @@ export default function PortalMilitar() {
     if (!p || !p.data) return false;
     try {
       const criacao = p.criadoEm ? new Date(p.criadoEm) : new Date();
-      const srv1 = new Date(p.data + 'T00:00:00');
+      const srv1 = new Date(p.data + 'T10:00:00-03:00');
       const diff1 = (srv1 - criacao) / 36e5;
       if (diff1 < 72) return true;
 
       if (p.tipo === 'real' && p.dataRetorno) {
-        const srv2 = new Date(p.dataRetorno + 'T00:00:00');
+        const srv2 = new Date(p.dataRetorno + 'T10:00:00-03:00');
         const diff2 = (srv2 - criacao) / 36e5;
         if (diff2 < 72) return true;
       }
@@ -108,7 +108,7 @@ export default function PortalMilitar() {
 
   function verificar72h(dataStr) {
     const agora = new Date();
-    const srv = new Date(dataStr + 'T00:00:00');
+    const srv = new Date(dataStr + 'T10:00:00-03:00');
     const diffH = (srv - agora) / 36e5;
     return diffH >= 72;
   }
