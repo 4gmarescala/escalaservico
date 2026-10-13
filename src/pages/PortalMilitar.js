@@ -87,30 +87,49 @@ export default function PortalMilitar() {
     return `${ms[parseInt(m) - 1]}/${y}`;
   }
 
-  function isMenos72h(p) {
+  function obterPrazoSolicitacao(dataStr) {
+    if (!dataStr) return null;
+    const [ano, mes, dia] = dataStr.split('-').map(Number);
+    const dataSv = new Date(Date.UTC(ano, mes - 1, dia, 12, 0, 0));
+    const diaSemana = dataSv.getUTCDay(); // 0: Domingo, 1: Segunda, ..., 6: Sábado
+
+    let diasSubtrair;
+    if (diaSemana === 0) {
+      diasSubtrair = 2; // Domingo -> Sexta-feira anterior
+    } else if (diaSemana === 1) {
+      diasSubtrair = 3; // Segunda-feira -> Sexta-feira anterior
+    } else {
+      diasSubtrair = 2; // Terça a Sábado -> 2 dias antes
+    }
+
+    const limiteDate = new Date(Date.UTC(ano, mes - 1, dia - diasSubtrair, 12, 0, 0));
+    const lAno = limiteDate.getUTCFullYear();
+    const lMes = String(limiteDate.getUTCMonth() + 1).padStart(2, '0');
+    const lDia = String(limiteDate.getUTCDate()).padStart(2, '0');
+    return new Date(`${lAno}-${lMes}-${lDia}T07:00:00-03:00`);
+  }
+
+  function verificarPrazoSolicitacao(dataStr, agora = new Date()) {
+    const limite = obterPrazoSolicitacao(dataStr);
+    if (!limite) return { valido: true, limite: null };
+    return { valido: agora <= limite, limite };
+  }
+
+  function isForaPrazo(p) {
     if (!p || !p.data) return false;
     try {
       const criacao = p.criadoEm ? new Date(p.criadoEm) : new Date();
-      const srv1 = new Date(p.data + 'T10:00:00-03:00');
-      const diff1 = (srv1 - criacao) / 36e5;
-      if (diff1 < 72) return true;
+      const c1 = verificarPrazoSolicitacao(p.data, criacao);
+      if (!c1.valido) return true;
 
       if (p.tipo === 'real' && p.dataRetorno) {
-        const srv2 = new Date(p.dataRetorno + 'T10:00:00-03:00');
-        const diff2 = (srv2 - criacao) / 36e5;
-        if (diff2 < 72) return true;
+        const c2 = verificarPrazoSolicitacao(p.dataRetorno, criacao);
+        if (!c2.valido) return true;
       }
       return false;
     } catch (e) {
       return false;
     }
-  }
-
-  function verificar72h(dataStr) {
-    const agora = new Date();
-    const srv = new Date(dataStr + 'T10:00:00-03:00');
-    const diffH = (srv - agora) / 36e5;
-    return diffH >= 72;
   }
 
   function obterPrimeiroServico(p) {
@@ -120,11 +139,24 @@ export default function PortalMilitar() {
     return p.data;
   }
 
+  function obterPrazoCancelamento(dataStr) {
+    if (!dataStr) return null;
+    const [ano, mes, dia] = dataStr.split('-').map(Number);
+    // Início do serviço às 7h: 48 horas (2 dias) antes às 7h
+    const limiteDate = new Date(Date.UTC(ano, mes - 1, dia - 2, 12, 0, 0));
+    const lAno = limiteDate.getUTCFullYear();
+    const lMes = String(limiteDate.getUTCMonth() + 1).padStart(2, '0');
+    const lDia = String(limiteDate.getUTCDate()).padStart(2, '0');
+    return new Date(`${lAno}-${lMes}-${lDia}T07:00:00-03:00`);
+  }
+
   function podeCancelar(p) {
     if (p.status === 'rejeitada' || p.status === 'quitada') return false;
     if (p.solicitanteId !== milId && p.receptorId !== milId) return false;
     const primeiro = obterPrimeiroServico(p);
-    return verificar72h(primeiro);
+    const limite = obterPrazoCancelamento(primeiro);
+    if (!limite) return false;
+    return new Date() <= limite;
   }
 
   function calcularSaldoDia(militarId, dataVerificar, permutaIdExcluir = null) {
@@ -170,14 +202,18 @@ export default function PortalMilitar() {
       return;
     }
 
-    if (!verificar72h(form.data)) {
-      setErro('⛔ Solicitação bloqueada: o seu serviço está a menos de 72 horas de antecedência.');
+    const chk1 = verificarPrazoSolicitacao(form.data);
+    if (!chk1.valido) {
+      const limiteFmt = chk1.limite ? `${String(chk1.limite.getDate()).padStart(2, '0')}/${String(chk1.limite.getMonth() + 1).padStart(2, '0')}/${chk1.limite.getFullYear()} às 07:00` : '';
+      setErro(`⛔ Solicitação bloqueada: o prazo para solicitar permuta para ${fmtData(form.data)} encerrou em ${limiteFmt}.`);
       return;
     }
 
     if (form.tipo === 'real') {
-      if (!verificar72h(form.dataRetorno)) {
-        setErro('⛔ Solicitação bloqueada: o serviço de retorno está a menos de 72 horas de antecedência.');
+      const chk2 = verificarPrazoSolicitacao(form.dataRetorno);
+      if (!chk2.valido) {
+        const limiteFmt = chk2.limite ? `${String(chk2.limite.getDate()).padStart(2, '0')}/${String(chk2.limite.getMonth() + 1).padStart(2, '0')}/${chk2.limite.getFullYear()} às 07:00` : '';
+        setErro(`⛔ Solicitação bloqueada: o prazo para solicitar permuta para o serviço de retorno em ${fmtData(form.dataRetorno)} encerrou em ${limiteFmt}.`);
         return;
       }
       if (form.data === form.dataRetorno) {
@@ -451,16 +487,16 @@ export default function PortalMilitar() {
             </div>
           ))
         ) : lista.map(p => (
-          <div key={p.id} style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderLeft: isMenos72h(p) ? '5px solid #ff7979' : `1px solid ${C.borda}`, borderRadius: 12, padding: '1rem 1.2rem', marginBottom: '0.8rem', boxShadow: isMenos72h(p) ? '0 4px 15px rgba(231, 76, 60, 0.25)' : '0 4px 15px rgba(0,0,0,0.2)' }}>
+          <div key={p.id} style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderLeft: isForaPrazo(p) ? '5px solid #ff7979' : `1px solid ${C.borda}`, borderRadius: 12, padding: '1rem 1.2rem', marginBottom: '0.8rem', boxShadow: isForaPrazo(p) ? '0 4px 15px rgba(231, 76, 60, 0.25)' : '0 4px 15px rgba(0,0,0,0.2)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
               <div>
                 <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 7px', fontSize: '0.65rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, marginRight: 6 }}>
                   {p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}
                 </span>
                 {badgeStatus(p)}
-                {isMenos72h(p) && (
+                {isForaPrazo(p) && (
                   <span style={{ background: 'rgba(231,76,60,0.2)', color: '#ff7979', border: '1px solid rgba(231,76,60,0.5)', borderRadius: 4, padding: '1px 7px', fontSize: '0.65rem', fontFamily: "'Montserrat', sans-serif", fontWeight: 800, marginLeft: 6 }}>
-                    ⚡ &lt;72H
+                    ⚡ FORA DO PRAZO
                   </span>
                 )}
               </div>
@@ -496,13 +532,19 @@ export default function PortalMilitar() {
               )
             )}
 
-            {podeCancelar(p) && (
+            {podeCancelar(p) ? (
               <div style={{ marginTop: '0.8rem' }}>
                 <button onClick={() => { setPermutaSel(p); setModal('cancelar_militar'); setObsModal(''); setErro(''); }}
                   style={{ width: '100%', background: C.vermelhoPale, color: '#e07070', border: `1px solid ${C.vermelho}40`, borderRadius: 6, padding: '0.5rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.7rem', fontWeight: 700, transition: 'all 0.2s' }}>
                   🚫 Cancelar Permuta
                 </button>
               </div>
+            ) : (
+              (p.solicitanteId === milId || p.receptorId === milId) && p.status !== 'rejeitada' && p.status !== 'quitada' && (
+                <div style={{ marginTop: '0.6rem', fontSize: '0.7rem', color: '#ffbe76', background: 'rgba(255,190,118,0.1)', padding: '0.4rem 0.6rem', borderRadius: 6, border: '1px solid rgba(255,190,118,0.25)', fontStyle: 'italic', textAlign: 'center' }}>
+                  ℹ️ Prazo de cancelamento expirado (&lt; 48h das 7h do serviço). Cancelamento apenas com autorização do chefe da SAd.
+                </div>
+              )
             )}
           </div>
         ))}
@@ -513,13 +555,19 @@ export default function PortalMilitar() {
         <Overlay onClose={() => setModal(null)}>
           <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.4rem', letterSpacing: 2, color: C.ouro, marginBottom: '1rem', borderBottom: `1px solid ${C.borda}`, paddingBottom: 6 }}>Nova Permuta</div>
 
-          <div style={{ display: 'flex', gap: 4, marginBottom: '1rem', background: 'rgba(0,0,0,0.3)', borderRadius: 8, padding: 3 }}>
+          <div style={{ display: 'flex', gap: 4, marginBottom: '0.8rem', background: 'rgba(0,0,0,0.3)', borderRadius: 8, padding: 3 }}>
             {[['real', '🤝 Permuta Dupla'], ['paga', 'Permuta Simples']].map(([v, l]) => (
               <button key={v} onClick={() => setForm(f => ({ ...f, tipo: v }))}
                 style={{ flex: 1, background: form.tipo === v ? (v === 'paga' ? C.laranjaPale : C.ouroPale) : 'transparent', color: form.tipo === v ? (v === 'paga' ? '#f0a050' : C.ouro) : C.cinza, border: 'none', borderRadius: 5, padding: '0.5rem', cursor: 'pointer', fontFamily: "'Montserrat', sans-serif", fontSize: '0.65rem', fontWeight: 700, transition: 'all 0.2s' }}>
                 {l}
               </button>
             ))}
+          </div>
+
+          <div style={{ background: 'rgba(0,0,0,0.25)', border: `1px solid ${C.borda}`, borderRadius: 8, padding: '0.6rem 0.8rem', marginBottom: '1rem', fontSize: '0.72rem', color: C.cinza, lineHeight: 1.4 }}>
+            <div style={{ color: C.ouro, fontWeight: 700, marginBottom: 3 }}>🕐 PRAZO PARA SOLICITAR PERMUTA:</div>
+            <div>• <strong>Terça a Sábado:</strong> até as 07h de 2 dias antes do serviço.</div>
+            <div>• <strong>Domingo ou Segunda:</strong> até a Sexta-feira anterior às 07h.</div>
           </div>
 
           <form onSubmit={handleSolicitar}>

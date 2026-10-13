@@ -4,6 +4,14 @@
 -- =====================================================================
 -- Cole todo este script no painel do seu Supabase em:
 -- SQL Editor -> "+ New query" -> Cole o código -> Clique em "Run"
+--
+-- Regras Operacionais Vigentes:
+-- 1. Prazo de Solicitação:
+--    - Terça a Sábado: até as 07h de 2 dias antes do serviço.
+--    - Domingo e Segunda: até a Sexta-feira anterior às 07h.
+-- 2. Prazo de Cancelamento pelo Militar:
+--    - Até 48h (2 dias) antes do início do serviço (07h).
+--    - Após esse prazo, somente mediante autorização do chefe da SAd / Admin.
 -- =====================================================================
 
 -- 1. Habilitar a extensão pgcrypto para criptografia Blowfish (bcrypt) das senhas

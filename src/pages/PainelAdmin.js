@@ -127,18 +127,44 @@ export default function PainelAdmin() {
     return configMes[milId] ?? (militares.find(x => x.id === milId)?.regime === '12h' ? 12 : militares.find(x => x.id === milId)?.regime === '24h' ? 7 : 2);
   }
 
-  function isMenos72h(p) {
+  function obterPrazoSolicitacao(dataStr) {
+    if (!dataStr) return null;
+    const [ano, mes, dia] = dataStr.split('-').map(Number);
+    const dataSv = new Date(Date.UTC(ano, mes - 1, dia, 12, 0, 0));
+    const diaSemana = dataSv.getUTCDay();
+
+    let diasSubtrair;
+    if (diaSemana === 0) {
+      diasSubtrair = 2; // Domingo -> Sexta anterior
+    } else if (diaSemana === 1) {
+      diasSubtrair = 3; // Segunda -> Sexta anterior
+    } else {
+      diasSubtrair = 2; // Terça a Sábado -> 2 dias antes
+    }
+
+    const limiteDate = new Date(Date.UTC(ano, mes - 1, dia - diasSubtrair, 12, 0, 0));
+    const lAno = limiteDate.getUTCFullYear();
+    const lMes = String(limiteDate.getUTCMonth() + 1).padStart(2, '0');
+    const lDia = String(limiteDate.getUTCDate()).padStart(2, '0');
+    return new Date(`${lAno}-${lMes}-${lDia}T07:00:00-03:00`);
+  }
+
+  function verificarPrazoSolicitacao(dataStr, agora = new Date()) {
+    const limite = obterPrazoSolicitacao(dataStr);
+    if (!limite) return { valido: true, limite: null };
+    return { valido: agora <= limite, limite };
+  }
+
+  function isForaPrazo(p) {
     if (!p || !p.data) return false;
     try {
       const criacao = p.criadoEm ? new Date(p.criadoEm) : new Date();
-      const srv1 = new Date(p.data + 'T10:00:00-03:00');
-      const diff1 = (srv1 - criacao) / 36e5;
-      if (diff1 < 72) return true;
+      const c1 = verificarPrazoSolicitacao(p.data, criacao);
+      if (!c1.valido) return true;
 
       if (p.tipo === 'real' && p.dataRetorno) {
-        const srv2 = new Date(p.dataRetorno + 'T10:00:00-03:00');
-        const diff2 = (srv2 - criacao) / 36e5;
-        if (diff2 < 72) return true;
+        const c2 = verificarPrazoSolicitacao(p.dataRetorno, criacao);
+        if (!c2.valido) return true;
       }
       return false;
     } catch (e) {
@@ -146,11 +172,11 @@ export default function PainelAdmin() {
     }
   }
 
-  function badge72h(p) {
-    if (!isMenos72h(p)) return null;
+  function badgeForaPrazo(p) {
+    if (!isForaPrazo(p)) return null;
     return (
       <span style={{ background: 'rgba(231,76,60,0.2)', color: '#ff7979', border: '1px solid rgba(231,76,60,0.5)', borderRadius: 4, padding: '1px 6px', fontSize: '0.62rem', fontFamily: 'monospace', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: 3, marginLeft: 4 }}>
-        ⚡ &lt;72H
+        ⚡ FORA DO PRAZO
       </span>
     );
   }
@@ -362,7 +388,7 @@ export default function PainelAdmin() {
       'Data de Solicitacao',
       'Tipo de Permuta',
       'Status',
-      'Urgente (<72h)',
+      'Fora do Prazo',
       'Motivo Rejeicao',
       'Observacao'
     ];
@@ -375,7 +401,7 @@ export default function PainelAdmin() {
       p.criadoEm ? fmtDateTime(p.criadoEm) : '—',
       p.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla',
       p.status,
-      isMenos72h(p) ? 'SIM' : 'NAO',
+      isForaPrazo(p) ? 'SIM' : 'NAO',
       p.motivoRejeicao || '—',
       p.obs || '—'
     ]);
@@ -404,7 +430,7 @@ export default function PainelAdmin() {
       'Data da Solicitação': p.criadoEm ? fmtDateTime(p.criadoEm) : '—',
       'Tipo de Permuta': p.tipo === 'paga' ? 'Permuta Simples' : 'Permuta Dupla',
       'Status': p.status,
-      'Urgente (<72h)': isMenos72h(p) ? 'SIM' : 'NÃO',
+      'Fora do Prazo': isForaPrazo(p) ? 'SIM' : 'NÃO',
       'Motivo Rejeição': p.motivoRejeicao || '—',
       'Observação': p.obs || '—'
     }));
@@ -434,7 +460,7 @@ export default function PainelAdmin() {
     doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 20);
 
     const tableHeaders = [
-      ['Data Sv', 'Retorno', 'Solicitante', 'Receptor', 'Solicitado Em', 'Tipo', 'Status', '<72h', 'Observação']
+      ['Data Sv', 'Retorno', 'Solicitante', 'Receptor', 'Solicitado Em', 'Tipo', 'Status', 'Fora Prazo', 'Observação']
     ];
 
     const tableData = relFiltradoPeriodo.map(p => [
@@ -445,7 +471,7 @@ export default function PainelAdmin() {
       p.criadoEm ? fmtDateTime(p.criadoEm) : '—',
       p.tipo === 'paga' ? 'Simples' : 'Dupla',
       p.status,
-      isMenos72h(p) ? 'SIM' : 'NÃO',
+      isForaPrazo(p) ? 'SIM' : 'NÃO',
       p.obs || '—'
     ]);
 
@@ -632,12 +658,12 @@ export default function PainelAdmin() {
             <input type="text" placeholder="🔍  Buscar por nome..." value={busca} onChange={e => setBusca(e.target.value)}
               style={{ width: '100%', background: 'rgba(0,0,0,.3)', border: `1px solid ${C.borda}`, borderRadius: 8, color: C.creme, fontFamily: 'monospace', fontSize: '0.9rem', padding: '0.6rem 0.9rem', marginBottom: '1rem', boxSizing: 'border-box', outline: 'none' }} />
             {permFiltradas.map(p => (
-              <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.7rem 0', borderBottom: `1px solid ${C.borda}`, borderLeft: isMenos72h(p) ? '4px solid #ff7979' : 'none', paddingLeft: isMenos72h(p) ? 6 : 0, flexWrap: 'wrap', gap: '0.5rem' }}>
+              <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.7rem 0', borderBottom: `1px solid ${C.borda}`, borderLeft: isForaPrazo(p) ? '4px solid #ff7979' : 'none', paddingLeft: isForaPrazo(p) ? 6 : 0, flexWrap: 'wrap', gap: '0.5rem' }}>
                 <div style={{ flex: 1, minWidth: 200 }}>
                   <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.2rem', flexWrap: 'wrap' }}>
                     <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 6px', fontSize: '0.62rem', fontFamily: 'monospace', fontWeight: 700 }}>{p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}</span>
                     {badgeStatus(p)}
-                    {badge72h(p)}
+                    {badgeForaPrazo(p)}
                     <span style={{ fontFamily: 'monospace', fontSize: '0.72rem', color: C.ouro, fontWeight: 600 }}>
                       {p.tipo === 'real' ? `${fmtData(p.data)} ⇆ ${fmtData(p.dataRetorno)}` : fmtData(p.data)}
                     </span>
@@ -796,8 +822,8 @@ export default function PainelAdmin() {
                 <div style={{ fontSize: '1.4rem', fontFamily: "'Bebas Neue',sans-serif", color: C.ouro }}>{relFiltradoPeriodo.filter(p => p.tipo === 'real').length}</div>
               </div>
               <div style={{ background: 'rgba(0,0,0,0.25)', padding: '0.6rem 0.8rem', borderRadius: 6, border: `1px solid ${C.borda}` }}>
-                <div style={{ fontSize: '0.6rem', color: C.cinza, fontFamily: 'monospace' }}>URGENTES (&lt;72H)</div>
-                <div style={{ fontSize: '1.4rem', fontFamily: "'Bebas Neue',sans-serif", color: '#ff7979' }}>{relFiltradoPeriodo.filter(isMenos72h).length}</div>
+                <div style={{ fontSize: '0.6rem', color: C.cinza, fontFamily: 'monospace' }}>FORA DO PRAZO</div>
+                <div style={{ fontSize: '1.4rem', fontFamily: "'Bebas Neue',sans-serif", color: '#ff7979' }}>{relFiltradoPeriodo.filter(isForaPrazo).length}</div>
               </div>
             </div>
 
@@ -825,7 +851,7 @@ export default function PainelAdmin() {
                 </thead>
                 <tbody>
                   {relFiltradoPeriodo.map(p => (
-                    <tr key={p.id} style={{ borderBottom: `1px solid ${C.borda}`, background: isMenos72h(p) ? 'rgba(231,76,60,0.08)' : 'transparent' }}>
+                    <tr key={p.id} style={{ borderBottom: `1px solid ${C.borda}`, background: isForaPrazo(p) ? 'rgba(231,76,60,0.08)' : 'transparent' }}>
                       <td style={{ padding: '0.6rem 0.5rem' }}>
                         {p.tipo === 'real' ? `${fmtData(p.data)} a ${fmtData(p.dataRetorno)}` : fmtData(p.data)}
                       </td>
@@ -839,7 +865,7 @@ export default function PainelAdmin() {
                       </td>
                       <td style={{ padding: '0.6rem 0.5rem' }}>
                         {badgeStatus(p)}
-                        {badge72h(p)}
+                        {badgeForaPrazo(p)}
                       </td>
                       <td style={{ padding: '0.6rem 0.5rem', fontStyle: 'italic', maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={p.obs || ''}>
                         {p.obs || '—'}
@@ -948,14 +974,14 @@ export default function PainelAdmin() {
                       </div>
                     ) : (
                       permutasNoDiaSel.map(p => (
-                        <div key={p.id} style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderLeft: isMenos72h(p) ? '4px solid #ff7979' : `1px solid ${C.borda}`, borderRadius: 8, padding: '0.8rem 1rem', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        <div key={p.id} style={{ background: C.fundo2, border: `1px solid ${C.borda}`, borderLeft: isForaPrazo(p) ? '4px solid #ff7979' : `1px solid ${C.borda}`, borderRadius: 8, padding: '0.8rem 1rem', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
                           <div>
                             <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.3rem', alignItems: 'center', flexWrap: 'wrap' }}>
                               <span style={{ background: p.tipo === 'paga' ? C.laranjaPale : C.ouroPale, color: p.tipo === 'paga' ? '#f0a050' : C.ouro, border: `1px solid ${p.tipo === 'paga' ? C.laranja : C.ouro}40`, borderRadius: 4, padding: '1px 6px', fontSize: '0.6rem', fontFamily: 'monospace', fontWeight: 700 }}>
                                 {p.tipo === 'paga' ? 'PERMUTA SIMPLES' : '🤝 PERMUTA DUPLA'}
                               </span>
                               {badgeStatus(p)}
-                              {badge72h(p)}
+                              {badgeForaPrazo(p)}
                               <span style={{ fontSize: '0.72rem', color: C.ouro, fontFamily: 'monospace' }}>{p.tipoSv}</span>
                             </div>
                             <div style={{ fontSize: '0.9rem', color: C.creme }}>

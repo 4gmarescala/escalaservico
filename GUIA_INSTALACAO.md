@@ -118,7 +118,7 @@ O sistema agora é **100% reativo por natureza**. Se dois celulares estiverem ab
 
 ```
 1. Militar A solicita permuta para o Militar B
-   └─ Sistema valida prazo antecedência de 72h
+   └─ Sistema valida prazo de antecedência (Ter-Sáb: 2 dias antes às 7h; Dom-Seg: Sexta anterior às 7h)
    └─ A permuta aparece IMEDIATAMENTE (tempo real) no celular do Militar B
 
 2. Militar B recebe a notificação e clica em Confirmar
@@ -128,6 +128,21 @@ O sistema agora é **100% reativo por natureza**. Se dois celulares estiverem ab
 3. Admin analisa, clica em Aprovar (ou Rejeitar)
    └─ O status final "Aprovada" / "Rejeitada" se propaga na hora para ambos os militares
 ```
+
+---
+
+## REGRAS OPERACIONAIS DE PRAZOS
+
+### 🕐 1. Prazo para Solicitar Permuta
+- **Serviços de Terça a Sábado:** até as **07h de 2 (dois) dias antes** do serviço.
+  - *Exemplo:* serviço na quarta-feira → solicitar até segunda-feira às 07:00.
+- **Serviços de Domingo:** até a **Sexta-feira anterior às 07:00**.
+- **Serviços de Segunda-feira:** até a **Sexta-feira anterior às 07:00**.
+- *Permutas Duplas:* ambas as datas (serviço original e serviço de retorno) são validadas simultaneamente.
+
+### 🕐 2. Prazo para Cancelamento de Permuta
+- **Até 48 horas (2 dias) antes do início do serviço (07h).**
+- *Após o prazo de 48h:* o botão de cancelamento direto pelo militar é bloqueado na tela do militar. O cancelamento somente poderá ser realizado mediante **autorização expressa do chefe da SAd**, com intervenção do Administrador pelo Painel Admin.
 
 ---
 
@@ -145,7 +160,7 @@ No início de cada mês:
 | Problema | Solução |
 |---|---|
 | Militar não consegue logar | Verifique se o RG está correto. Se necessário, o Admin pode atualizar a senha recadastrando o acesso ou via SQL no editor |
-| "Permuta bloqueada" | O serviço está a menos de 72h do início ou o limite de permutas mensais do militar foi atingido |
+| "Permuta bloqueada" | O prazo de solicitação expirou, o militar está a menos de 48h das 7h do serviço para cancelamento (necessita chefe SAd) ou o limite de permutas mensais do militar foi atingido |
 | Dados não aparecem | Verifique se as tabelas foram criadas com sucesso no passo 2 |
 
 ---
